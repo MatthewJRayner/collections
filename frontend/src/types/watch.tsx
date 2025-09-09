@@ -1,0 +1,22 @@
+export type Watch = {
+    id?: number;
+    brand: string;
+    model: string;
+    reference_number?: string;
+    registration_number?: string;
+    country?: string;
+    diameter?: string;
+    price?: string;
+    photo?: string;
+    link?: string;
+    year?: number;
+    movement?: string;
+    winding?: string;
+    complications?: string[];
+    strap?: string;
+    dial?: string;
+    case?: string;
+    numerals?: string;
+    owned: boolean;
+    notes?: string;
+};
