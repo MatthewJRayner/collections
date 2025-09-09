@@ -225,7 +225,7 @@ class Extra(models.Model):
     ]
 
     owned = models.BooleanField(default=False)
-    category = models.ForeignKey(ExtrasCategory, on_delete=models.CASCADE, related_name="extras", null=True, blank=True)
+    category = models.ForeignKey(ExtrasCategory, on_delete=models.CASCADE, related_name="extra", null=True, blank=True)
     brand = models.CharField(max_length=200, blank=True, null=True)
     model = models.CharField(max_length=200)
     price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)

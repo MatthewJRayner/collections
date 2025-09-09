@@ -38,7 +38,7 @@ class BookCollectionAdmin(admin.ModelAdmin):
 class WardrobeAdmin(admin.ModelAdmin):
     list_display = ("category", "type", "style", "preferred_quantity", "price")
     list_filter = ("category",)
-    search_fields = ("style", "brands")
+    search_fields = ("type", "brands")
 
 
 @admin.register(GameCollection)
