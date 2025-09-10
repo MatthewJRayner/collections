@@ -1,6 +1,7 @@
 export type Watch = {
     id?: number;
     brand: string;
+    collection?: string;
     model: string;
     reference_number?: string;
     registration_number?: string;

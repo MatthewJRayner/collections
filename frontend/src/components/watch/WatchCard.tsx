@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Watch } from "../types/watch";
+import { Watch } from "../../types/watch";
 import Link from "next/link";
+import ZoomableImageModal from "../ZoomableImageModal";
 
 type WatchCardProps = {
   watch: Watch;
@@ -11,21 +12,33 @@ type WatchCardProps = {
 
 export default function WatchCard({ watch, onDelete }: WatchCardProps) {
   const [expanded, setExpanded] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   return (
-    <li className="border rounded-lg shadow p-4 flex flex-col items-center text-center">
+    <li className={`rounded-lg shadow-md p-4 flex flex-col items-center text-center bg-neutral ${!showModal ? "transition hover:scale-105" : ""}`}>
       {watch.photo && (
-        <img
-          src={watch.photo}
-          alt={watch.model}
-          className="h-32 object-contain mb-3"
-        />
+        <div onClick={() => setShowModal(true)} className="cursor-pointer">
+          <img
+            src={watch.photo}
+            alt={watch.model}
+            className="h-64 object-contain mb-3"
+          />
+        </div>
       )}
+
+      {showModal && (
+          <ZoomableImageModal
+            src={watch.photo || "/placeholder.jpg"}
+            alt={watch.model}
+            onClose={() => setShowModal(false)}
+          />
+        )}
+
       <h2 className="font-semibold">
-        {watch.brand} {watch.model}
+        {watch.brand} {watch.collection || ""} {watch.model}
       </h2>
-      <p className="text-sm text-gray-600">{watch.reference_number || "—"}</p>
-      <p className="mt-2">{watch.price ? `£${watch.price}` : "—"}</p>
+      <p className="text-sm text-gray-800">{watch.reference_number || "—"}</p>
+      <p className="mt-2">{watch.price ? `£${Number(watch.price).toLocaleString()}` : "—"}</p>
       <span
         className={`mt-2 px-2 py-1 rounded text-xs ${
           watch.owned
@@ -38,13 +51,13 @@ export default function WatchCard({ watch, onDelete }: WatchCardProps) {
 
       <button
         onClick={() => setExpanded(!expanded)}
-        className="mt-3 text-sm text-blue-600 hover:underline"
+        className="mt-3 text-sm text-primary cursor-pointer hover:text-neutral-mid"
       >
         {expanded ? "Hide Details" : "Show Details"}
       </button>
 
       {expanded && (
-        <div className="mt-4 text-left w-full space-y-2 text-sm text-gray-700">
+        <div className="mt-4 text-left w-full space-y-2 text-sm text-neutral-mid">
           {watch.year && <p><strong>Year:</strong> {watch.year}</p>}
           {watch.registration_number && (
             <p><strong>Registration #:</strong> {watch.registration_number}</p>
@@ -66,7 +79,7 @@ export default function WatchCard({ watch, onDelete }: WatchCardProps) {
               <a
                 href={watch.link}
                 target="_blank"
-                className="text-blue-600 hover:underline"
+                className="text-primary cursor-pointer hover:text-neutral-mid"
               >
                 View
               </a>
@@ -76,16 +89,16 @@ export default function WatchCard({ watch, onDelete }: WatchCardProps) {
         </div>
       )}
 
-      <div className="mt-3 flex gap-4">
+      <div className={`mt-3 flex gap-4`}>
         <Link
           href={`/watches/${watch.id}/edit`}
-          className="text-blue-600 hover:underline"
+          className="text-primary cursor-pointer hover:text-neutral-mid"
         >
           Edit
         </Link>
         <button
           onClick={() => onDelete(watch.id!)}
-          className="text-red-600 hover:underline"
+          className="text-danger cursor-pointer hover:text-red-500"
         >
           Delete
         </button>

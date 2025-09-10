@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 class Watch(models.Model):
     brand = models.CharField(max_length=100)
+    collection = models.CharField(max_length=100, blank=True, null=True)
     model = models.CharField(max_length=100)
     reference_number = models.CharField(max_length=50, blank=True, null=True)
     registration_number = models.CharField(max_length=50, blank=True, null=True)
@@ -184,6 +185,7 @@ class GameCollection(models.Model):
     publisher = models.CharField(max_length=200, blank=True, null=True)
     link = models.URLField(blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
+    series = models.CharField(max_length=200, default="")
 
     def __str__(self):
         return f"{self.title} ({self.platform})"
