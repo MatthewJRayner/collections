@@ -15,13 +15,14 @@ class Watch(models.Model):
     year = models.IntegerField(blank=True, null=True)
     movement = models.CharField(max_length=100, blank=True, null=True)
     winding = models.CharField(max_length=100, blank=True, null=True)
-    complications = models.JSONField(blank=True, null=True)
+    complications = models.JSONField(default=list, blank=True, null=True) # Format: ["Small Seconds", "Date", "Chronograph"] etc.
     strap = models.CharField(max_length=100, blank=True, null=True)
     dial = models.CharField(max_length=100, blank=True, null=True)
     case = models.CharField(max_length=100, blank=True, null=True)
     numerals = models.CharField(max_length=100, blank=True, null=True)
     owned = models.BooleanField(default=False)
     notes = models.TextField(blank=True, null=True)
+    date_bought = models.DateField(blank=True, null=True)
     
     def __str__(self):
         return f"{self.brand} {self.model} ({self.reference_number})"
@@ -50,7 +51,7 @@ class Music(models.Model):
     artist = models.CharField(max_length=200)
     release_date = models.DateField(blank=True, null=True)
     catalog_number = models.CharField(max_length=50, blank=True, null=True)
-    genre = models.JSONField(default=list, blank=True, null=True)
+    genre = models.JSONField(default=list, blank=True, null=True) # Format: ["Rock", "Pop"]
     length = models.DurationField(blank=True, null=True)
     type = models.CharField(max_length=50, choices=TYPE_CHOICES)
     cover_art = models.URLField(blank=True, null=True)
@@ -58,8 +59,10 @@ class Music(models.Model):
     language = models.CharField(max_length=100, blank=True, null=True)
     country = models.CharField(max_length=100, blank=True, null=True)
     label = models.CharField(max_length=200, blank=True, null=True)
+    tracklist = models.JSONField(blank=True, null=True) # Format: {"track_number": 1, "title":  "Song Title", "lyrics": "Lyrics here", "length": "4:53"}
     link = models.URLField(blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
+    date_bought = models.DateField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.artist} - {self.title} ({self.format})"
@@ -100,6 +103,7 @@ class FilmCollection(models.Model):
     runtime = models.DurationField(blank=True, null=True)
     link = models.URLField(blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
+    date_bought = models.DateField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.title} ({self.format})"
@@ -128,6 +132,7 @@ class BookCollection(models.Model):
     publisher = models.CharField(max_length=200, blank=True, null=True)
     link = models.URLField(blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
+    date_bought = models.DateField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.title} by {self.author} ({self.format})"
@@ -186,6 +191,7 @@ class GameCollection(models.Model):
     link = models.URLField(blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
     series = models.CharField(max_length=200, default="")
+    date_bought = models.DateField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.title} ({self.platform})"
@@ -213,6 +219,7 @@ class Art(models.Model):
     price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
     photo = models.URLField(blank=True, null=True)
     link = models.URLField(blank=True, null=True)
+    date_bought = models.DateField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.title} by {self.artist} ({self.year})"
@@ -243,6 +250,7 @@ class Extra(models.Model):
     year = models.IntegerField(blank=True, null=True)
     year_specificity = models.CharField(max_length=50, choices=YEAR_SPECIFICITY_CHOICES, blank=True, null=True)
     additional_info = models.TextField(blank=True, null=True)
+    date_bought = models.DateField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.brand} {self.model} ({self.category})"

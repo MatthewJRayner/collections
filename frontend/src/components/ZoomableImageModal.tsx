@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 
 type ZoomableImageModalProps = {
@@ -13,10 +12,49 @@ export default function ZoomableImageModal({ src, alt, onClose }: ZoomableImageM
   const [translate, setTranslate] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [startPos, setStartPos] = useState({ x: 0, y: 0 });
+  const [initialPinchDistance, setInitialPinchDistance] = useState<number | null>(null);
+  const [initialScale, setInitialScale] = useState(1);
 
-  const handleWheel = (e: React.WheelEvent) => {
-    e.preventDefault();
-    setScale((prev) => Math.min(Math.max(0.5, prev + e.deltaY * -0.001), 5));
+  const handleZoomIn = () => {
+    setScale((prev) => Math.min(5, prev + 0.2));
+  };
+
+  const handleZoomOut = () => {
+    setScale((prev) => Math.max(0.5, prev - 0.2));
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      e.preventDefault();
+      const touch1 = e.touches[0];
+      const touch2 = e.touches[1];
+      const distance = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
+      setInitialPinchDistance(distance);
+      setInitialScale(scale);
+      setIsDragging(false);
+    } else if (e.touches.length === 1) {
+      e.preventDefault();
+      setIsDragging(true);
+      setStartPos({ x: e.touches[0].clientX - translate.x, y: e.touches[0].clientY - translate.y });
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (e.touches.length === 2 && initialPinchDistance !== null) {
+      e.preventDefault();
+      const touch1 = e.touches[0];
+      const touch2 = e.touches[1];
+      const currentDistance = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
+      const newScale = initialScale * (currentDistance / initialPinchDistance);
+      setScale(Math.min(Math.max(0.5, newScale), 5));
+    } else if (isDragging && e.touches.length === 1) {
+      setTranslate({ x: e.touches[0].clientX - startPos.x, y: e.touches[0].clientY - startPos.y });
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+    setInitialPinchDistance(null);
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -43,15 +81,31 @@ export default function ZoomableImageModal({ src, alt, onClose }: ZoomableImageM
       onClick={onClose}
     >
       <div
-        className="bg-white p-4 rounded shadow-lg max-h-[90vh] max-w-[90vw] overflow-hidden cursor-grab active:cursor-grabbing"
-        onWheel={handleWheel}
+        className="bg-white p-4 rounded shadow-lg max-h-[90vh] max-w-[90vw] overflow-hidden cursor-grab active:cursor-grabbing relative"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
         onDoubleClick={handleDoubleClick}
-        onClick={(e) => e.stopPropagation()} // prevent closing on click inside
+        onClick={(e) => e.stopPropagation()}
       >
+        <div className="absolute top-2 right-2 flex gap-2">
+          <button
+            className="bg-neutral-mid text-background shadow p-2 rounded hover:bg-neutral hover:text-foreground transition cursor-pointer"
+            onClick={handleZoomIn}
+          >
+            +
+          </button>
+          <button
+            className="bg-neutral-mid text-background shadow p-2 rounded hover:bg-neutral hover:text-foreground transition cursor-pointer"
+            onClick={handleZoomOut}
+          >
+            -
+          </button>
+        </div>
         <img
           src={src}
           alt={alt || "Image preview"}

@@ -71,12 +71,12 @@ export default function WatchForm({ initialData, onSuccess }: WatchFormProps) {
             <div className="w-1/2 pr-2">
                 {formData.photo && (
                     <div className="mb-3">
-                    <p className="text-sm text-silver mb-1">Current Photo Preview:</p>
-                    <img
-                        src={formData.photo}
-                        alt="Watch preview"
-                        className=" object-contain rounded"
-                    />
+                        <p className="text-sm text-silver mb-1">Current Photo Preview:</p>
+                        <img
+                            src={formData.photo}
+                            alt="Watch preview"
+                            className=" object-contain rounded"
+                        />
                     </div>
                 )}
             </div>
@@ -236,7 +236,7 @@ export default function WatchForm({ initialData, onSuccess }: WatchFormProps) {
                     </label>
                     <button
                         type="submit"
-                        className="bg-primary text-white px-4 py-2 rounded hover:scale-105 transition cursor-pointer"
+                        className="bg-primary text-background px-4 py-2 rounded hover:bg-neutral-mid hover:scale-105 transition cursor-pointer"
                     >
                         {initialData ? "Update Watch" : "Add Watch"}
                     </button>

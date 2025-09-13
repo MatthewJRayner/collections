@@ -32,7 +32,7 @@ export default function WatchCard({ watch, onDelete }: WatchCardProps) {
             alt={watch.model}
             onClose={() => setShowModal(false)}
           />
-        )}
+      )}
 
       <h2 className="font-semibold">
         {watch.brand} {watch.collection || ""} {watch.model}
@@ -42,8 +42,8 @@ export default function WatchCard({ watch, onDelete }: WatchCardProps) {
       <span
         className={`mt-2 px-2 py-1 rounded text-xs ${
           watch.owned
-            ? "bg-green-200 text-green-700"
-            : "bg-red-200 text-red-700"
+            ? "bg-green-200 text-success"
+            : "bg-red-200 text-danger"
         }`}
       >
         {watch.owned ? "Owned" : "Wishlist"}
