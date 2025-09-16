@@ -34,7 +34,7 @@ export default function AwardsEditor({ awards, setAwards }: Props) {
     };
 
     return (
-        <div className="p-3 rounded bg-neutral shadow w-full">
+        <div className="p-2 rounded bg-neutral shadow w-full">
             <button
                 type="button" 
                 className="mb-2 text-neutral-mid w-full text-left cursor-pointer"

@@ -31,7 +31,6 @@ export type Film = {
     language?: string;
     country?: string;
     festival?: string;
-    rewatch_count?: string;
     poster?: string;
     background_pic?: string;
     medium?: string;

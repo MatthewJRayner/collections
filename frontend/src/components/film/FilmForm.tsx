@@ -68,14 +68,13 @@ export default function FilmForm({ initialData, onSuccess }: FilmFormProps) {
                 : null,
             rating: formData.rating ? parseFloat(formData.rating): null,
             volume: formData.volume ? parseFloat(formData.volume): null,
-            rewatch_count: formData.rewatch_count ? parseFloat(formData.rewatch_count): null,
             budget: formData.budget ? parseFloat(formData.budget): null,
             box_office: formData.box_office ? parseFloat(formData.box_office): null,
         };
 
         const method = initialData ? "PUT": "POST";
         const url = initialData
-            ? `http://127.0.0.1:8000/api/films/${initialData.id}`
+            ? `http://127.0.0.1:8000/api/films/${initialData.id}/`
             : "http://127.0.0.1:8000/api/films/";
 
         await fetch(url, {
