@@ -86,6 +86,7 @@ export default function WatchCard({ watch, onDelete }: WatchCardProps) {
             </p>
           )}
           {watch.notes && <p><strong>Notes:</strong> {watch.notes}</p>}
+          {watch.date_bought && <p><strong>Date Bought:</strong> {watch.date_bought}</p>}
         </div>
       )}
 

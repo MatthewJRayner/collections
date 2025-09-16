@@ -20,4 +20,5 @@ export type Watch = {
     numerals?: string;
     owned: boolean;
     notes?: string;
+    date_bought?: string;
 };

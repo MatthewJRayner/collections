@@ -222,6 +222,14 @@ export default function MusicForm({ initialData, onSuccess }: MusicFormProps) {
                         tracklist={formData.tracklist || []}
                         setTracklist={(t) => setFormData({ ...formData, tracklist: t })}
                     />
+                    <input
+                        type="date"
+                        name="date_bought"
+                        placeholder="Date Bought"
+                        value={formData.date_bought || ""}
+                        onChange={handleChange}
+                        className="bg-neutral shadow p-2 w-full rounded"
+                    />
                     <label className="flex items-center space-x-2">
                         <input
                         type="checkbox"

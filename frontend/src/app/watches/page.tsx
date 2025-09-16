@@ -8,6 +8,16 @@ import Link from "next/link";
 export default function WatchesPage() {
   const [watches, setWatches] = useState<Watch[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredWatches = watches.filter((w) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      w.brand.toLowerCase().includes(query) ||
+      w.collection?.toLowerCase().includes(query) ||
+      w.model.toLowerCase().includes(query)
+    );
+  });
 
   const fetchWatches = () => {
     setLoading(true);
@@ -42,12 +52,22 @@ export default function WatchesPage() {
     <div className="p-6">
       <div className="flex justify-start items-center mb-6 ">
         <h1 className="text-3xl font-bold mr-4">Watches</h1>
+      </div>
+
+      <div className="flex items-center mb-6 gap-2">
+        <input 
+          type="text"
+          placeholder="Search..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="p-2 w-1/4 bg-neutral rounded shadow"
+        />
         <Link
           href="/watches/new"
           className="bg-primary text-background px-2 py-0.5 hover:bg-neutral-mid hover:scale-105 transition rounded-md"
         >
           +
-        </Link>
+        </Link>  
       </div>
 
       <div className="flex gap-4 mb-6">
@@ -67,11 +87,11 @@ export default function WatchesPage() {
 
       {loading ? (
         <p>Loading watches...</p>
-      ) : watches.length === 0 ? (
+      ) : filteredWatches.length === 0 ? (
         <p>No watches found.</p>
       ) : (
         <ul className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-          {watches.map((watch) => (
+          {filteredWatches.map((watch) => (
             <WatchCard
               key={watch.id}
               watch={watch}

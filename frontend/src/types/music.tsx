@@ -27,4 +27,5 @@ export type Music = {
     notes?: string;
     owned: boolean;
     tracklist?: Track[];
+    date_bought?: string;
 };

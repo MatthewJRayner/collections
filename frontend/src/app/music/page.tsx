@@ -9,6 +9,16 @@ export default function MusicPage() {
     const [music, setMusic] = useState<Music[]>([]);
     const [loading, setLoading] = useState(true);
     const [openLanguages, setOpenLanguages] = useState<Record<string, boolean>>({});
+    const [searchQuery, setSearchQuery] = useState("");
+
+    const filteredMusic = music.filter((m) => {
+        const query = searchQuery.toLowerCase();
+        return (
+            m.title?.toLowerCase().includes(query) ||
+            m.artist?.toLowerCase().includes(query) ||
+            m.genre?.some((g) => g.toLowerCase().includes(query))
+        );
+    });
 
     const fetchMusic = () => {
         setLoading(true);
@@ -33,7 +43,7 @@ export default function MusicPage() {
         fetchMusic();
     };
 
-    const groupByLanguage = music.reduce<Record<string, Music[]>>((acc, item) => {
+    const groupByLanguage = filteredMusic.reduce<Record<string, Music[]>>((acc, item) => {
         const lang = item.language || "Unknown";
         if (!acc[lang]) acc[lang] = [];
         acc[lang].push(item);
@@ -48,13 +58,23 @@ export default function MusicPage() {
     return (
         <div className="p-6">
             <div className="flex justify-start items-center mb-6 ">
-                <h1 className="text-3xl font-bold mr-4">Music Collection</h1>
+                <h1 className="text-3xl font-bold">Music Collection</h1>
+            </div>
+
+            <div className="flex items-center mb-6 gap-2">
+                <input 
+                    type='text'
+                    placeholder='Search...'
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="p-2 w-1/4 bg-neutral rounded shadow"
+                />
                 <Link
                 href="/music/new"
                 className="bg-primary text-background px-2 py-0.5 hover:bg-neutral-mid hover:scale-105 transition rounded-md"
                 >
                 +
-                </Link>
+                </Link>                
             </div>
 
             <div className="flex gap-4 mb-6">
@@ -74,7 +94,7 @@ export default function MusicPage() {
 
             {loading ? (
                 <p>Loading watches...</p>
-            ) : music.length === 0 ? (
+            ) : filteredMusic.length === 0 ? (
                 <p>No music items found.</p>
             ) : (
                 <div className="space-y-4">

@@ -9,7 +9,7 @@ type Track = {
     length?: string;
 };
 
-type Props ={
+type Props = {
     tracklist: Track[];
     setTracklist: (t: Track[]) => void;
 }

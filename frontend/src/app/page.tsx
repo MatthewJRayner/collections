@@ -24,7 +24,7 @@ export default function HomePage() {
           <Link
             key={c.path}
             href={c.path}
-            className="bg-neutral rounded-lg shadow hover:shadow-lg hover:scale-101 hover:bg-neutral-mid hover:text-background transition duration-300 p-6 flex items-center justify-center text-lg font-semibold"
+            className="bg-neutral rounded-lg shadow active:scale-95 hover:shadow-lg hover:scale-101 hover:bg-neutral-mid hover:text-background transition duration-300 p-6 flex items-center justify-center text-lg font-semibold"
           >
             {c.name}
           </Link>

@@ -109,6 +109,7 @@ export default function MusicCard({ music, onDelete }: MusicCardProps) {
                         </p>
                     )}
                     {music.notes && <p><strong>Notes:</strong> {music.notes}</p>}
+                    {music.date_bought && <p><strong>Date Bought:</strong> {music.date_bought}</p>}
                 </div>
             )}
 

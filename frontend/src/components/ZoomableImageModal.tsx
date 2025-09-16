@@ -94,13 +94,13 @@ export default function ZoomableImageModal({ src, alt, onClose }: ZoomableImageM
       >
         <div className="absolute top-2 right-2 flex gap-2">
           <button
-            className="bg-neutral-mid text-background shadow p-2 rounded hover:bg-neutral hover:text-foreground transition cursor-pointer"
+            className="bg-neutral-mid text-background shadow p-2 rounded hover:bg-neutral hover:text-foreground transition cursor-pointer z-10"
             onClick={handleZoomIn}
           >
             +
           </button>
           <button
-            className="bg-neutral-mid text-background shadow p-2 rounded hover:bg-neutral hover:text-foreground transition cursor-pointer"
+            className="bg-neutral-mid text-background shadow p-2 rounded hover:bg-neutral hover:text-foreground transition cursor-pointer z-10"
             onClick={handleZoomOut}
           >
             -

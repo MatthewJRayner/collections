@@ -225,6 +225,14 @@ export default function WatchForm({ initialData, onSuccess }: WatchFormProps) {
                         onChange={handleTextAreaChange}
                         className="bg-neutral shadow p-2 w-full rounded"
                     />
+                    <input
+                        type="date"
+                        name="date_bought"
+                        placeholder="Date Bought"
+                        value={formData.date_bought || ""}
+                        onChange={handleChange}
+                        className="bg-neutral shadow p-2 w-full rounded"
+                    />
                     <label className="flex items-center space-x-2">
                         <input
                         type="checkbox"
