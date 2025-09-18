@@ -4,18 +4,27 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Film } from "../../../types/film";
 import ZoomableImageModal from "@/components/ZoomableImageModal";
+import StarRating from "@/components/StarRating";
+import ReviewModal from "@/components/ReviewModal";
 import Link from "next/link";
+import AwardsEditor from "@/components/film/AwardsEditor";
 
 export default function FilmDetailPage() {
   const { id } = useParams();
   const [film, setFilm] = useState<Film | null>(null);
   const [showModal, setShowModal] = useState(false);
-  const [showDetails, setShowDetails] = useState(false)
+  const [showDetails, setShowDetails] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [activeTab, setActiveTab] = useState<"cast" | "crew" | "awards">("cast");
 
   useEffect(() => {
     fetch(`http://127.0.0.1:8000/api/films/${id}/`)
       .then((res) => res.json())
-      .then(setFilm);
+      .then((data) => {
+        setFilm(data);
+        setRating(data.rating || 0);
+      });
   }, [id]);
 
   function formatDate(dateString?: string): string {
@@ -23,7 +32,7 @@ export default function FilmDetailPage() {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-GB", {
       day: "2-digit",
-      month: "short",
+      month: "long",
       year: "numeric",
     });
   }
@@ -34,6 +43,63 @@ export default function FilmDetailPage() {
     const totalMinutes = hours * 60 + minutes + Math.round((seconds || 0) / 60);
     return `${totalMinutes} mins`
   }
+
+  const saveReview = async (newReview: string) => {
+    if (!film?.id) return;
+
+    const response = await fetch(`http://127.0.0.1:8000/api/films/${film.id}/`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ review: newReview, seen: true }),
+    });
+
+    if (response.ok) {
+      const updated = await response.json();
+      setFilm(updated);
+    }
+  };
+
+  const updateRating = async (newValue: number) => {
+    if (!film?.id) return;
+
+    setRating(newValue);
+
+    await fetch(`http://127.0.0.1:8000/api/films/${film.id}/`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ rating: newValue, seen: true }),
+    });
+  };
+  
+  const toggleSeen = async () => {
+    if (!film?.id) return;
+    
+    const response = await fetch(`http://127.0.0.1:8000/api/films/${film.id}/`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ seen: !film?.seen }),
+    });
+
+    if (response.ok) {
+      const updated = await response.json();
+      setFilm(updated);
+    }
+  };
+
+  const toggleWatchlist = async () => {
+    if (!film?.id) return;
+    
+    const response = await fetch(`http://127.0.0.1:8000/api/films/${film.id}/`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ watchlist: !film?.watchlist }),
+    });
+
+    if (response.ok) {
+      const updated = await response.json();
+      setFilm(updated);
+    }
+  };
 
   const toggleFavourite = async () => {
     if (!film?.id) return;
@@ -54,36 +120,26 @@ export default function FilmDetailPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Background */}
       {film.background_pic && (
-        <div className="absolute top-0 left-0 w-full h-[550px] flex justify-center -z-10">
-          {/* Image wrapper, relative so shadows align to it */}
+        <div className="absolute top-0 left-0 w-full h-[560px] flex justify-center -z-10">
           <div className="relative h-full w-[1200px]">
             <img
               src={film.background_pic}
               alt={film.title}
               className="h-full w-full object-cover object-top"
             />
-
-            {/* Bottom gradient for blending */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-background"></div>
-
-            {/* Left shadow, now relative to the image */}
-            <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background via-background/70 to-transparent"></div>
-
-            {/* Right shadow */}
-            <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background via-background/70 to-transparent"></div>
+            <div className="absolute inset-y-0 left-0 w-18 bg-gradient-to-r from-background to-transparent"></div>
+            <div className="absolute inset-y-0 right-0 w-18 bg-gradient-to-l from-background to-transparent"></div>
           </div>
         </div>
       )}
 
       <div className="h-1/3"></div>
 
-      {/* Content Section */}
       <div className="flex flex-col w-[1000px] items-center justify-center mx-auto">
         <div className="h-[42vh]"></div>
         <div className="flex flex-1 p-6 gap-6 z-10 justify-center w-full">
-          {/* Left column */}
           <div className="w-1/4 space-y-2 flex flex-col items-center">
             {film.poster && (
               <div onClick={() => setShowModal(true)} className="cursor-pointer">
@@ -111,15 +167,23 @@ export default function FilmDetailPage() {
               >
                 ❤︎
               </button>
+              <Link
+                href={`/films/${film.id}/edit`}
+                className="text-lg text-neutral-mid cursor-pointer transition-all duration-300 hover:text-primary hover:scale-105 active:scale-90"
+              >
+                ✎
+              </Link>
             </div>
           </div>
 
-          {/* Center column */}
-          <div className="flex flex-col space-y-2 w-3/4 pl-6">
+          <div className="flex flex-col w-3/4 pl-6">
             <div>
-              <h1 className="text-4xl font-bold font-serif">
-                {film.title}{" "}
+              <h1 className="text-4xl font-bold font-serif flex items-center">
+                {film.title ?? film.title}
               </h1>
+              {film.series && (
+                <span className="text-gray-400 text-sm">{film.series} (#{film.volume ?? film.volume})</span>
+              )}
               <div className="flex items-center space-x-4 mt-2">
                 {film.release_date && (
                   <h2 className=" text-md">{film.release_date.substring(0,4)}</h2>
@@ -142,110 +206,264 @@ export default function FilmDetailPage() {
                     <p className="text-md text-gray-400 leading-relaxed font-serif font-medium">{film.synopsis}</p>
                   )}
 
-                  {/* Cast & Crew Accordions */}
-                  <div className="space-y-2 text-sm">
-                    <details className="group">
-                      <summary className="cursor-pointer font-semibold flex items-center justify-start transition-colors group-open:text-primary">
+                  <div className="space-y-4 pb-4">
+                    <div className="flex space-x-4">
+                      <button
+                        onClick={() => setActiveTab("cast")}
+                        className={`font-semibold cursor-pointer ${
+                          activeTab === "cast" ? "text-primary border-b-2 border-primary" : "text-gray-500"
+                        }`}
+                      >
                         Cast
-                        <span className="transform transition-transform duration-300 group-open:rotate-180 ml-2">
-                          ▼
-                        </span>
-                      </summary>
-                      <ul className="text-md pl-4 mt-2 mb-4">
-                        {film.cast?.map((c, i) => (
-                          <li key={i}>
-                            <span className="font-bold">{c.actor}</span> - {c.role}
-                          </li>
-                        ))}
-                      </ul>
-                    </details>
-
-                    <details className="group">
-                      <summary className="cursor-pointer font-semibold flex items-center justify-start transition-colors group-open:text-primary">
+                      </button>
+                      <button
+                        onClick={() => setActiveTab("crew")}
+                        className={`font-semibold cursor-pointer ${
+                          activeTab === "crew" ? "text-primary border-b-2 border-primary" : "text-gray-500"
+                        }`}
+                      >
                         Crew
-                        <span className="transform transition-transform duration-300 group-open:rotate-180 ml-2">
-                          ▼
-                        </span>
-                      </summary>
-                      <ul className="text-md pl-4 mt-2">
-                        {film.crew?.map((c, i) => (
-                          <li key={i}>
-                            <span className="font-bold">{c.name}</span> - {c.role}
-                          </li>
-                        ))}
-                      </ul>
-                    </details>
-
-                    <details className="group">
-                      <summary className="cursor-pointer font-semibold flex items-center justify-start transition-colors group-open:text-primary">
+                      </button>
+                      <button
+                        onClick={() => setActiveTab("awards")}
+                        className={`font-semibold cursor-pointer ${
+                          activeTab === "awards" ? "text-primary border-b-2 border-primary" : "text-gray-500"
+                        }`}
+                      >
                         Awards
-                        <span className="transform transition-transform duration-300 group-open:rotate-180 ml-2">
-                          ▼
-                        </span>
-                      </summary>
-                      <ul className="text-md pl-4 mt-2 mb-4">
-                        {film.awards_won?.map((a, i) => (
-                          <li key={i}>
-                            <span className="font-bold">{a.award}</span> - <span className={`${a.won ? "" : "text-gray-400"}`}>{a.category} {a.won ? "🏆" : "(NOM)"} </span>
-                          </li>
-                        ))}
-                      </ul>
-                    </details>
+                      </button>
+                    </div>
+
+                    <div className="text-md">
+                      {activeTab === "cast" && (
+                        <div className="space-x-1 flex flex-wrap">
+                          {film.cast?.map((c, i) => (
+                            <div
+                              key={i}
+                              className="relative group"
+                            >
+                              <div className="bg-neutral p-1 w-fit rounded-md text-xs cursor-help">
+                                {c.actor}
+                              </div>
+
+                              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 hidden group-hover:block bg-black text-white text-xs rounded px-2 py-1 whitespace-nowrap z-20 shadow-lg">
+                                {c.role}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      {activeTab === "crew" && (
+                        <div className="space-y-4 flex flex-col">
+                          <div className="flex justify-start items-center pr-4 space-x-4">
+                            <span className="font-normal text-xs">DIRECTOR</span>
+                            <div className="flex flex-wrap gap-2">
+                              <div className="bg-neutral p-1 w-fit rounded-md text-xs">
+                                {film.director}
+                              </div>
+                            </div>
+                          </div>
+                          {Object.entries(
+                            film.crew?.reduce((acc: Record<string, string[]>, c) => {
+                              if (!acc[c.role]) acc[c.role] = [];
+                              acc[c.role].push(c.name);
+                              return acc;
+                            }, {}) || {}
+                          ).map(([role, names]) => (
+                            <div key={role} className="flex justify-start items-center pr-4 space-x-4">
+                              <span className="font-normal text-xs">{role.toUpperCase()}</span>
+                              <div className="flex flex-wrap gap-2">
+                                {names.map((name, idx) => (
+                                  <div
+                                    key={idx}
+                                    className="bg-neutral p-1 w-fit rounded-md text-xs"
+                                  >
+                                    {name}
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      {activeTab === "awards" && (
+                        <div className="space-y-4 flex flex-col">
+                          {Object.entries(
+                            film.awards_won?.reduce((acc: Record<string, { category: string; won: boolean }[]>, a) => {
+                              if (!acc[a.award]) acc[a.award] = [];
+                              acc[a.award].push({ category: a.category, won: a.won });
+                              return acc;
+                            }, {}) || {}
+                          ).map(([award, entries]) => (
+                            <div key={award} className="flex justify-start items-center pr-4 space-x-4">
+                              <span className="font-normal text-xs">{award.toUpperCase()}</span>
+                              <div className="flex flex-wrap gap-2">
+                                {entries.map((entry, idx) => (
+                                  <div
+                                    key={idx}
+                                    className={`p-1 w-fit rounded-md text-xs ${entry.won ? "bg-warning text-white" : "bg-neutral"}`}
+                                  >
+                                    {entry.category}
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
 
-                  {/* Extra details */}
-                  <div className="flex flex-col space-y-2 mt-4">
-                    {film.festival && <p>Premiered at: {film.festival}</p>}
-                    {film.genre && (
-                      <div className="flex items-center space-x-2">
-                        <span>Genres: </span>
-                        {film.genre?.map((g, i) => (
-                          <div className="bg-neutral p-1 rounded-md" key={i}>
-                            {g}
-                          </div>
-                        ))}
-                      </div>
+                  
+                  <button
+                      onClick={() => setShowDetails(!showDetails)}
+                      className="mt-3 text-md text-primary cursor-pointer hover:text-neutral-mid"
+                  >
+                      {showDetails ? "Hide Details" : "More Details"}
+                  </button>   
+                  {showDetails && (
+                    <div className="mt-t text-left w-full space-y-2 text-sm text-neutral-mid">
+                      {film.genre && (
+                        <div className="flex items-center space-x-2">
+                          <span><strong>Genres:</strong> </span>
+                          {film.genre?.map((g, i) => (
+                            <div className="bg-neutral p-1 rounded-md" key={i}>
+                              {g}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      {film.tags && (
+                        <div className="flex items-center space-x-2">
+                          <span><strong>Tags:</strong> </span>
+                          {film.tags?.map((g, i) => (
+                            <div className="bg-neutral p-1 rounded-md" key={i}>
+                              {g}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      {film.series && <p><strong>Series:</strong> {film.series}</p>}
+                      {film.volume && <p><strong>Entry #:</strong> {film.volume}</p>}
+                      {film.rating && <p><strong>Rating:</strong> {film.rating}/10</p>}
+                      {film.runtime && <p><strong>Runtime:</strong> {formatRuntime(film.runtime)}</p>}
+                      {film.date_watched && <p><strong>Date Watched:</strong> {formatDate(film.date_watched)}</p>}
+                      {film.release_date && <p><strong>Release Date:</strong> {formatDate(film.release_date)}</p>}
+                      {film.festival && <p><strong>Premiered at:</strong> {film.festival}</p>}
+                      {film.medium && <p><strong>Medium:</strong> {film.medium}</p>}
+                      {!film.colour && <p><strong>Colour:</strong> Black & White</p>}
+                      {!film.sound && <p><strong>Sound:</strong> Silent</p>}
+                      {film.budget && <p><strong>Budget:</strong> {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(Number(film.budget))}</p>}
+                      {film.box_office && <p><strong>Box Office:</strong> {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(Number(film.box_office))}</p>}
+                      {film.language && <p><strong>Language:</strong> {film.language}</p>}
+                      {film.country && <p><strong>Country:</strong> {film.country}</p>}
+                      {film.external_links && (
+                        <p>
+                        <strong>Link:</strong>{" "}
+                        <a
+                            href={film.external_links}
+                            target="_blank"
+                            className="text-primary cursor-pointer hover:text-neutral-mid"
+                        >
+                            View
+                        </a>
+                        </p>
                     )}
-                    {film.tags && (
-                      <div className="flex items-center space-x-2">
-                        <span>Tags: </span>
-                        {film.tags?.map((g, i) => (
-                          <div className="bg-neutral p-1 rounded-md" key={i}>
-                            {g}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                    </div>
+                )}
                 </div>
 
-                {/* Right column */}
-                <div className="rounded-lg w-2/5 space-y-4 bg-neutral h-fit p-4 flex flex-col items-left">
-                  <span className={`px-2 py-1 rounded text-xs w-fit ${
-                      film.seen
-                          ? "bg-green-200 text-success"
-                          : "bg-red-200 text-danger"
-                  }`}>
-                      {film.seen ? "Seen" : "Watchlist"}
-                  </span>
+                <div className="rounded-lg w-2/5 bg-neutral h-fit">
+                  <div className="w-full text-center border-b-background border-b-1 p-4 flex flex-coljustify-center space-x-4">
+                    <div className="w-1/2 flex flex-col items-center">
+                      <button onClick={toggleSeen} aria-label="Toggle Seen" className="cursor-pointer mb-2">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill={"none"}
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          className={`w-6 h-6 ${
+                            film.seen ? "text-success" : "text-gray-400 hover:text-green-300"
+                          }`}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M1.5 12s4.5-7.5 10.5-7.5S22.5 12 22.5 12s-4.5 7.5-10.5 7.5S1.5 12 1.5 12z"
+                          />
+                          <circle cx="12" cy="12" r="3" />
+                        </svg>
+                      </button>
+                      {film.seen ? (
+                        <h2 className="text-md text-green-300">Seen</h2>
+                      ) : (
+                        <h2 className="text-md text-gray-400">Not Seen</h2>
+                      )}
+                    </div>
+                    
+                    <div className="w-1/2 flex flex-col items-center">
+                      <button onClick={toggleWatchlist} aria-label="Toggle Watchlist" className="cursor-pointer mb-2">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          className={`w-6 h-6 ${
+                            film.watchlist ? "text-primary" : "text-gray-400 hover:text-blue-300"
+                          }`}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 8v4l3 2m6-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                      </button>
+                      {film.watchlist ? (
+                        <h2 className="text-md text-blue-300">Watchlist</h2>
+                      ) : (
+                        <h2 className="text-md text-gray-400">Watchlist</h2>
+                      )}
+                    </div>
+                  </div>
 
-                  {film.rating != null && (
-                    <p className="text-lg">Rating: ⭐ {film.rating}/10</p>
-                  )}
+                  <div className="flex flex-col items-center border-b-background border-b-1 p-4">
+                    <h2 className="text-xs text-gray-400 font-semibold">{film.rating ? "RATED" : "RATE"}</h2>
+                    <StarRating value={rating || 0} onChange={updateRating} />
+                  </div>
 
                   {film.review ? (
-                    <div className="flex flex-col justify-start">
-                      <h3 className="font-semibold">Review</h3>
+                    <div className="flex flex-col justify-start py-4 px-2">
+                      <div className="flex space-x-2 items-center">
+                        <h3 className="font-semibold">Review</h3>
+                        <button
+                          onClick={() => setShowReviewModal(true)}
+                          className="text-md cursor-pointer transition-all duration-300 hover:text-primary hover:scale-105 active:scale-90" 
+                        >
+                          ✎
+                        </button>
+                      </div>
                       <p className="text-sm">{film.review}</p>
                     </div>
                   ) : (
-                    <button
-                      onClick={() => alert("TODO: open review modal")}
-                      className="bg-primary text-background px-4 py-2 rounded hover:bg-neutral-mid hover:scale-105 transition cursor-pointer"
-                    >
-                      + Add Review
-                    </button>
+                    <div className="py-4 px-2 text-center">
+                      <button
+                        onClick={() => setShowReviewModal(true)}
+                        className="bg-primary text-background px-4 py-2 rounded hover:bg-neutral-mid hover:scale-105 transition cursor-pointer active:scale-95"
+                      >
+                        + Add Review
+                      </button>
+                    </div>
                   )}
+
+                  <ReviewModal 
+                    isOpen={showReviewModal}
+                    onClose={() => setShowReviewModal(false)}
+                    onSave={saveReview}
+                    initialValue={film.review || ""}
+                  />
                 </div>
             </div>
           </div>

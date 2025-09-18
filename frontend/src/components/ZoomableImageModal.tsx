@@ -77,11 +77,19 @@ export default function ZoomableImageModal({ src, alt, onClose }: ZoomableImageM
 
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center z-50"
+      className="fixed inset-0 flex items-center justify-center z-50 bg-black/30 backdrop-blur-md"
       onClick={onClose}
     >
+      <div className="absolute top-4 right-4 text-3xl">
+        <button
+          className="bg-neutral-mid text-background shadow px-4 py-2 rounded hover:bg-danger hover:text-white transition-all duration-300 cursor-pointer z-20"
+          onClick={onClose}
+        >
+          ✖
+        </button>
+      </div>
       <div
-        className="bg-white p-4 rounded shadow-lg max-h-[90vh] max-w-[90vw] overflow-hidden cursor-grab active:cursor-grabbing relative"
+        className="bg-white/20 backdrop-blur-md p-4 overflow-hidden cursor-grab active:cursor-grabbing relative"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -91,21 +99,22 @@ export default function ZoomableImageModal({ src, alt, onClose }: ZoomableImageM
         onMouseLeave={handleMouseUp}
         onDoubleClick={handleDoubleClick}
         onClick={(e) => e.stopPropagation()}
-      >
-        <div className="absolute top-2 right-2 flex gap-2">
+      >               
+        <div className="absolute top-6 right-6 flex gap-2">
           <button
-            className="bg-neutral-mid text-background shadow p-2 rounded hover:bg-neutral hover:text-foreground transition cursor-pointer z-10"
+            className="bg-neutral-mid text-background shadow px-2 rounded hover:bg-neutral hover:text-foreground transition cursor-pointer z-10"
             onClick={handleZoomIn}
           >
             +
           </button>
           <button
-            className="bg-neutral-mid text-background shadow p-2 rounded hover:bg-neutral hover:text-foreground transition cursor-pointer z-10"
+            className="bg-neutral-mid text-background shadow px-2 rounded hover:bg-neutral hover:text-foreground transition cursor-pointer z-10"
             onClick={handleZoomOut}
           >
             -
-          </button>
+          </button>               
         </div>
+        
         <img
           src={src}
           alt={alt || "Image preview"}
@@ -113,7 +122,7 @@ export default function ZoomableImageModal({ src, alt, onClose }: ZoomableImageM
             transform: `translate(${translate.x}px, ${translate.y}px) scale(${scale})`,
             transition: isDragging ? "none" : "transform 0.2s ease",
           }}
-          className="select-none pointer-events-none max-h-[80vh] max-w-[90vw]"
+          className="select-none pointer-events-none max-h-[80vh] max-w-[90vw] rounded"
         />
       </div>
     </div>

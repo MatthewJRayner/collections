@@ -44,7 +44,7 @@ export default function TracklistEditor({ tracklist, setTracklist }: Props){
         <div className="p-3 rounded bg-neutral shadow w-full">
             <button
                 type="button" 
-                className="mb-2 text-neutral-mid w-full text-left cursor-pointer"
+                className="mb-2 w-full text-left cursor-pointer"
                 onClick={() => setTracksView(!tracksView)}
             >
                 <span className={`mr-1 transition ${tracksView ? "text-primary" : ""}`}>Tracklist</span>
@@ -59,20 +59,20 @@ export default function TracklistEditor({ tracklist, setTracklist }: Props){
                                 placeholder="Track Title"
                                 value={track.title}
                                 onChange={(e) => updateTrack(index, "title", e.target.value)}
-                                className="bg-background shadow p-1 w-full rounded mb-3"
+                                className="bg-background border-foreground border-b-1 p-1 w-full rounded mb-3"
                             />
                             <input
                                 type="text"
                                 placeholder="Length"
                                 value={track.length || ""}
                                 onChange={(e) => updateTrack(index, "length", e.target.value)}
-                                className="bg-background shadow p-1 w-full rounded mb-3"
+                                className="bg-background border-foreground border-b-1 p-1 w-full rounded mb-3"
                             />
                             <textarea
                                 placeholder="Lyrics (optional)"
                                 value={track.lyrics || ""}
                                 onChange={(e) => updateTrack(index, "lyrics", e.target.value)}
-                                className="bg-background shadow p-1 w-full rounded mb-1"
+                                className="bg-background border-foreground border-b-1 p-1 w-full rounded mb-1"
                             />
                             <button
                                 type="button"

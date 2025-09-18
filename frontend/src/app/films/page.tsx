@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Film } from "../../types/film";
 import FilmCard from "../../components/film/FilmCard";
+import { getMostRecent, getRandomWatchlist, getRandomFavourites, getTopDirectors } from "../utils/filmHelper";
 import Link from "next/link";
 
 export default function FilmPage() {
@@ -15,8 +16,8 @@ export default function FilmPage() {
         return (
             f.title.toLowerCase().includes(query) ||
             f.director?.toLowerCase().includes(query) ||
-            f.genre?.some((g) => g.toLowerCase().includes(query)) ||
-            f.cast?.some((c) => c.actor?.toLowerCase().includes(query))
+            f.cast?.some((c) => c.actor?.toLowerCase().includes(query)) ||
+            f.crew?.some((c) => c.name?.toLowerCase().includes(query))
         );
     });
 
@@ -39,33 +40,140 @@ export default function FilmPage() {
     const totalRating = films.reduce((sum, f) => sum + Number(f.runtime || 0), 0);
     const avgRuntime = films.length > 0 ? Number(totalRating / films.length).toFixed(1) : 0;
 
+    const recent = getMostRecent(films);
+    const watchlist = getRandomWatchlist(films);
+    const favourites = getRandomFavourites(films);
+    const directors = getTopDirectors(films);
+
     return (
         <div className="p-6">
             <div className="flex justify-start items-center mb-6">
                 <h1 className="text-3x1 font-bold">Films</h1>
             </div>
 
-            <div className="flex items-center mb-6 gap-2">
-                <input 
-                    type="text"
-                    placeholder="Search..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="p-2 w-1/4 bg-neutral rounded shadow"
-                />
-                <Link
-                    href="/films/new"
-                    className="bg-primary text-background px-2 py-0.5 hover:bg-neutral-mid hover:scale-105 transition rounded-md"
-                >
-                    +
-                </Link>
+            <div className="flex flex-col mb-6 gap-2 relative">
+                <div className="flex items-center gap-2">
+                    <input 
+                        type="text"
+                        placeholder="Search..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="p-2 w-1/4 bg-neutral rounded shadow"
+                    />
+                    <Link
+                        href="/films/new"
+                        className="bg-primary text-background px-2 py-0.5 hover:bg-neutral-mid hover:scale-105 transition rounded-md"
+                    >
+                        +
+                    </Link>
+                </div>
+                {searchQuery.length > 4 && filteredFilms.length > 0 && (
+                    <div className="absolute top-full mt-1 left-0 right-0 bg-white/20 backdrop-blur-md rounded shadow-lg max-w-[350px] overflow-y-auto z-10">
+                        {filteredFilms.map((f) => {
+                            const query = searchQuery.toLowerCase();
+                            const matchesSet = new Set<string>();
+
+                            if (f.title.toLowerCase().includes(query)) matchesSet.add(f.title);
+                            if (f.director.toLowerCase().includes(query)) matchesSet.add(f.director);
+                            if (f.cast?.some((c) => c.actor?.toLowerCase().includes(query))) {
+                                f.cast.forEach((c) => {
+                                    if (c.actor?.toLowerCase().includes(query)) matchesSet.add(c.actor);
+                                })
+                            }
+                            if (f.crew?.some((c) => c.name?.toLowerCase().includes(query))) {
+                                f.crew.forEach((c) => {
+                                    if (c.name?.toLowerCase().includes(query)) matchesSet.add(c.name);
+                                })
+                            }
+
+                            const matches = Array.from(matchesSet)
+
+                            const highlightMatch = (text: string) => {
+                                const regex = new RegExp(`(${query})`, "gi");
+                                return text.split(regex).map((part, idx) =>
+                                    part.toLowerCase() === query.toLowerCase() ? (
+                                        <span key={idx} className="">{part}</span>
+                                    ) : (
+                                        part
+                                    )
+                                );
+                            };
+
+                            return (
+                                <Link
+                                    key={f.id}
+                                    href={`/films/${f.id}`}
+                                    className="p-2 transition-all duration-300 hover:text-primary cursor-pointer transition flex space-x-2 items-center"
+                                >
+                                    <img 
+                                        src={f.poster}
+                                        alt={f.title}
+                                        className="h-24 object-cover transition-transform duration-300 group-hover:scale-105"
+                                    />
+                                    <div className="font-semibold">{highlightMatch(f.title)}</div>
+                                    {matches
+                                        .filter((m) => m !== f.title)
+                                        .map((m, idx) => (
+                                            <div key={idx} className="text-sm text-gray-400">
+                                                {highlightMatch(m)}
+                                            </div>
+                                        ))}
+                                </Link>
+                            );
+                        })}
+                    </div>
+                )}
             </div>
 
-            <div className="grid gap-6 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-                {films.map((film) => (
-                    <FilmCard key={film.id} film={film} />
-                ))}
-            </div>
+            <div className="space-y-10">
+                <Section title="Most Recently Watched">
+                    {recent.map(f => <FilmCard key={f.id} film={f} />)}
+                </Section>
+
+                <Section title="Random Watchlist Picks">
+                    {watchlist.map(f => <FilmCard key={f.id} film={f} />)}
+                </Section>
+
+                <Section title="Random Favourites">
+                    {favourites.map(f => <FilmCard key={f.id} film={f} />)}
+                </Section>
+
+                <div>
+                    <h2 className="text-xl font-bold mb-4">Top Directors</h2>
+                    <ul className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {directors.map(d => (
+                        <li
+                        key={d.director}
+                        className="relative group bg-neutral p-3 rounded shadow"
+                        >
+                        <span className="font-semibold">{d.director}</span>
+                        <span className="block text-sm text-gray-400">
+                            Avg {d.avg.toFixed(1)}
+                        </span>
+
+                        <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-background text-foreground text-sm rounded shadow p-2 whitespace-nowrap">
+                            {(() => {
+                            const maxRating = Math.max(
+                                ...d.films.map(f => Number(f.rating) ?? 0)
+                            );
+                            const best = d.films.filter(f => Number(f.rating) === maxRating);
+                            return best.map(f => f.title).join(", ");
+                            })()}
+                        </div>
+                        </li>
+                    ))}
+                    </ul>
+                </div>
+                </div>
+        </div>
+    );
+}
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+    return (
+        <div>
+            <h2 className="text-xl font-bold mb-4">{title}</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">{children}</div>
         </div>
     );
 }

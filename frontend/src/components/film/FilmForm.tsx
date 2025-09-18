@@ -21,7 +21,8 @@ export default function FilmForm({ initialData, onSuccess }: FilmFormProps) {
             sound: true,
             colour: true,
             favourite: false,
-            seen: false
+            seen: false,
+            watchlist: false
         }
     );
 
@@ -133,6 +134,14 @@ export default function FilmForm({ initialData, onSuccess }: FilmFormProps) {
                         name="director"
                         placeholder="Director"
                         value={formData.director || ""}
+                        onChange={handleChange}
+                        className="bg-neutral shadow p-2 w-full rounded"
+                    />
+                    <input
+                        type="text"
+                        name="rating"
+                        placeholder="Rating"
+                        value={formData.rating || ""}
                         onChange={handleChange}
                         className="bg-neutral shadow p-2 w-full rounded"
                     />
@@ -262,7 +271,7 @@ export default function FilmForm({ initialData, onSuccess }: FilmFormProps) {
                     <input
                         type="text"
                         name="budget"
-                        placeholder="Budget"
+                        placeholder="Budget ($)"
                         value={formData.budget || ""}
                         onChange={handleChange}
                         className="bg-neutral shadow p-2 w-full rounded"
@@ -270,7 +279,7 @@ export default function FilmForm({ initialData, onSuccess }: FilmFormProps) {
                     <input
                         type="text"
                         name="box_office"
-                        placeholder="Box Office"
+                        placeholder="Box Office ($)"
                         value={formData.box_office || ""}
                         onChange={handleChange}
                         className="bg-neutral shadow p-2 w-full rounded"
@@ -343,7 +352,7 @@ export default function FilmForm({ initialData, onSuccess }: FilmFormProps) {
                     />
                     <button
                         type="submit"
-                        className="bg-primary text-background px-4 py-2 rounded hover:bg-neutral-mid hover:scale-105 transition cursor-pointer"
+                        className="bg-primary text-white px-4 py-2 rounded hover:bg-neutral-mid hover:text-background hover:scale-105 transition cursor-pointer"
                     >
                         {initialData ? "Update Item" : "Add Item"}
                     </button>

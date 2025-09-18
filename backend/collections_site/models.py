@@ -287,6 +287,7 @@ class Film(models.Model):
     favourite = models.BooleanField(default=False)
     seen = models.BooleanField(default=False)
     date_watched = models.DateField(blank=True, null=True)
+    watchlist = models.BooleanField(default=False)
     
     def __str__(self):
         return f"{self.title} ({self.director})"

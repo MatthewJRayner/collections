@@ -37,7 +37,7 @@ export default function AwardsEditor({ awards, setAwards }: Props) {
         <div className="p-2 rounded bg-neutral shadow w-full">
             <button
                 type="button" 
-                className="mb-2 text-neutral-mid w-full text-left cursor-pointer"
+                className="mb-2 w-full text-left cursor-pointer"
                 onClick={() => setAwardsView(!awardsView)}
             >
                 <span className={`mr-1 transition ${awardsView ? "text-primary" : ""}`}>Awards</span>
@@ -52,14 +52,14 @@ export default function AwardsEditor({ awards, setAwards }: Props) {
                             placeholder="Award Name"
                             value={award.award}
                             onChange={(e) => updateAward(index, "award", e.target.value)}
-                            className="bg-background shadow p-1 w-full rounded mb-2"
+                            className="bg-background border-foreground border-b-1 p-1 w-full rounded mb-2"
                             />
                             <input
                             type="text"
                             placeholder="Category"
                             value={award.category}
                             onChange={(e) => updateAward(index, "category", e.target.value)}
-                            className="bg-background shadow p-1 w-full rounded mb-2"
+                            className="bg-background border-foreground border-b-1 p-1 w-full rounded mb-2"
                             />
                             <label className="flex items-center space-x-2">
                                 <input
@@ -72,7 +72,7 @@ export default function AwardsEditor({ awards, setAwards }: Props) {
                             <button
                                 type="button"
                                 onClick={() => removeAward(index)}
-                                className="bg-red-500 text-white text-sm px-2 py-1 rounded mt-2"
+                                className="bg-danger text-white px-2 py-1 mt-2 rounded hover:text-background hover:bg-red-500 transition cursor-pointer active:scale-95"
                             >
                                 Remove
                             </button>
@@ -81,7 +81,7 @@ export default function AwardsEditor({ awards, setAwards }: Props) {
                     <button
                         type="button"
                         onClick={addAward}
-                        className="bg-blue-600 text-white px-3 py-1 rounded"
+                        className="bg-primary text-white px-2 py-2 rounded hover:text-background hover:bg-neutral-mid transition cursor-pointer active:scale-95"
                     >
                         + Add Award
                     </button>

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 
 type Crew = {
-    name: string;
+    name: string[];
     role: string;
 }
 
@@ -31,11 +31,11 @@ export default function CastEditor({ crewlist, setCrewlist }: Props) {
         <div className="p-2 rounded bg-neutral shadow w-full">
             <button
                 type="button" 
-                className="mb-2 text-neutral-mid w-full text-left cursor-pointer"
+                className="mb-2 w-full text-left cursor-pointer"
                 onClick={() => setCrewView(!crewView)}
             >
                 <span className={`mr-1 transition ${crewView ? "text-primary" : ""}`}>Crew</span>
-                <span className={`transition duration-400 ${crewView ? "text-primary" : ""}`}>▼</span>
+                <span className={`transition-all duration-400 ${crewView ? "text-primary transform rotate-90" : ""}`}>▼</span>
             </button>
             {crewView && (
                 <>
@@ -43,22 +43,22 @@ export default function CastEditor({ crewlist, setCrewlist }: Props) {
                         <div key={index} className="mb-3 bg-background shadow p-2 rounded">
                         <input
                             type="text"
-                            placeholder="Actor Name"
+                            placeholder="Name"
                             value={member.name}
                             onChange={(e) => updateMember(index, "name", e.target.value)}
-                            className="bg-background shadow p-1 w-full rounded mb-2"
+                            className="bg-background border-foreground border-b-1 p-1 w-full rounded mb-2"
                         />
                         <input
                             type="text"
                             placeholder="Role"
                             value={member.role}
                             onChange={(e) => updateMember(index, "role", e.target.value)}
-                            className="bg-background shadow p-1 w-full rounded"
+                            className="bg-background border-foreground border-b-1 p-1 w-full rounded"
                         />
                         <button
                             type="button"
                             onClick={() => removeMember(index)}
-                            className="bg-red-500 text-white text-sm px-2 py-1 rounded mt-2"
+                            className="bg-danger text-white px-2 py-1 mt-2 rounded hover:bg-red-500 transition cursor-pointer active:scale-95"
                         >
                             Remove
                         </button>
@@ -67,9 +67,9 @@ export default function CastEditor({ crewlist, setCrewlist }: Props) {
                     <button
                         type="button"
                         onClick={addMember}
-                        className="bg-blue-600 text-white px-3 py-1 rounded"
+                        className="bg-primary text-white px-2 py-2 rounded hover:text-background hover:bg-neutral-mid transition cursor-pointer active:scale-95"
                     >
-                        + Add Cast Member
+                        + Add Crew Member
                     </button>
                 </>
             )}

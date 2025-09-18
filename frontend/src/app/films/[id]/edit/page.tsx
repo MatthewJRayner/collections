@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Film } from "../../../../types/film";
 import FilmForm from "../../../../components/film/FilmForm";
+import Link from "next/link";
 
 export default function EditFilmsPage() {
     const { id } = useParams();
@@ -20,11 +21,19 @@ export default function EditFilmsPage() {
 
     return (
         <div className="p-6">
-            <h1 className="text-2xl font-bold mb-4">Edit Film</h1>
+            <div className="flex items-center">
+                <h1 className="text-2xl font-bold mb-4">Edit Film</h1>
+                <Link
+                    href={`/films/${id}`}
+                    className="text-lg transition-all duration-300 hover:scale-105 hover:text-danger active:scale-90"
+                >
+                    ⏴
+                </Link>
+            </div>
             <FilmForm
                 initialData={film}
                 onSuccess={() => {
-                    router.push("/films");
+                    router.push(`/films/${id}`);
                 }}
             />
         </div>    

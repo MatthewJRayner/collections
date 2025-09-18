@@ -47,4 +47,5 @@ export type Film = {
     favourite: boolean;
     seen: boolean;
     date_watched?: string;
+    watchlist: boolean;
 };
