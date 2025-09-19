@@ -4,19 +4,21 @@ export type FilmPhysicalType = "movie" | "series" | "documentary" | "short" | "o
 export type FilmPhysical = {
     id?: number;
     owned: boolean;
-    format: FilmPhysicalFormat[];
+    format: FilmPhysicalFormat;
     title: string;
     director?: string;
     release_year?: string;
     genre?: string[];
-    type: FilmPhysicalType[];
+    type: FilmPhysicalType;
     cover_art?: string;
-    price?: number;
+    price?: string;
     language?: string;
     country?: string;
     studio?: string;
     runtime?: string;
     link?: string;
     notes?: string;
+    special_features: boolean;
+    features?: string[];
     date_bought?: string;
 }

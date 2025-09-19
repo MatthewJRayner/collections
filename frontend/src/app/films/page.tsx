@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Film } from "../../types/film";
 import FilmCard from "../../components/film/FilmCard";
-import { getMostRecent, getRandomWatchlist, getRandomFavourites, getTopDirectors } from "../utils/filmHelper";
+import { getMostRecent, getRandomWatchlist, getRandomFavourites, getTopDirectors } from "../../utils/filmHelper";
 import Link from "next/link";
 
 export default function FilmPage() {
@@ -35,10 +35,17 @@ export default function FilmPage() {
         fetchFilms();
     }, []);
 
+    function formatRuntime(runtime?: string): string {
+        if (!runtime) return "Unknown runtime";
+        const [hours, minutes, seconds] = runtime.split(":").map(Number);
+        const totalMinutes = hours * 60 + minutes + Math.round((seconds || 0) / 60);
+        return `${totalMinutes} mins`
+    }
+
     // Stats
     const totalWatched = films.length;
-    const totalRating = films.reduce((sum, f) => sum + Number(f.runtime || 0), 0);
-    const avgRuntime = films.length > 0 ? Number(totalRating / films.length).toFixed(1) : 0;
+    const totalRating = films.reduce((sum, f) => sum + Number(f.rating || 0), 0);
+    const avgRating = films.length > 0 ? Number(totalRating / films.length).toFixed(1) : "0";
 
     const recent = getMostRecent(films);
     const watchlist = getRandomWatchlist(films);
@@ -48,7 +55,7 @@ export default function FilmPage() {
     return (
         <div className="p-6">
             <div className="flex justify-start items-center mb-6">
-                <h1 className="text-3x1 font-bold">Films</h1>
+                <h1 className="text-3xl font-bold">Films</h1>
             </div>
 
             <div className="flex flex-col mb-6 gap-2 relative">
@@ -62,9 +69,15 @@ export default function FilmPage() {
                     />
                     <Link
                         href="/films/new"
-                        className="bg-primary text-background px-2 py-0.5 hover:bg-neutral-mid hover:scale-105 transition rounded-md"
+                        className="bg-primary text-white px-2 py-1 hover:text-background hover:bg-neutral-mid hover:scale-105 transition rounded-md"
                     >
                         +
+                    </Link>
+                    <Link
+                        href="/films/collections"
+                        className="bg-primary text-white px-2 py-1 hover:text-background hover:bg-neutral-mid hover:scale-105 transition rounded-md"
+                    >
+                        Collection
                     </Link>
                 </div>
                 {searchQuery.length > 4 && filteredFilms.length > 0 && (
@@ -123,6 +136,17 @@ export default function FilmPage() {
                         })}
                     </div>
                 )}
+            </div>
+
+            <div className="flex gap-4 mb-6">
+                <div className="rounded p-4 text-center">
+                <h3 className="text-sm">Total Seen</h3>
+                <p className="font-bold text-xl mt-2">{totalWatched}</p>
+                </div>
+                <div className="rounded p-4 text-center">
+                <h3 className="text-sm">Average Rating</h3>
+                <p className="font-bold text-xl mt-2">{avgRating}</p>
+                </div>
             </div>
 
             <div className="space-y-10">

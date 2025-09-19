@@ -1,26 +1,26 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Music } from "../../types/music";
-import TracklistEditor from './TracklistEditor';
+import { FilmPhysical } from '@/types/filmMedia';
 
-type MusicFormProps = {
-    initialData?: Music;
+type FilmMediaFormProps = {
+    initialData?: FilmPhysical;
     onSuccess: () => void;
 };
 
-export default function MusicForm({ initialData, onSuccess }: MusicFormProps) {
-    const [formData, setFormData] = useState<Music>(
+export default function FilmMediaForm({ initialData, onSuccess }: FilmMediaFormProps) {
+    const [formData, setFormData] = useState<FilmPhysical>(
         initialData || {
             title: "",
-            artist: "",
-            format: "vinyl",
-            type: "album",
+            format: "dvd",
+            type: "movie",
             owned: false,
-            genre: []
+            genre: [],
+            special_features: false,
+            features: []
         }
     );
-
+    
     const handleChange = (
         e: React.ChangeEvent<
             HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -40,6 +40,10 @@ export default function MusicForm({ initialData, onSuccess }: MusicFormProps) {
         (formData.genre || []).join(", ")
     );
 
+    const [featuresInput, setFeaturesInput] = useState(
+        (formData.features || []).join(", ")
+    );
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -49,18 +53,19 @@ export default function MusicForm({ initialData, onSuccess }: MusicFormProps) {
                 .split(",")
                 .map((g) => g.trim())
                 .filter(Boolean),
-            length: formData.length 
-                ? (formData.length.length === 5
-                    ? formData.length + ":00"
-                    : formData.length)
+            runtime: formData.runtime 
+                ? (formData.runtime.length === 5
+                    ? formData.runtime + ":00"
+                    : formData.runtime)
                 : null,
             price: formData.price ? parseFloat(formData.price): null,
+            release_year: formData.release_year ? parseFloat(formData.release_year): null,
         };
 
-        const method = initialData ? "PUT": "POST";
+        const method = initialData ? "PUT" : "POST";
         const url = initialData
-            ? `http://127.0.0.1:8000/api/music/${initialData.id}/`
-            : "http://127.0.0.1:8000/api/music/";
+            ? `http://127.0.0.1:8000/api/film-collections/${initialData.id}/`
+            : "http://127.0.0.1:8000/api/film-collections/";
 
         await fetch(url, {
             method,
@@ -79,14 +84,14 @@ export default function MusicForm({ initialData, onSuccess }: MusicFormProps) {
                         <p className="text-sm text-silver mb-1">Current Cover Art Preview:</p>
                         <img
                             src={formData.cover_art}
-                            alt="Cover Art Preview"
+                            alt="Watch preview"
                             className=" object-contain rounded"
                         />
                     </div>
                 )}
             </div>
             <div className="w-1/2 pl-2">
-                <form onSubmit={handleSubmit} className='space-y-3'>
+                <form onSubmit={handleSubmit} className="space-y-3">
                     <input
                         type="text"
                         name="title"
@@ -97,17 +102,9 @@ export default function MusicForm({ initialData, onSuccess }: MusicFormProps) {
                     />
                     <input
                         type="text"
-                        name="artist"
-                        placeholder="Artist"
-                        value={formData.artist || ""}
-                        onChange={handleChange}
-                        className="bg-neutral shadow p-2 w-full rounded"
-                    />
-                    <input
-                        type="date"
-                        name="release_date"
-                        placeholder="Release Date"
-                        value={formData.release_date || ""}
+                        name="director"
+                        placeholder="Director"
+                        value={formData.director || ""}
                         onChange={handleChange}
                         className="bg-neutral shadow p-2 w-full rounded"
                     />
@@ -118,10 +115,13 @@ export default function MusicForm({ initialData, onSuccess }: MusicFormProps) {
                         className="bg-neutral shadow p-2 w-full rounded"
                     >
                         <option value="">-- Select Format --</option>
-                        <option value="vinyl">Vinyl</option>
-                        <option value="cd">CD</option>
-                        <option value="cassette">Cassette</option>
-                        <option value="8cm">8CM</option>
+                        <option value="dvd">DVD</option>
+                        <option value="blu-ray">BluRay</option>
+                        <option value="4k">4k UHD</option>
+                        <option value="vhs">VHS</option>
+                        <option value="laserdisc">Laserdisc</option>
+                        <option value="betamax">Betamax</option>
+                        <option value="film">Film</option>
                         <option value="digital">Digital</option>
                         <option value="other">Other</option>
                     </select>
@@ -132,17 +132,25 @@ export default function MusicForm({ initialData, onSuccess }: MusicFormProps) {
                         className="bg-neutral shadow p-2 w-full rounded"
                     >
                         <option value="">-- Select Type --</option>
-                        <option value="album">Album</option>
-                        <option value="single">Single</option>
-                        <option value="ep">EP</option>
-                        <option value="live">Live</option>
-                        <option value="compilation">Compilation</option>
+                        <option value="movie">Movie</option>
+                        <option value="series">Series</option>
+                        <option value="documentary">Documentary</option>
+                        <option value="short">Short</option>
+                        <option value="other">Other</option>
                     </select>
                     <input
                         type="text"
-                        name="catalog_number"
-                        placeholder="Catelog #"
-                        value={formData.catalog_number || ""}
+                        name="release_year"
+                        placeholder="Release Year"
+                        value={formData.release_year || ""}
+                        onChange={handleChange}
+                        className="bg-neutral shadow p-2 w-full rounded"
+                    />
+                    <input
+                        type="url"
+                        name="cover_art"
+                        placeholder="Cover Art"
+                        value={formData.cover_art || ""}
                         onChange={handleChange}
                         className="bg-neutral shadow p-2 w-full rounded"
                     />
@@ -155,39 +163,6 @@ export default function MusicForm({ initialData, onSuccess }: MusicFormProps) {
                         className="p-2 w-full rounded bg-neutral shadow"
                     />
                     <input
-                        type="time"
-                        step="1"
-                        name="length"
-                        placeholder="Length"
-                        value={formData.length || ""}
-                        onChange={handleChange}
-                        className="bg-neutral shadow p-2 w-full rounded"
-                    />
-                    <input
-                        type="text"
-                        name="cover_art"
-                        placeholder="Cover Art URL"
-                        value={formData.cover_art || ""}
-                        onChange={handleChange}
-                        className="bg-neutral shadow p-2 w-full rounded"
-                    />
-                    <input
-                        type="text"
-                        name="price"
-                        placeholder="Price"
-                        value={formData.price || ""}
-                        onChange={handleChange}
-                        className="bg-neutral shadow p-2 w-full rounded"
-                    />
-                    <input
-                        type="text"
-                        name="language"
-                        placeholder="Language"
-                        value={formData.language || ""}
-                        onChange={handleChange}
-                        className="bg-neutral shadow p-2 w-full rounded"
-                    />
-                    <input
                         type="text"
                         name="country"
                         placeholder="Country"
@@ -196,17 +171,34 @@ export default function MusicForm({ initialData, onSuccess }: MusicFormProps) {
                         className="bg-neutral shadow p-2 w-full rounded"
                     />
                     <input
-                        type="text"
-                        name="label"
-                        placeholder="Label"
-                        value={formData.label || ""}
+                        type="number"
+                        name="language"
+                        placeholder="Language"
+                        value={formData.language || ""}
                         onChange={handleChange}
                         className="bg-neutral shadow p-2 w-full rounded"
                     />
                     <input
-                        type="text"
+                        type="number"
+                        name="studio"
+                        placeholder="Distributor"
+                        value={formData.studio || ""}
+                        onChange={handleChange}
+                        className="bg-neutral shadow p-2 w-full rounded"
+                    />
+                    <input
+                        type="time"
+                        step="1"
+                        name="runtime"
+                        placeholder="Runtime"
+                        value={formData.runtime || ""}
+                        onChange={handleChange}
+                        className="bg-neutral shadow p-2 w-full rounded"
+                    />
+                    <input
+                        type="url"
                         name="link"
-                        placeholder="Link to any external sites"
+                        placeholder="Link"
                         value={formData.link || ""}
                         onChange={handleChange}
                         className="bg-neutral shadow p-2 w-full rounded"
@@ -218,10 +210,6 @@ export default function MusicForm({ initialData, onSuccess }: MusicFormProps) {
                         onChange={handleChange}
                         className="bg-neutral shadow p-2 w-full rounded"
                     />
-                    <TracklistEditor
-                        tracklist={formData.tracklist || []}
-                        setTracklist={(t) => setFormData({ ...formData, tracklist: t })}
-                    />
                     <input
                         type="date"
                         name="date_bought"
@@ -229,6 +217,23 @@ export default function MusicForm({ initialData, onSuccess }: MusicFormProps) {
                         value={formData.date_bought || ""}
                         onChange={handleChange}
                         className="bg-neutral shadow p-2 w-full rounded"
+                    />
+                    <label className="flex items-center space-x-2">
+                        <input
+                        type="checkbox"
+                        name="special_features"
+                        checked={formData.special_features}
+                        onChange={handleChange}
+                        />
+                        <span>Special Features</span>
+                    </label>
+                    <input
+                        type="text"
+                        name="features"
+                        placeholder="Features (comma separated)"
+                        value={featuresInput}
+                        onChange={(e) => setFeaturesInput(e.target.value)}
+                        className="p-2 w-full rounded bg-neutral shadow"
                     />
                     <label className="flex items-center space-x-2">
                         <input
@@ -243,10 +248,10 @@ export default function MusicForm({ initialData, onSuccess }: MusicFormProps) {
                         type="submit"
                         className="bg-primary text-white px-4 py-2 rounded hover:bg-neutral-mid hover:text-background hover:scale-105 transition cursor-pointer"
                     >
-                        {initialData ? "Update Item" : "Add Item"}
+                        {initialData ? "Update Film Collection" : "Add Film"}
                     </button>
                 </form>
             </div>
         </div>
-    );
+  );
 }

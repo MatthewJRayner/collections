@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 
 type Crew = {
-    name: string[];
+    name: string;
     role: string;
 }
 
@@ -58,7 +58,7 @@ export default function CastEditor({ crewlist, setCrewlist }: Props) {
                         <button
                             type="button"
                             onClick={() => removeMember(index)}
-                            className="bg-danger text-white px-2 py-1 mt-2 rounded hover:bg-red-500 transition cursor-pointer active:scale-95"
+                            className="bg-danger text-white px-2 py-1 mt-2 rounded hbg-red-500 transition cursor-pointer active:scale-95"
                         >
                             Remove
                         </button>

@@ -64,7 +64,7 @@ export default function WatchesPage() {
         />
         <Link
           href="/watches/new"
-          className="bg-primary text-background px-2 py-0.5 hover:bg-neutral-mid hover:scale-105 transition rounded-md"
+          className="bg-primary text-white px-2 py-0.5 hover:text-background hover:bg-neutral-mid hover:scale-105 transition rounded-md"
         >
           +
         </Link>  

@@ -1,57 +1,58 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { FilmPhysical } from "@/types/filmMedia";
-import FilmMediaCard from "@/components/film/FilmMediaCard";
+import { Art } from "@/types/art";
+import ArtCard from "@/components/art/ArtCard";
 import Link from "next/link";
 
-export default function FilmMediaPage() {
-  const [filmMedia, setFilmMedia] = useState<FilmPhysical[]>([]);
+export default function ArtPage() {
+  const [art, setArt] = useState<Art[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredWFilmMedia = filmMedia.filter((f) => {
+  const filteredArt = art.filter((a) => {
     const query = searchQuery.toLowerCase();
     return (
-      f.title.toLowerCase().includes(query) ||
-      f.director?.toLowerCase().includes(query) ||
-      f.format.toString().toLowerCase().includes(query)
+      a.title?.toLowerCase().includes(query) ||
+      a.artist?.toLowerCase().includes(query) ||
+      a.type?.toLowerCase().includes(query) ||
+      a.format?.toLowerCase().includes(query)
     );
   });
 
-  const fetchFilmMedia = () => {
+  const fetchArt = () => {
     setLoading(true);
-    fetch("http://127.0.0.1:8000/api/film-collections/")
+    fetch("http://127.0.0.1:8000/api/art/")
       .then((response) => response.json())
       .then((data) => {
-        setFilmMedia(data);
+        setArt(data);
         setLoading(false);
       });
   };
 
   useEffect(() => {
-    fetchFilmMedia();
+    fetchArt();
   }, []);
 
-  const deleteFilmMedia = async (id: number) => {
-    if (!confirm("Are you sure you want to delete this film?")) return;
+  const deleteArt = async (id: number) => {
+    if (!confirm("Are you sure you want to delete this artwork?")) return;
 
-    await fetch(`http://127.0.0.1:8000/api/film-collections/${id}/`, {
+    await fetch(`http://127.0.0.1:8000/api/art/${id}/`, {
       method: "DELETE",
     });
-    fetchFilmMedia();
+    fetchArt();
   };
 
   
   // Stats
-  const totalOwned = filmMedia.filter((f) => f.owned).length;
-  const totalValue = filmMedia.reduce((sum, f) => sum + Number(f.price || 0), 0);
-  const avgPrice = filmMedia.length > 0 ? Number(totalValue / filmMedia.length).toFixed(0) : 0;
+  const totalOwned = art.filter((a) => a.owned).length;
+  const totalValue = art.reduce((sum, a) => sum + Number(a.price || 0), 0);
+  const avgPrice = art.length > 0 ? Number(totalValue / art.length).toFixed(0) : 0;
   
   return (
     <div className="p-6">
       <div className="flex justify-start items-center mb-6 ">
-        <h1 className="text-3xl font-bold mr-4">Film Collection</h1>
+        <h1 className="text-3xl font-bold mr-4">Art</h1>
       </div>
 
       <div className="flex items-center mb-6 gap-2">
@@ -63,17 +64,11 @@ export default function FilmMediaPage() {
           className="p-2 w-1/4 bg-neutral rounded shadow"
         />
         <Link
-          href="/films/collections/new"
+          href="/art/new"
           className="bg-primary text-white px-2 py-0.5 hover:text-background hover:bg-neutral-mid hover:scale-105 transition rounded-md"
         >
           +
-        </Link>
-        <Link
-            href="/films"
-            className="bg-primary text-white px-2 py-1 hover:text-background hover:bg-neutral-mid hover:scale-105 transition rounded-md"
-        >
-            {`Films `}
-        </Link>
+        </Link>  
       </div>
 
       <div className="flex gap-4 mb-6">
@@ -92,16 +87,16 @@ export default function FilmMediaPage() {
       </div>
 
       {loading ? (
-        <p>Loading film collection...</p>
-      ) : filteredWFilmMedia.length === 0 ? (
-        <p>No films found.</p>
+        <p>Loading artworks...</p>
+      ) : filteredArt.length === 0 ? (
+        <p>No artwork found.</p>
       ) : (
-        <ul className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-          {filteredWFilmMedia.map((filmMedia) => (
-            <FilmMediaCard
-              key={filmMedia.id}
-              filmMedia={filmMedia}
-              onDelete={deleteFilmMedia}
+        <ul className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
+          {filteredArt.map((art) => (
+            <ArtCard
+              key={art.id}
+              art={art}
+              onDelete={deleteArt}
             />
           ))}
         </ul>

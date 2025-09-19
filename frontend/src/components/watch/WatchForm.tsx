@@ -244,7 +244,7 @@ export default function WatchForm({ initialData, onSuccess }: WatchFormProps) {
                     </label>
                     <button
                         type="submit"
-                        className="bg-primary text-background px-4 py-2 rounded hover:bg-neutral-mid hover:scale-105 transition cursor-pointer"
+                        className="bg-primary text-white px-4 py-2 rounded hover:bg-neutral-mid hover:text-background hover:scale-105 transition cursor-pointer"
                     >
                         {initialData ? "Update Watch" : "Add Watch"}
                     </button>

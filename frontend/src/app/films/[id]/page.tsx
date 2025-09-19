@@ -7,6 +7,7 @@ import ZoomableImageModal from "@/components/ZoomableImageModal";
 import StarRating from "@/components/StarRating";
 import ReviewModal from "@/components/ReviewModal";
 import Link from "next/link";
+import { formatDate, formatRuntime } from "@/utils/formatters";
 import AwardsEditor from "@/components/film/AwardsEditor";
 
 export default function FilmDetailPage() {
@@ -26,23 +27,6 @@ export default function FilmDetailPage() {
         setRating(data.rating || 0);
       });
   }, [id]);
-
-  function formatDate(dateString?: string): string {
-    if (!dateString) return "Unknown date";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "long",
-      year: "numeric",
-    });
-  }
-
-  function formatRuntime(runtime?: string): string {
-    if (!runtime) return "Unknown runtime";
-    const [hours, minutes, seconds] = runtime.split(":").map(Number);
-    const totalMinutes = hours * 60 + minutes + Math.round((seconds || 0) / 60);
-    return `${totalMinutes} mins`
-  }
 
   const saveReview = async (newReview: string) => {
     if (!film?.id) return;

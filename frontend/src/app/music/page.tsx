@@ -70,10 +70,10 @@ export default function MusicPage() {
                     className="p-2 w-1/4 bg-neutral rounded shadow"
                 />
                 <Link
-                href="/music/new"
-                className="bg-primary text-background px-2 py-0.5 hover:bg-neutral-mid hover:scale-105 transition rounded-md"
+                    href="/music/new"
+                    className="bg-primary text-white px-2 py-0.5 hover:text-background hover:bg-neutral-mid hover:scale-105 transition rounded-md"
                 >
-                +
+                    +
                 </Link>                
             </div>
 

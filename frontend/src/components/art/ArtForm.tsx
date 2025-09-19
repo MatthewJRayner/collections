@@ -1,23 +1,21 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Music } from "../../types/music";
-import TracklistEditor from './TracklistEditor';
+import { Art } from '@/types/art';
 
-type MusicFormProps = {
-    initialData?: Music;
+type ArtFormProps = {
+    initialData?: Art;
     onSuccess: () => void;
 };
 
-export default function MusicForm({ initialData, onSuccess }: MusicFormProps) {
-    const [formData, setFormData] = useState<Music>(
+export default function ArtForm({ initialData, onSuccess }: ArtFormProps) {
+    const [formData, setFormData] = useState<Art>(
         initialData || {
             title: "",
             artist: "",
-            format: "vinyl",
-            type: "album",
             owned: false,
-            genre: []
+            tags: [],
+            year_specificity: undefined
         }
     );
 
@@ -36,8 +34,8 @@ export default function MusicForm({ initialData, onSuccess }: MusicFormProps) {
         });
     };
 
-    const [genreInput, setGenreInput] = useState(
-        (formData.genre || []).join(", ")
+    const [tagsInput, setTagsInput] = useState(
+        (formData.tags || []).join(", ")
     );
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -45,22 +43,18 @@ export default function MusicForm({ initialData, onSuccess }: MusicFormProps) {
 
         const payload = {
             ...formData,
-            genre: genreInput
+            tags: tagsInput
                 .split(",")
-                .map((g) => g.trim())
+                .map((t) => t.trim())
                 .filter(Boolean),
-            length: formData.length 
-                ? (formData.length.length === 5
-                    ? formData.length + ":00"
-                    : formData.length)
-                : null,
             price: formData.price ? parseFloat(formData.price): null,
+            year: formData.year ? parseFloat(formData.year): null,
         };
 
         const method = initialData ? "PUT": "POST";
         const url = initialData
-            ? `http://127.0.0.1:8000/api/music/${initialData.id}/`
-            : "http://127.0.0.1:8000/api/music/";
+            ? `http://127.0.0.1:8000/api/art/${initialData.id}/`
+            : "http://127.0.0.1:8000/api/art/";
 
         await fetch(url, {
             method,
@@ -74,12 +68,12 @@ export default function MusicForm({ initialData, onSuccess }: MusicFormProps) {
     return (
         <div className="flex w-full">
             <div className="w-1/2 pr-2">
-                {formData.cover_art && (
+                {formData.photo && (
                     <div className="mb-3">
-                        <p className="text-sm text-silver mb-1">Current Cover Art Preview:</p>
+                        <p className="text-sm text-silver mb-1">Current Artwork Preview:</p>
                         <img
-                            src={formData.cover_art}
-                            alt="Cover Art Preview"
+                            src={formData.photo}
+                            alt="Art Preview"
                             className=" object-contain rounded"
                         />
                     </div>
@@ -104,70 +98,80 @@ export default function MusicForm({ initialData, onSuccess }: MusicFormProps) {
                         className="bg-neutral shadow p-2 w-full rounded"
                     />
                     <input
-                        type="date"
-                        name="release_date"
-                        placeholder="Release Date"
-                        value={formData.release_date || ""}
+                        type="text"
+                        name="culture"
+                        placeholder="Culture / Country (if known)"
+                        value={formData.culture || ""}
+                        onChange={handleChange}
+                        className="bg-neutral shadow p-2 w-full rounded"
+                    />
+                    <input
+                        type="text"
+                        name="year"
+                        placeholder="Year"
+                        value={formData.year || ""}
                         onChange={handleChange}
                         className="bg-neutral shadow p-2 w-full rounded"
                     />
                     <select
-                        name="format"
-                        value={formData.format || ""}
+                        name="year_specificity"
+                        value={formData.year_specificity || ""}
                         onChange={handleChange}
                         className="bg-neutral shadow p-2 w-full rounded"
                     >
-                        <option value="">-- Select Format --</option>
-                        <option value="vinyl">Vinyl</option>
-                        <option value="cd">CD</option>
-                        <option value="cassette">Cassette</option>
-                        <option value="8cm">8CM</option>
-                        <option value="digital">Digital</option>
-                        <option value="other">Other</option>
+                        <option value="">-- Select Year Specificity --</option>
+                        <option value="exact">Exact</option>
+                        <option value="year">Year</option>
+                        <option value="decade">Decade</option>
+                        <option value="century">Century</option>
+                        <option value="millennium">Millennium</option>
+                        <option value="unknown">Unknown</option>
                     </select>
-                    <select
+                    <input
+                        type="text"
                         name="type"
+                        placeholder="Type"
                         value={formData.type || ""}
                         onChange={handleChange}
                         className="bg-neutral shadow p-2 w-full rounded"
-                    >
-                        <option value="">-- Select Type --</option>
-                        <option value="album">Album</option>
-                        <option value="single">Single</option>
-                        <option value="ep">EP</option>
-                        <option value="live">Live</option>
-                        <option value="compilation">Compilation</option>
-                    </select>
+                    />
                     <input
                         type="text"
-                        name="catalog_number"
-                        placeholder="Catelog #"
-                        value={formData.catalog_number || ""}
+                        name="format"
+                        placeholder="Format"
+                        value={formData.format || ""}
                         onChange={handleChange}
                         className="bg-neutral shadow p-2 w-full rounded"
                     />
                     <input
                         type="text"
-                        name="genre"
-                        placeholder="Genres (comma separated)"
-                        value={genreInput}
-                        onChange={(e) => setGenreInput(e.target.value)}
+                        name="techniques"
+                        placeholder="Techniques"
+                        value={formData.techniques || ""}
+                        onChange={handleChange}
+                        className="bg-neutral shadow p-2 w-full rounded"
+                    />
+                    <input
+                        type="text"
+                        name="movement"
+                        placeholder="Movement"
+                        value={formData.movement || ""}
+                        onChange={handleChange}
+                        className="bg-neutral shadow p-2 w-full rounded"
+                    />
+                    <input
+                        type="text"
+                        name="tags"
+                        placeholder="Tags (comma separated)"
+                        value={tagsInput}
+                        onChange={(e) => setTagsInput(e.target.value)}
                         className="p-2 w-full rounded bg-neutral shadow"
                     />
                     <input
-                        type="time"
-                        step="1"
-                        name="length"
-                        placeholder="Length"
-                        value={formData.length || ""}
-                        onChange={handleChange}
-                        className="bg-neutral shadow p-2 w-full rounded"
-                    />
-                    <input
-                        type="text"
-                        name="cover_art"
-                        placeholder="Cover Art URL"
-                        value={formData.cover_art || ""}
+                        type="url"
+                        name="photo"
+                        placeholder="Photo URL"
+                        value={formData.photo || ""}
                         onChange={handleChange}
                         className="bg-neutral shadow p-2 w-full rounded"
                     />
@@ -180,31 +184,7 @@ export default function MusicForm({ initialData, onSuccess }: MusicFormProps) {
                         className="bg-neutral shadow p-2 w-full rounded"
                     />
                     <input
-                        type="text"
-                        name="language"
-                        placeholder="Language"
-                        value={formData.language || ""}
-                        onChange={handleChange}
-                        className="bg-neutral shadow p-2 w-full rounded"
-                    />
-                    <input
-                        type="text"
-                        name="country"
-                        placeholder="Country"
-                        value={formData.country || ""}
-                        onChange={handleChange}
-                        className="bg-neutral shadow p-2 w-full rounded"
-                    />
-                    <input
-                        type="text"
-                        name="label"
-                        placeholder="Label"
-                        value={formData.label || ""}
-                        onChange={handleChange}
-                        className="bg-neutral shadow p-2 w-full rounded"
-                    />
-                    <input
-                        type="text"
+                        type="url"
                         name="link"
                         placeholder="Link to any external sites"
                         value={formData.link || ""}
@@ -217,10 +197,6 @@ export default function MusicForm({ initialData, onSuccess }: MusicFormProps) {
                         value={formData.notes || ""}
                         onChange={handleChange}
                         className="bg-neutral shadow p-2 w-full rounded"
-                    />
-                    <TracklistEditor
-                        tracklist={formData.tracklist || []}
-                        setTracklist={(t) => setFormData({ ...formData, tracklist: t })}
                     />
                     <input
                         type="date"

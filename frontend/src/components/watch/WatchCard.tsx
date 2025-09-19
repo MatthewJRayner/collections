@@ -15,7 +15,7 @@ export default function WatchCard({ watch, onDelete }: WatchCardProps) {
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <li className={`rounded-lg shadow-md p-4 flex flex-col items-center text-center bg-neutral ${!showModal ? "transition hover:scale-105" : ""}`}>
+    <div className={`rounded-lg shadow-md p-4 flex flex-col items-center text-center bg-neutral ${!showModal ? "transition hover:scale-105" : ""}`}>
       {watch.photo && (
         <div onClick={() => setShowModal(true)} className="cursor-pointer">
           <img
@@ -104,6 +104,6 @@ export default function WatchCard({ watch, onDelete }: WatchCardProps) {
           Delete
         </button>
       </div>
-    </li>
+    </div>
   );
 }
