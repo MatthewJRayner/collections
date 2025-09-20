@@ -45,6 +45,7 @@ export default function FilmMediaPage() {
   
   // Stats
   const totalOwned = filmMedia.filter((f) => f.owned).length;
+  const totalOwnedValue = filmMedia.filter((f) => f.owned).reduce((sum, f) => sum + Number(f.price || 0), 0);
   const totalValue = filmMedia.reduce((sum, f) => sum + Number(f.price || 0), 0);
   const avgPrice = filmMedia.length > 0 ? Number(totalValue / filmMedia.length).toFixed(0) : 0;
   
@@ -88,6 +89,10 @@ export default function FilmMediaPage() {
         <div className="rounded p-4 text-center">
           <h3 className="text-sm">Average Price</h3>
           <p className="font-bold text-xl mt-2">£{avgPrice.toLocaleString()}</p>
+        </div>
+        <div className="rounded p-4 text-center">
+          <h3 className="text-sm">Total Owned Value</h3>
+          <p className="font-bold text-xl mt-2">{totalOwnedValue}</p>
         </div>
       </div>
 

@@ -171,7 +171,7 @@ export default function FilmMediaForm({ initialData, onSuccess }: FilmMediaFormP
                         className="bg-neutral shadow p-2 w-full rounded"
                     />
                     <input
-                        type="number"
+                        type="text"
                         name="language"
                         placeholder="Language"
                         value={formData.language || ""}
@@ -179,7 +179,15 @@ export default function FilmMediaForm({ initialData, onSuccess }: FilmMediaFormP
                         className="bg-neutral shadow p-2 w-full rounded"
                     />
                     <input
-                        type="number"
+                        type="text"
+                        name="price"
+                        placeholder="Price"
+                        value={formData.price || ""}
+                        onChange={handleChange}
+                        className="bg-neutral shadow p-2 w-full rounded"
+                    />
+                    <input
+                        type="text"
                         name="studio"
                         placeholder="Distributor"
                         value={formData.studio || ""}

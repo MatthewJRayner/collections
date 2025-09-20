@@ -52,6 +52,7 @@ export default function MusicPage() {
 
     // Stats
     const totalOwned = music.filter((m) => m.owned).length;
+    const totalOwnedValue = music.filter((m) => m.owned).reduce((sum, m) => sum + Number(m.price || 0), 0);
     const totalValue = music.reduce((sum, m) => sum + Number(m.price || 0), 0);
     const avgPrice = music.length > 0 ? Number(totalValue / music.length).toFixed(0) : 0;
 
@@ -79,16 +80,20 @@ export default function MusicPage() {
 
             <div className="flex gap-4 mb-6">
                 <div className="rounded p-4 text-center">
-                <h3 className="text-sm">Total Owned</h3>
-                <p className="font-bold text-xl mt-2">{totalOwned}</p>
+                    <h3 className="text-sm">Total Owned</h3>
+                    <p className="font-bold text-xl mt-2">{totalOwned}</p>
                 </div>
                 <div className="rounded p-4 text-center">
-                <h3 className="text-sm">Total Value</h3>
-                <p className="font-bold text-xl mt-2">£{totalValue.toLocaleString()}</p>
+                    <h3 className="text-sm">Total Value</h3>
+                    <p className="font-bold text-xl mt-2">£{totalValue.toLocaleString()}</p>
                 </div>
                 <div className="rounded p-4 text-center">
-                <h3 className="text-sm">Average Price</h3>
-                <p className="font-bold text-xl mt-2">£{avgPrice.toLocaleString()}</p>
+                    <h3 className="text-sm">Average Price</h3>
+                    <p className="font-bold text-xl mt-2">£{avgPrice.toLocaleString()}</p>
+                </div>
+                <div className="rounded p-4 text-center">
+                    <h3 className="text-sm">Total Owned Value</h3>
+                    <p className="font-bold text-xl mt-2">{totalOwnedValue}</p>
                 </div>
             </div>
 

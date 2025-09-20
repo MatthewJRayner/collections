@@ -22,6 +22,7 @@ export type Film = {
     cast?: Cast[];
     crew?: Crew[];
     rating?: string;
+    industry_rating?: string;
     review?: string;
     series?: string;
     volume?: string;

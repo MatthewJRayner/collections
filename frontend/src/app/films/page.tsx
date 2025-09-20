@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Film } from "../../types/film";
 import FilmCard from "../../components/film/FilmCard";
-import { getMostRecent, getRandomWatchlist, getRandomFavourites, getTopDirectors } from "../../utils/filmHelper";
+import { getMostRecent, getRandomWatchlist, getRandomFavourites, getTopDirectors } from "../../utils/trackerHelper";
 import Link from "next/link";
 
 export default function FilmPage() {

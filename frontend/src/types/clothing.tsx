@@ -7,8 +7,13 @@ export type Clothing = {
     brands?: string;
     type?: string;
     style?: string;
+    material?: string;
     colour?: string;
-    pictures?: string[];
+    pictures?: string;
     price?: string;
     preferred_quantity?: string;
+    features?: string[];
+    collection?: string;
+    notes?: string;
+    date_bought?: string;
 }

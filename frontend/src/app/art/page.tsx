@@ -46,6 +46,7 @@ export default function ArtPage() {
   
   // Stats
   const totalOwned = art.filter((a) => a.owned).length;
+  const totalOwnedValue = art.filter((a) => a.owned).reduce((sum, a) => sum + Number(a.price || 0), 0)
   const totalValue = art.reduce((sum, a) => sum + Number(a.price || 0), 0);
   const avgPrice = art.length > 0 ? Number(totalValue / art.length).toFixed(0) : 0;
   
@@ -83,6 +84,10 @@ export default function ArtPage() {
         <div className="rounded p-4 text-center">
           <h3 className="text-sm">Average Price</h3>
           <p className="font-bold text-xl mt-2">£{avgPrice.toLocaleString()}</p>
+        </div>
+        <div className="rounded p-4 text-center">
+          <h3 className="text-sm">Total Owned Value</h3>
+          <p className="font-bold text-xl mt-2">{totalOwnedValue}</p>
         </div>
       </div>
 

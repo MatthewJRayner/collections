@@ -3,12 +3,14 @@ from rest_framework import viewsets
 from .models import (
     Watch, Music, FilmCollection, BookCollection,
     Wardrobe, GameCollection, Art,
-    ExtrasCategory, Extra, Film, Book
+    ExtrasCategory, Extra, Film, Book,
+    Instrument
 )
 from .serializers import (
     WatchSerializer, MusicSerializer, FilmCollectionSerializer, BookCollectionSerializer,
     WardrobeSerializer, GameCollectionSerializer, ArtSerializer,
-    ExtrasCategorySerializer, ExtraSerializer, FilmSerializer, BookSerializer
+    ExtrasCategorySerializer, ExtraSerializer, FilmSerializer, BookSerializer,
+    InstrumentSerializer
 )
 
 # Create your views here.
@@ -64,3 +66,7 @@ class FilmViewSet(viewsets.ModelViewSet):
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    
+class InstrumentViewSet(viewsets.ModelViewSet):
+    queryset = Instrument.objects.all()
+    serializer_class = InstrumentSerializer

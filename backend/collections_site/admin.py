@@ -2,7 +2,8 @@ from django.contrib import admin
 from .models import (
     Watch, Music, FilmCollection, BookCollection, GameCollection,
     Wardrobe, Art, ExtrasCategory, 
-    Extra, Film, Book
+    Extra, Film, Book,
+    Instrument
 )
 
 # Register your models here.
@@ -80,3 +81,9 @@ class BookAdmin(admin.ModelAdmin):
     list_display = ("title", "author", "year_released", "year_specificity", "genre", "rating")
     list_filter = ("year_specificity", "genre", "language", "publisher")
     search_fields = ("title", "author", "ISBN", "series", "publisher")
+    
+@admin.register(Instrument)
+class InstrumentAdmin(admin.ModelAdmin):
+    list_display = ("brand", "category", "year", "name", "type")
+    list_filter = ("category", "brand")
+    search_fields = ("brand", "category", "type")

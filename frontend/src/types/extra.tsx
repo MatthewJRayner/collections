@@ -10,6 +10,7 @@ export type Extra = {
     links?: string;
     year?: string;
     year_specificity?: YearSpecificity;
-    additional_info?: string;
+    notes?: string;
     date_bought?: string;
+    photo?: string;
 }

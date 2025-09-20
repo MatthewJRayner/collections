@@ -63,3 +63,16 @@ export function formatRuntime(runtime?: string): string {
     const totalMinutes = hours * 60 + minutes + Math.round((seconds || 0) / 60);
     return `${totalMinutes} mins`
 }
+
+export function formatPhrase(phrase: string): string {
+  if (!phrase) return "";
+  return phrase
+    .replace(/_/g, " & ") // replace underscores with " & "
+    .split(" ")
+    .map(word =>
+      word.length > 0
+        ? word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+        : ""
+    )
+    .join(" ");
+}

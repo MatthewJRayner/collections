@@ -131,6 +131,8 @@ class BookCollection(models.Model):
     language = models.CharField(max_length=100, blank=True, null=True)
     country = models.CharField(max_length=100, blank=True, null=True)
     publisher = models.CharField(max_length=200, blank=True, null=True)
+    edition = models.CharField(max_length=50, blank=True, null=True)
+    printing = models.CharField(max_length=50, blank=True, null=True)
     link = models.URLField(blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
     date_bought = models.DateField(blank=True, null=True)
@@ -160,11 +162,16 @@ class Wardrobe(models.Model):
     brands = models.JSONField(blank=True, null=True)
     type = models.CharField(max_length=50, blank=True, null=True)
     style = models.CharField(max_length=100, blank=True, null=True)
+    material = models.CharField(max_length=100, blank=True, null=True)
     colour = models.JSONField(blank=True, null=True)
     pictures = models.JSONField(blank=True, null=True)
     price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
     preferred_quantity = models.IntegerField(blank=True, null=True)
     owned = models.BooleanField(default=False)
+    features = models.JSONField(default=list, null=True, blank=True)
+    collection = models.CharField(max_length=200, blank=True, null=True)
+    notes = models.TextField(null=True, blank=True)
+    date_bought = models.DateField(null=True, blank=True)
     
     def __str__(self):
         return f"{self.category} - {self.type} ({self.style})"
@@ -181,8 +188,11 @@ class GameCollection(models.Model):
 
     owned = models.BooleanField(default=False)
     platform = models.CharField(max_length=50, choices=PLATFORM_CHOICES)
+    console = models.CharField(max_length=200, blank=True, null=True)
     title = models.CharField(max_length=200)
+    special_title = models.CharField(max_length=200, blank=True, null=True)
     developer = models.CharField(max_length=200, blank=True, null=True)
+    bonus_content = models.JSONField(default=list, null=True, blank=True)
     release_date = models.DateField(blank=True, null=True)
     genre = models.JSONField(default=list, blank=True, null=True)
     cover_art = models.URLField(blank=True, null=True)
@@ -255,7 +265,8 @@ class Extra(models.Model):
     links = models.JSONField(blank=True, null=True)
     year = models.IntegerField(blank=True, null=True)
     year_specificity = models.CharField(max_length=50, choices=YEAR_SPECIFICITY_CHOICES, blank=True, null=True)
-    additional_info = models.TextField(blank=True, null=True)
+    notes = models.TextField(blank=True, null=True)
+    photo = models.URLField(blank=True, null=True)
     date_bought = models.DateField(blank=True, null=True)
 
     def __str__(self):
@@ -267,7 +278,8 @@ class Film(models.Model):
     director = models.CharField(max_length=200, default="")
     cast = models.JSONField(blank=True, null=True) # Format: [{"actor": "Actor Name", "role": "Role Name"}, ...]
     crew = models.JSONField(blank=True, null=True) # Format: [{"name": "Crew Member Name", "role": "Role Description"}, ...]
-    rating = models.IntegerField(blank=True, null=True)
+    rating = models.DecimalField(max_digits=4, blank=True, null=True, decimal_places=1)
+    industry_rating = models.DecimalField(max_digits=4, blank=True, null=True, decimal_places=1)
     review = models.TextField(blank=True, null=True)
     series = models.CharField(max_length=200, blank=True, null=True)
     volume = models.IntegerField(blank=True, null=True)
@@ -312,12 +324,12 @@ class Book(models.Model):
     title = models.CharField(max_length=200)
     alt_title = models.CharField(max_length=200, blank=True, null=True)
     author = models.CharField(max_length=200)
-    owned = models.ForeignKey(BookCollection, on_delete=models.SET_NULL, null=True, blank=True, related_name="read_entries")
     series = models.CharField(max_length=200, blank=True, null=True)
     volume = models.IntegerField(blank=True, null=True)
     year_released = models.IntegerField(blank=True, null=True)
     year_specificity = models.CharField(max_length=50, choices=YEAR_SPECIFICITY_CHOICES, blank=True, null=True)
-    rating = models.IntegerField(blank=True, null=True)
+    rating = models.DecimalField(max_digits=4, blank=True, null=True, decimal_places=1)
+    industry_rating = models.DecimalField(max_digits=4, blank=True, null=True, decimal_places=1)
     genre = models.JSONField(default=list, blank=True, null=True)
     tags = models.JSONField(default=list, blank=True, null=True)
     review = models.TextField(blank=True, null=True)
@@ -326,13 +338,44 @@ class Book(models.Model):
     cover = models.URLField(blank=True, null=True)
     external_links = models.JSONField(blank=True, null=True)
     ISBN = models.CharField(max_length=20, blank=True, null=True)
-    series = models.CharField(max_length=200, blank=True, null=True)
     synopsis = models.TextField(blank=True, null=True)
     publisher = models.CharField(max_length=200, blank=True, null=True)
     edition = models.CharField(max_length=50, blank=True, null=True)
     language = models.CharField(max_length=100, blank=True, null=True)
+    og_language = models.CharField(max_length=100, blank=True, null=True)
     country = models.CharField(max_length=100, blank=True, null=True)
     read = models.BooleanField(default=False)
     favourite = models.BooleanField(default=False)
+    readlist = models.BooleanField(default=False)
     notes = models.TextField(blank=True, null=True)
     date_read = models.DateField(blank=True, null=True)
+    
+    def __str__(self):
+        return f"{self.title} ({self.author})"
+
+class Instrument(models.Model):
+    CATEGORY_CHOICES = [
+        ("string", "String"),
+        ("keyboard", "keyboard"),
+        ("percussion", "Percussion"),
+        ("wind", "Wind"),
+        ("brass", "Brass"),
+        ("electronic", "Electronic"),
+        ("other", "Other"),
+    ]
+    
+    instrument = models.CharField(max_length=200)
+    brand = models.CharField(max_length=100, blank=True, null=True)
+    name = models.CharField(max_length=200)
+    maker = models.CharField(max_length=200, null=True, blank=True)
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
+    type = models.CharField(max_length=100, null=True, blank=True)
+    year = models.IntegerField(null=True, blank=True)
+    country = models.CharField(max_length=100, null=True, blank=True)
+    owned = models.BooleanField(default=False)
+    price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    photo = models.URLField(blank=True, null=True)
+    link = models.URLField(blank=True, null=True)
+    notes = models.TextField(blank=True, null=True)
+    date_bought = models.DateField(blank=True, null=True)
+    materials = models.CharField(max_length=100, blank=True, null=True)

@@ -68,6 +68,7 @@ export default function FilmForm({ initialData, onSuccess }: FilmFormProps) {
                     : formData.runtime)
                 : null,
             rating: formData.rating ? parseFloat(formData.rating): null,
+            industry_rating: formData.industry_rating ? parseFloat(formData.industry_rating): null,
             volume: formData.volume ? parseFloat(formData.volume): null,
             budget: formData.budget ? parseFloat(formData.budget): null,
             box_office: formData.box_office ? parseFloat(formData.box_office): null,
@@ -142,6 +143,14 @@ export default function FilmForm({ initialData, onSuccess }: FilmFormProps) {
                         name="rating"
                         placeholder="Rating"
                         value={formData.rating || ""}
+                        onChange={handleChange}
+                        className="bg-neutral shadow p-2 w-full rounded"
+                    />
+                    <input
+                        type="text"
+                        name="industry_rating"
+                        placeholder="Industry Rating (IMDb or something)"
+                        value={formData.industry_rating || ""}
                         onChange={handleChange}
                         className="bg-neutral shadow p-2 w-full rounded"
                     />
@@ -325,6 +334,15 @@ export default function FilmForm({ initialData, onSuccess }: FilmFormProps) {
                         onChange={handleChange}
                         />
                         <span>Seen</span>
+                    </label>
+                    <label className="flex items-center space-x-2">
+                        <input
+                        type="checkbox"
+                        name="watchlist"
+                        checked={formData.watchlist}
+                        onChange={handleChange}
+                        />
+                        <span>Watchlist</span>
                     </label>
                     <input
                         type="date"

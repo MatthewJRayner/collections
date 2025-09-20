@@ -2,7 +2,8 @@ from rest_framework import routers
 from .views import (
     WatchViewSet, MusicViewSet, FilmCollectionViewSet, BookCollectionViewSet,
     WardrobeViewSet, GameCollectionViewSet, ArtViewSet,
-    ExtrasCategoryViewSet, ExtraViewSet, FilmViewSet, BookViewSet
+    ExtrasCategoryViewSet, ExtraViewSet, FilmViewSet, BookViewSet,
+    InstrumentViewSet
 )
 
 router = routers.DefaultRouter()
@@ -17,5 +18,6 @@ router.register(r'extras-categories', ExtrasCategoryViewSet)
 router.register(r'extra', ExtraViewSet)
 router.register(r'films', FilmViewSet)
 router.register(r'books', BookViewSet)
+router.register(r'instruments', InstrumentViewSet)
 
 urlpatterns = router.urls

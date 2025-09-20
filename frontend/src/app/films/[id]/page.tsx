@@ -141,13 +141,13 @@ export default function FilmDetailPage() {
                   onClose={() => setShowModal(false)}
                 />
             )}
-            <div className="w-1/2 flex justify-between items-center text-center">
+            <div className="w-full flex items-center justify-center text-center space-x-2">
               {film.runtime && (
                 <p className="text-sm text-gray-400">{formatRuntime(film.runtime)}</p>
               )}
               <button
                 onClick={toggleFavourite}
-                className={`text-lg cursor-pointer transition-all duration-300 hover:scale-105 active:scale-90 ${film?.favourite ? "text-danger" : "text-neutral-mid"}`}
+                className={`text-lg cursor-pointer transition-all duration-300  hover:scale-105 active:scale-90 ${film?.favourite ? "text-danger" : "text-neutral-mid"}`}
               >
                 ❤︎
               </button>
@@ -157,6 +157,14 @@ export default function FilmDetailPage() {
               >
                 ✎
               </Link>
+              {film.external_links && (
+                <Link
+                  href={film.external_links}
+                  className="text-lg text-neutral-mid cursor-pointer transition-all duration-300 hover:text-primary hover:scale-105 active:scale-90"
+                >
+                  ⮺
+                </Link>
+              )}
             </div>
           </div>
 

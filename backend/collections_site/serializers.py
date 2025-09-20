@@ -2,7 +2,8 @@ from rest_framework import serializers
 from .models import (
     Watch, Music, FilmCollection, BookCollection,
     Wardrobe, GameCollection, Art,
-    ExtrasCategory, Extra, Film, Book
+    ExtrasCategory, Extra, Film, Book,
+    Instrument
 )
 
 class WatchSerializer(serializers.ModelSerializer):
@@ -67,4 +68,9 @@ class FilmSerializer(serializers.ModelSerializer):
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
+        fields = "__all__"
+        
+class InstrumentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Instrument
         fields = "__all__"

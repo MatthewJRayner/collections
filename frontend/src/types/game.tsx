@@ -3,9 +3,12 @@ export type PlatformChoices = "pc" | "playstation" | "xbox" | "nintendo" | "mobi
 export type Game = {
     id?: number;
     owned: boolean;
-    titel: string;
+    title: string;
+    special_title?: string;
     platform: PlatformChoices;
+    console?: string;
     developer?: string;
+    bonus_content?: string[];
     release_date?: string;
     genre?: string[];
     cover_art?: string;

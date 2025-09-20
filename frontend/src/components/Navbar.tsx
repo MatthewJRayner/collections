@@ -13,7 +13,8 @@ export default function Navbar() {
         <Link href="/wardrobe" className="transition hover:scale-105 hover:text-primary active:scale-95">Wardrobe</Link>
         <Link href="/games" className="transition hover:scale-105 hover:text-primary active:scale-95">Games</Link>
         <Link href="/art" className="transition hover:scale-105 hover:text-primary active:scale-95">Art</Link>
-        <Link href="/extras" className="transition hover:scale-105 hover:text-primary active:scale-95">Extras</Link>
+        <Link href="/instruments" className="transition hover:scale-105 hover:text-primary active:scale-95">Instruments</Link>
+        <Link href="/extra" className="transition hover:scale-105 hover:text-primary active:scale-95">Extras</Link>
         <ThemeToggle />
       </div>
       <div className="w-1/3">

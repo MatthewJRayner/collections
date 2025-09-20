@@ -18,19 +18,18 @@ export default function WatchForm({ initialData, onSuccess }: WatchFormProps) {
         }
     );
     
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value, type, checked } = e.target;
+    const handleChange = (
+        e: React.ChangeEvent<
+            HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+        >
+    ) => {
+        const { name, value, type } = e.target;
         setFormData({
             ...formData,
-            [name]: type === "checkbox" ? checked : value,
-        });
-    };
-
-    const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
+            [name]:
+                type === 'checkbox'
+                    ? (e.target instanceof HTMLInputElement ? e.target.checked : false)
+                    : value,
         });
     };
 
@@ -210,6 +209,14 @@ export default function WatchForm({ initialData, onSuccess }: WatchFormProps) {
                         onChange={handleChange}
                         className="bg-neutral shadow p-2 w-full rounded"
                     />
+                    <input 
+                        type="url"
+                        name="link"
+                        placeholder="Link"
+                        value={formData.link || ""}
+                        onChange={handleChange}
+                        className='bg-neutral shadow p-2 w-full rounded'
+                    />
                     <input
                         type="url"
                         name="photo"
@@ -222,7 +229,7 @@ export default function WatchForm({ initialData, onSuccess }: WatchFormProps) {
                         name="notes"
                         placeholder="Notes"
                         value={formData.notes || ""}
-                        onChange={handleTextAreaChange}
+                        onChange={handleChange}
                         className="bg-neutral shadow p-2 w-full rounded"
                     />
                     <input

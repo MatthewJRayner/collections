@@ -11,6 +11,7 @@ export default function HomePage() {
     { name: "Wardrobe", path: "/wardrobe" },
     { name: "Games", path: "/games" },
     { name: "Art", path: "/art" },
+    { name: "Instruments", path: "/instruments"},
     { name: "Extras", path: "/extras" },
   ];
 
