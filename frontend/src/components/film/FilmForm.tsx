@@ -140,6 +140,14 @@ export default function FilmForm({ initialData, onSuccess }: FilmFormProps) {
                     />
                     <input
                         type="text"
+                        name="alt_name"
+                        placeholder="Original Name"
+                        value={formData.alt_name || ""}
+                        onChange={handleChange}
+                        className="bg-neutral shadow p-2 w-full rounded"
+                    />
+                    <input
+                        type="text"
                         name="rating"
                         placeholder="Rating"
                         value={formData.rating || ""}

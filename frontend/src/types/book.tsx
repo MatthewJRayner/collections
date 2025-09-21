@@ -5,8 +5,10 @@ export type Book = {
     title: string;
     alt_title?: string;
     author: string;
+    alt_name?: string;
     series?: string;
     volume?: string;
+    date_published?: string;
     year_released?: string;
     year_specificity?: YearSpecificityChoices;
     rating?: string;
@@ -22,6 +24,7 @@ export type Book = {
     synopsis?: string;
     publisher?: string;
     edition?: string;
+    edition_read_year?: string;
     language?: string;
     og_language?: string;
     country?: string;

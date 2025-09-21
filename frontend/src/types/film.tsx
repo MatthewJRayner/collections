@@ -19,6 +19,7 @@ export type Film = {
     title: string;
     alt_title?: string;
     director: string;
+    alt_name?: string;
     cast?: Cast[];
     crew?: Crew[];
     rating?: string;

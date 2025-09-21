@@ -147,7 +147,7 @@ export default function FilmDetailPage() {
               )}
               <button
                 onClick={toggleFavourite}
-                className={`text-lg cursor-pointer transition-all duration-300  hover:scale-105 active:scale-90 ${film?.favourite ? "text-danger" : "text-neutral-mid"}`}
+                className={`text-lg cursor-pointer transition-all duration-300  hover:text-danger/50 hover:scale-105 active:scale-90 ${film?.favourite ? "text-danger" : "text-neutral-mid"}`}
               >
                 ❤︎
               </button>
@@ -184,7 +184,7 @@ export default function FilmDetailPage() {
                   <p className="italic text-gray-400 font-light">{`'${film.alt_title}'`}</p>
                 )}
                 {film.director && (
-                  <p className="text-gray-400 font-light">Directed by <span className="text-foreground">{film.director}</span></p>
+                  <p className="text-gray-400 font-light">Directed by <span className="text-foreground">{film.director}{film.alt_name ? <span className="text-gray-400 ml-1 italic text-xs">{film.alt_name}</span> : ""}</span></p>
                 )}
               </div>
             </div>

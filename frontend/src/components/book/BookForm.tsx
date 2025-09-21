@@ -61,6 +61,7 @@ export default function BookForm({ initialData, onSuccess }: BookFormProps) {
             volume: formData.volume ? parseFloat(formData.volume): null,
             year_released: formData.year_released ? parseFloat(formData.year_released): null,
             page_count: formData.page_count ? parseFloat(formData.page_count): null,
+            edition_read_year: formData.edition_read_year ? parseFloat(formData.edition_read_year): null,
         };
 
         const method = initialData ? "PUT": "POST";
@@ -119,6 +120,14 @@ export default function BookForm({ initialData, onSuccess }: BookFormProps) {
                     />
                     <input
                         type="text"
+                        name="alt_name"
+                        placeholder="Original Name"
+                        value={formData.alt_name || ""}
+                        onChange={handleChange}
+                        className="bg-neutral shadow p-2 w-full rounded"
+                    />
+                    <input
+                        type="text"
                         name="rating"
                         placeholder="Rating"
                         value={formData.rating || ""}
@@ -147,6 +156,14 @@ export default function BookForm({ initialData, onSuccess }: BookFormProps) {
                         name="page_count"
                         placeholder="Page Count"
                         value={formData.page_count || ""}
+                        onChange={handleChange}
+                        className="bg-neutral shadow p-2 w-full rounded"
+                    />
+                    <input
+                        type="date"
+                        name="date_published"
+                        placeholder="Date Published (if known)"
+                        value={formData.date_published || ""}
                         onChange={handleChange}
                         className="bg-neutral shadow p-2 w-full rounded"
                     />
@@ -199,7 +216,7 @@ export default function BookForm({ initialData, onSuccess }: BookFormProps) {
                     <input
                         type="text"
                         name="og_language"
-                        placeholder="Original Language (if read if differnt language)"
+                        placeholder="Original Language"
                         value={formData.og_language || ""}
                         onChange={handleChange}
                         className="bg-neutral shadow p-2 w-full rounded"
@@ -257,6 +274,14 @@ export default function BookForm({ initialData, onSuccess }: BookFormProps) {
                         name="edition"
                         placeholder="Edition"
                         value={formData.edition || ""}
+                        onChange={handleChange}
+                        className="bg-neutral shadow p-2 w-full rounded"
+                    />
+                    <input
+                        type="text"
+                        name="edition_read_year"
+                        placeholder="Year of the Edition Read"
+                        value={formData.edition_read_year || ""}
                         onChange={handleChange}
                         className="bg-neutral shadow p-2 w-full rounded"
                     />

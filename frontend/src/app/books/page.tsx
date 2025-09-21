@@ -16,7 +16,8 @@ export default function BookPage() {
         return (
             b.title.toLowerCase().includes(query) ||
             b.author?.toLowerCase().includes(query) ||
-            b.alt_title?.toLowerCase().includes(query)
+            b.alt_title?.toLowerCase().includes(query) ||
+            b.alt_name?.toLowerCase().includes(query)
         );
     });
 
@@ -80,7 +81,8 @@ export default function BookPage() {
 
                             if (b.title.toLowerCase().includes(query)) matchesSet.add(b.title);
                             if (b.author.toLowerCase().includes(query)) matchesSet.add(b.author);
-                            if (b.alt_title?.toLowerCase().includes(query)) matchesSet.add(b.alt_title)
+                            if (b.alt_title?.toLowerCase().includes(query)) matchesSet.add(b.alt_title);
+                            if (b.alt_name?.toLowerCase().includes(query)) matchesSet.add(b.alt_name)
 
                             const matches = Array.from(matchesSet)
 
@@ -137,7 +139,7 @@ export default function BookPage() {
                     {recent.map(b => <BookCard key={b.id} book={b} />)}
                 </Section>
 
-                <Section title="Random Watchlist Picks">
+                <Section title="Random Reading List Picks">
                     {watchlist.map(b => <BookCard key={b.id} book={b} />)}
                 </Section>
 

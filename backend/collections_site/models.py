@@ -276,6 +276,7 @@ class Film(models.Model):
     title = models.CharField(max_length=200)
     alt_title = models.CharField(max_length=200, blank=True, null=True)
     director = models.CharField(max_length=200, default="")
+    alt_name = models.CharField(max_length=200, blank=True, null=True)
     cast = models.JSONField(blank=True, null=True) # Format: [{"actor": "Actor Name", "role": "Role Name"}, ...]
     crew = models.JSONField(blank=True, null=True) # Format: [{"name": "Crew Member Name", "role": "Role Description"}, ...]
     rating = models.DecimalField(max_digits=4, blank=True, null=True, decimal_places=1)
@@ -324,8 +325,10 @@ class Book(models.Model):
     title = models.CharField(max_length=200)
     alt_title = models.CharField(max_length=200, blank=True, null=True)
     author = models.CharField(max_length=200)
+    alt_name = models.CharField(max_length=200, blank=True, null=True)
     series = models.CharField(max_length=200, blank=True, null=True)
     volume = models.IntegerField(blank=True, null=True)
+    date_published = models.DateField(blank=True, null=True)
     year_released = models.IntegerField(blank=True, null=True)
     year_specificity = models.CharField(max_length=50, choices=YEAR_SPECIFICITY_CHOICES, blank=True, null=True)
     rating = models.DecimalField(max_digits=4, blank=True, null=True, decimal_places=1)
@@ -341,6 +344,7 @@ class Book(models.Model):
     synopsis = models.TextField(blank=True, null=True)
     publisher = models.CharField(max_length=200, blank=True, null=True)
     edition = models.CharField(max_length=50, blank=True, null=True)
+    edition_read_year = models.IntegerField(blank=True, null=True)
     language = models.CharField(max_length=100, blank=True, null=True)
     og_language = models.CharField(max_length=100, blank=True, null=True)
     country = models.CharField(max_length=100, blank=True, null=True)

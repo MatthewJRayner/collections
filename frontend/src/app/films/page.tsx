@@ -15,7 +15,9 @@ export default function FilmPage() {
         const query = searchQuery.toLowerCase();
         return (
             f.title.toLowerCase().includes(query) ||
+            f.alt_title?.toLowerCase().includes(query) ||
             f.director?.toLowerCase().includes(query) ||
+            f.alt_name?.toLowerCase().includes(query) ||
             f.cast?.some((c) => c.actor?.toLowerCase().includes(query)) ||
             f.crew?.some((c) => c.name?.toLowerCase().includes(query))
         );
@@ -87,7 +89,9 @@ export default function FilmPage() {
                             const matchesSet = new Set<string>();
 
                             if (f.title.toLowerCase().includes(query)) matchesSet.add(f.title);
+                            if (f.alt_title?.toLowerCase().includes(query)) matchesSet.add(f.alt_title);
                             if (f.director.toLowerCase().includes(query)) matchesSet.add(f.director);
+                            if (f.alt_name?.toLowerCase().includes(query)) matchesSet.add(f.alt_name);
                             if (f.cast?.some((c) => c.actor?.toLowerCase().includes(query))) {
                                 f.cast.forEach((c) => {
                                     if (c.actor?.toLowerCase().includes(query)) matchesSet.add(c.actor);
