@@ -20,6 +20,8 @@ export default function FilmDetailPage() {
   const [activeTab, setActiveTab] = useState<"cast" | "crew" | "awards">("cast");
   const [showFullCast, setShowFullCast] = useState(false);
   const [showFullCrew, setShowFullCrew] = useState(false);
+  const MAX_CAST_CREW = 20;
+
 
   useEffect(() => {
     fetch(`http://127.0.0.1:8000/api/films/${id}/`)
@@ -174,7 +176,7 @@ export default function FilmDetailPage() {
                 {film.title ?? film.title}
               </h1>
               {film.series && (
-                <span className="text-gray-400 text-sm">{film.series} (#{film.volume ?? film.volume})</span>
+                <span className="text-gray-400 text-sm">{film.series}{film.volume ? ` (#${film.volume})` : ""}</span>
               )}
               <div className="flex items-center space-x-4 mt-2">
                 {film.release_date && (
@@ -192,7 +194,7 @@ export default function FilmDetailPage() {
                 )}
               </div>
             </div>
-            <div className="flex space-x-2 w-full mt-2">
+            <div className="flex space-x-2 w-full mt-4">
                 <div className="w-3/5 space-y-4">
                   {film.blurb && (
                     <h6 className="text-sm text-gray-400">{film.blurb.toUpperCase()}</h6>
@@ -234,14 +236,12 @@ export default function FilmDetailPage() {
                       {activeTab === "cast" && (
                         <div className="mb-12 relative">
                           <div
-                            className={`space-x-1 flex flex-wrap transition-all duration-300 ${
-                              showFullCast ? "max-h-none" : "max-h-32 overflow-hidden"
-                            }`}
+                            className={`gap-x-2 gap-y-2 flex flex-wrap transition-all duration-300`}
                           >
-                            {film.cast?.map((c, i) => (
+                            {(showFullCast ? film.cast : film.cast?.slice(0, MAX_CAST_CREW))?.map((c, i) => (
                               <div key={i} className="relative group">
                                 <Link
-                                  className="bg-neutral p-1 w-fit rounded-md text-xs cursor-help transition-all duration-300 hover:bg-neutral/50"
+                                  className="bg-neutral px-2 py-1 w-fit rounded-md text-sm cursor-help transition-all duration-300 hover:bg-neutral/50"
                                   href={`/films/search/actor/${encodeURIComponent(c.actor)}`}
                                 >
                                   {c.actor}
@@ -251,47 +251,23 @@ export default function FilmDetailPage() {
                                 </div>
                               </div>
                             ))}
-                          </div>
-                          {!showFullCast && film.cast && (
-                            <div className="absolute bottom-5 left-0 w-full h-12 bg-gradient-to-t from-background via-background/80 to-transparent pointer-events-none" />
-                          )}
-                          {film.cast && (
-                            <button
-                              onClick={() => setShowFullCast(!showFullCast)}
-                              className="mt-1 cursor-pointer z-10 flex items-center"
-                            >
-                              <span className="mr-1 text-sm transition hover:text-primary">
-                                {showFullCast ? "Show Less" : "Show More"}
-                              </span>
-                              <span
-                                className={`transition-transform duration-300 ${
-                                  showFullCast ? "rotate-180" : "rotate-0"
-                                }`}
+
+                            {film.cast && film.cast.length > MAX_CAST_CREW && (
+                              <button
+                                onClick={() => setShowFullCast(!showFullCast)}
+                                className="bg-neutral px-2 py-1 w-fit rounded-md text-sm cursor-help transition-all duration-300 hover:bg-neutral/50 cursor-pointer"
                               >
-                                ▼
-                              </span>
-                            </button>
-                          )}
+                                {showFullCast ? "Show Less" : "Show All"}
+                              </button>
+                            )}
+                          </div>
                         </div>
                       )}
                       {activeTab === "crew" && (
                         <div className="mb-12 relative">
                           <div
-                            className={`space-y-4 flex flex-col transition-all duration-300 ${
-                              showFullCrew ? "max-h-none" : "max-h-32 overflow-hidden"
-                            }`}
+                            className={`space-y-4 flex flex-col transition-all duration-300`}
                           >
-                            <div className="flex justify-start items-center pr-4 space-x-4">
-                              <span className="font-normal text-xs">DIRECTOR</span>
-                              <div className="flex flex-wrap gap-2">
-                                <Link
-                                  className="bg-neutral p-1 w-fit rounded-md text-xs transition-all duration-300 hover:bg-neutral/50"
-                                  href={`/films/search/directors/${encodeURIComponent(film.director)}`}
-                                >
-                                  {film.director}
-                                </Link>
-                              </div>
-                            </div>
                             {Object.entries(
                               film.crew?.reduce((acc: Record<string, string[]>, c) => {
                                 if (!acc[c.role]) acc[c.role] = [];

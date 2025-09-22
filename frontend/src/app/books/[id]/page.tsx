@@ -307,7 +307,7 @@ export default function FilmDetailPage() {
                     {book.language && <p><span className="text-xs text-gray-400 mr-2">Language</span> <Link href={`/books/search/language/${encodeURIComponent(book.language)}`} className="transition-all duration-500 hover:text-primary">{book.language}</Link></p>}
                     {book.external_links && (
                     <p>
-                    <span className="text-xs text-gray-400 mr-2">Link:</span>{" "}
+                    <span className="text-xs text-gray-400 mr-2">Link</span>{" "}
                     <a
                         href={book.external_links}
                         target="_blank"

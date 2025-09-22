@@ -73,7 +73,7 @@ export default function FilmSearchPage() {
 
   if (category?.toLowerCase() === "actor") {
     headingText = "Films starring";
-  } else if (category?.toLowerCase() === "director") {
+  } else if (category?.toLowerCase() === "directors") {
     headingText = "Films directed by";
   } else if (category?.toLowerCase() === "genre") {
     headingText = "Films about";

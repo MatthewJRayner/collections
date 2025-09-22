@@ -69,7 +69,7 @@ class FilmViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        director = self.request.query_params.get('director')
+        director = self.request.query_params.get('directors')
         actor = self.request.query_params.get('actor')
         genre = self.request.query_params.get('genre')
         crew = self.request.query_params.get('crew')

@@ -33,7 +33,7 @@ export default function EditFilmsPage() {
             <FilmForm
                 initialData={film}
                 onSuccess={() => {
-                    router.push(`/films/${id}`);
+                    router.push(`/films`);
                 }}
             />
         </div>    

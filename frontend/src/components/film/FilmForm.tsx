@@ -26,7 +26,6 @@ export default function FilmForm({ initialData, onSuccess }: FilmFormProps) {
             watchlist: false
         }
     );
-    const [showBatchModal, setShowBatchModal] = useState(false);
 
     const handleChange = (
         e: React.ChangeEvent<
@@ -89,6 +88,18 @@ export default function FilmForm({ initialData, onSuccess }: FilmFormProps) {
 
         onSuccess();
     };
+
+    const deletefilm = async (id: number) => {
+    if (!formData.id) return;
+
+    if (!confirm("Are you sure you want to delete this film?")) return;
+
+    await fetch(`http://127.0.0.1:8000/api/films/${formData.id}/`, {
+      method: "DELETE",
+    });
+
+    onSuccess();
+  };
 
     return (
         <div className='flex w-full'>
@@ -378,12 +389,22 @@ export default function FilmForm({ initialData, onSuccess }: FilmFormProps) {
                         onChange={handleChange}
                         className="bg-neutral shadow p-2 w-full rounded"
                     />
-                    <button
-                        type="submit"
-                        className="bg-primary text-white px-4 py-2 rounded hover:bg-neutral-mid hover:text-background hover:scale-105 transition cursor-pointer"
-                    >
-                        {initialData ? "Update Item" : "Add Item"}
-                    </button>
+                    <div className='flex space-x-2'>
+                        <button
+                            type="submit"
+                            className="bg-primary text-white px-4 py-2 rounded hover:bg-neutral-mid hover:text-background hover:scale-105 transition cursor-pointer"
+                        >
+                            {initialData ? "Update Item" : "Add Item"}
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => deletefilm(Number(formData.id))}
+                            className="bg-danger text-white px-4 py-2 rounded hover:bg-neutral-mid hover:text-background hover:scale-105 transition cursor-pointer"
+                        >
+                            Delete
+                        </button>
+                    </div>
+                    
                 </form>
             </div>
         </div>
