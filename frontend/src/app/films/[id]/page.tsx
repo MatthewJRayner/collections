@@ -18,6 +18,8 @@ export default function FilmDetailPage() {
   const [rating, setRating] = useState(0);
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [activeTab, setActiveTab] = useState<"cast" | "crew" | "awards">("cast");
+  const [showFullCast, setShowFullCast] = useState(false);
+  const [showFullCrew, setShowFullCrew] = useState(false);
 
   useEffect(() => {
     fetch(`http://127.0.0.1:8000/api/films/${id}/`)
@@ -145,7 +147,7 @@ export default function FilmDetailPage() {
               )}
               <button
                 onClick={toggleFavourite}
-                className={`text-lg cursor-pointer transition-all duration-300  hover:text-danger/50 hover:scale-105 active:scale-90 ${film?.favourite ? "text-danger" : "text-neutral-mid"}`}
+                className={`text-lg cursor-pointer transition-all duration-300 hover:text-danger/50 hover:scale-105 active:scale-90 ${film?.favourite ? "text-danger" : "text-neutral-mid"}`}
               >
                 ❤︎
               </button>
@@ -176,14 +178,14 @@ export default function FilmDetailPage() {
               )}
               <div className="flex items-center space-x-4 mt-2">
                 {film.release_date && (
-                  <h2 className=" text-md">{film.release_date.substring(0,4)}</h2>
+                  <h2 className="text-md">{film.release_date.substring(0,4)}</h2>
                 )}
                 {film.alt_title && (
                   <p className="italic text-gray-400 font-light">{`'${film.alt_title}'`}</p>
                 )}
                 {film.director && (
                   <div className="text-gray-400 font-light">Directed by 
-                    <Link href={`/films/search/director/${encodeURIComponent(film.director)}`} className="cursor-pointer text-foreground transition-all duration-500 hover:text-primary ml-1">
+                    <Link href={`/films/search/directors/${encodeURIComponent(film.director)}`} className="cursor-pointer text-foreground transition-all duration-500 hover:text-primary ml-1">
                       {film.director} {film.alt_name ? <span className="text-gray-400 ml-1 italic text-xs transition-all duration-500 hover:text-primary">{film.alt_name}</span> : ""}
                     </Link>
                   </div>
@@ -193,7 +195,7 @@ export default function FilmDetailPage() {
             <div className="flex space-x-2 w-full mt-2">
                 <div className="w-3/5 space-y-4">
                   {film.blurb && (
-                    <h6 className="text-sm text-gray-400 ">{film.blurb.toUpperCase()}</h6>
+                    <h6 className="text-sm text-gray-400">{film.blurb.toUpperCase()}</h6>
                   )}
 
                   {film.synopsis && (
@@ -230,61 +232,109 @@ export default function FilmDetailPage() {
 
                     <div className="text-md">
                       {activeTab === "cast" && (
-                        <div className="space-x-1 flex flex-wrap">
-                          {film.cast?.map((c, i) => (
-                            <div
-                              key={i}
-                              className="relative group"
-                            >
-                              <Link 
-                                className="bg-neutral p-1 w-fit rounded-md text-xs cursor-help transition-all duration-300 hover:bg-neutral/50"
-                                href={`/films/search/actor/${encodeURIComponent(c.actor)}`}
-                              >
-                                {c.actor}
-                              </Link>
-
-                              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 hidden group-hover:block bg-black text-white text-xs rounded px-2 py-1 whitespace-nowrap z-20 shadow-lg">
-                                {c.role}
+                        <div className="mb-12 relative">
+                          <div
+                            className={`space-x-1 flex flex-wrap transition-all duration-300 ${
+                              showFullCast ? "max-h-none" : "max-h-32 overflow-hidden"
+                            }`}
+                          >
+                            {film.cast?.map((c, i) => (
+                              <div key={i} className="relative group">
+                                <Link
+                                  className="bg-neutral p-1 w-fit rounded-md text-xs cursor-help transition-all duration-300 hover:bg-neutral/50"
+                                  href={`/films/search/actor/${encodeURIComponent(c.actor)}`}
+                                >
+                                  {c.actor}
+                                </Link>
+                                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 hidden group-hover:block bg-black text-white text-xs rounded px-2 py-1 whitespace-nowrap z-20 shadow-lg">
+                                  {c.role}
+                                </div>
                               </div>
-                            </div>
-                          ))}
+                            ))}
+                          </div>
+                          {!showFullCast && film.cast && (
+                            <div className="absolute bottom-5 left-0 w-full h-12 bg-gradient-to-t from-background via-background/80 to-transparent pointer-events-none" />
+                          )}
+                          {film.cast && (
+                            <button
+                              onClick={() => setShowFullCast(!showFullCast)}
+                              className="mt-1 cursor-pointer z-10 flex items-center"
+                            >
+                              <span className="mr-1 text-sm transition hover:text-primary">
+                                {showFullCast ? "Show Less" : "Show More"}
+                              </span>
+                              <span
+                                className={`transition-transform duration-300 ${
+                                  showFullCast ? "rotate-180" : "rotate-0"
+                                }`}
+                              >
+                                ▼
+                              </span>
+                            </button>
+                          )}
                         </div>
                       )}
                       {activeTab === "crew" && (
-                        <div className="space-y-4 flex flex-col">
-                          <div className="flex justify-start items-center pr-4 space-x-4">
-                            <span className="font-normal text-xs">DIRECTOR</span>
-                            <div className="flex flex-wrap gap-2">
-                              <Link 
-                                className="bg-neutral p-1 w-fit rounded-md text-xs transition-all duration-300 hover:bg-neutral/50"
-                                href={`/films/search/director/${encodeURIComponent(film.director)}`}
-                              >
-                                {film.director}
-                              </Link>
-                            </div>
-                          </div>
-                          {Object.entries(
-                            film.crew?.reduce((acc: Record<string, string[]>, c) => {
-                              if (!acc[c.role]) acc[c.role] = [];
-                              acc[c.role].push(c.name);
-                              return acc;
-                            }, {}) || {}
-                          ).map(([role, names]) => (
-                            <div key={role} className="flex justify-start items-center pr-4 space-x-4">
-                              <span className="font-normal text-xs">{role.toUpperCase()}</span>
+                        <div className="mb-12 relative">
+                          <div
+                            className={`space-y-4 flex flex-col transition-all duration-300 ${
+                              showFullCrew ? "max-h-none" : "max-h-32 overflow-hidden"
+                            }`}
+                          >
+                            <div className="flex justify-start items-center pr-4 space-x-4">
+                              <span className="font-normal text-xs">DIRECTOR</span>
                               <div className="flex flex-wrap gap-2">
-                                {names.map((name, idx) => (
-                                  <Link
-                                    href={`/films/search/${encodeURIComponent(role)}/${encodeURIComponent(name)}`}
-                                    key={idx}
-                                    className="bg-neutral p-1 w-fit rounded-md text-xs transition-all duration-300 hover:bg-neutral/50"
-                                  >
-                                    {name}
-                                  </Link>
-                                ))}
+                                <Link
+                                  className="bg-neutral p-1 w-fit rounded-md text-xs transition-all duration-300 hover:bg-neutral/50"
+                                  href={`/films/search/directors/${encodeURIComponent(film.director)}`}
+                                >
+                                  {film.director}
+                                </Link>
                               </div>
                             </div>
-                          ))}
+                            {Object.entries(
+                              film.crew?.reduce((acc: Record<string, string[]>, c) => {
+                                if (!acc[c.role]) acc[c.role] = [];
+                                acc[c.role].push(c.name);
+                                return acc;
+                              }, {}) || {}
+                            ).map(([role, names]) => (
+                              <div key={role} className="flex justify-start items-center pr-4 space-x-4">
+                                <span className="font-normal text-xs">{role.toUpperCase()}</span>
+                                <div className="flex flex-wrap gap-2">
+                                  {names.map((name, idx) => (
+                                    <Link
+                                      href={`/films/search/crew/${encodeURIComponent(name)}`}
+                                      key={idx}
+                                      className="bg-neutral p-1 w-fit rounded-md text-xs transition-all duration-300 hover:bg-neutral/50"
+                                    >
+                                      {name}
+                                    </Link>
+                                  ))}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                          {!showFullCrew && film.crew && (
+                            <div className="absolute bottom-5 left-0 w-full h-12 bg-gradient-to-t from-background via-background/80 to-transparent pointer-events-none" />
+                          )}
+                          {film.crew && (
+                            <button
+                              onClick={() => setShowFullCrew(!showFullCrew)}
+                              className="mt-1 cursor-pointer z-10 flex items-center"
+                            >
+                              <span className="mr-1 font-bold text-sm transition hover:text-primary">
+                                {showFullCrew ? "Show Less" : "Show More"}
+                              </span>
+                              <span
+                                className={`transition-transform duration-300 ${
+                                  showFullCrew ? "rotate-180" : "rotate-0"
+                                }`}
+                              >
+                                ▼
+                              </span>
+                            </button>
+                          )}
                         </div>
                       )}
                       {activeTab === "awards" && (
@@ -315,15 +365,14 @@ export default function FilmDetailPage() {
                     </div>
                   </div>
 
-                  
                   <button
-                      onClick={() => setShowDetails(!showDetails)}
-                      className="mt-3 text-md text-primary cursor-pointer hover:text-neutral-mid"
+                    onClick={() => setShowDetails(!showDetails)}
+                    className="text-md text-primary cursor-pointer hover:text-neutral-mid"
                   >
-                      {showDetails ? "Hide Details" : "More Details"}
+                    {showDetails ? "Hide Details" : "More Details"}
                   </button>   
                   {showDetails && (
-                    <div className="mt-t text-left w-full space-y-2 text-sm text-neutral-mid">
+                    <div className="mt-2 text-left w-full space-y-2 text-sm text-neutral-mid">
                       {film.genre && (
                         <div className="flex items-center space-x-2">
                           <span><strong>Genres:</strong> </span>
@@ -360,22 +409,22 @@ export default function FilmDetailPage() {
                       {film.country && <p><strong>Country:</strong> {film.country}</p>}
                       {film.external_links && (
                         <p>
-                        <strong>Link:</strong>{" "}
-                        <a
+                          <strong>Link:</strong>{" "}
+                          <a
                             href={film.external_links}
                             target="_blank"
                             className="text-primary cursor-pointer hover:text-neutral-mid"
-                        >
+                          >
                             View
-                        </a>
+                          </a>
                         </p>
-                    )}
+                      )}
                     </div>
-                )}
+                  )}
                 </div>
 
                 <div className="rounded-lg w-2/5 bg-neutral h-fit">
-                  <div className="w-full text-center border-b-background border-b-1 p-4 flex flex-coljustify-center space-x-4">
+                  <div className="w-full text-center border-b-background border-b-1 p-4 flex justify-center space-x-4">
                     <div className="w-1/2 flex flex-col items-center">
                       <button onClick={toggleSeen} aria-label="Toggle Seen" className="cursor-pointer mb-2">
                         <svg
@@ -452,7 +501,7 @@ export default function FilmDetailPage() {
                     <div className="py-4 px-2 text-center">
                       <button
                         onClick={() => setShowReviewModal(true)}
-                        className="bg-primary text-background px-4 py-2 rounded hover:bg-neutral-mid hover:scale-105 transition cursor-pointer active:scale-95"
+                        className="bg-primary text-white hover:text-background px-4 py-2 rounded hover:bg-neutral-mid hover:scale-105 transition cursor-pointer active:scale-95"
                       >
                         + Add Review
                       </button>
@@ -468,10 +517,8 @@ export default function FilmDetailPage() {
                 </div>
             </div>
           </div>
-          
         </div>
       </div>
-      
     </div>
   );
 }

@@ -1,9 +1,10 @@
+from django.urls import path, include
 from rest_framework import routers
 from .views import (
     WatchViewSet, MusicViewSet, FilmCollectionViewSet, BookCollectionViewSet,
     WardrobeViewSet, GameCollectionViewSet, ArtViewSet,
     ExtrasCategoryViewSet, ExtraViewSet, FilmViewSet, BookViewSet,
-    InstrumentViewSet
+    InstrumentViewSet, batch_import_films
 )
 
 router = routers.DefaultRouter()
@@ -20,4 +21,7 @@ router.register(r'films', FilmViewSet)
 router.register(r'books', BookViewSet)
 router.register(r'instruments', InstrumentViewSet)
 
-urlpatterns = router.urls
+urlpatterns = [
+    path("", include(router.urls)),
+    path("batch-import-films/", batch_import_films, name="batch_import_films")
+] 

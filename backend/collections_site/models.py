@@ -308,6 +308,7 @@ class Film(models.Model):
     seen = models.BooleanField(default=False)
     date_watched = models.DateField(blank=True, null=True)
     watchlist = models.BooleanField(default=False)
+    tmdb_id = models.IntegerField(blank=True, null=True)
     
     def __str__(self):
         return f"{self.title} ({self.director})"

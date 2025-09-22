@@ -5,6 +5,7 @@ import { Film } from "../../types/film";
 import CastEditor from './CastEditor';
 import CrewEditor from './CrewEditor';
 import AwardsEditor from './AwardsEditor';
+import BatchImportModal from './BatchImportModal';
 
 type FilmFormProps = {
     initialData?: Film;
@@ -25,6 +26,7 @@ export default function FilmForm({ initialData, onSuccess }: FilmFormProps) {
             watchlist: false
         }
     );
+    const [showBatchModal, setShowBatchModal] = useState(false);
 
     const handleChange = (
         e: React.ChangeEvent<
