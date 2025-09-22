@@ -106,22 +106,20 @@ export default function FilmDetailPage() {
     <div className="min-h-screen flex flex-col">
       {film.background_pic && (
         <div className="absolute top-0 left-0 w-full h-[560px] flex justify-center -z-10">
-          <div className="relative h-full w-[1200px]">
+          <div className="relative h-full w-[100vw]">
             <img
               src={film.background_pic}
               alt={film.title}
               className="h-full w-full object-cover object-top"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-background"></div>
-            <div className="absolute inset-y-0 left-0 w-18 bg-gradient-to-r from-background to-transparent"></div>
-            <div className="absolute inset-y-0 right-0 w-18 bg-gradient-to-l from-background to-transparent"></div>
           </div>
         </div>
       )}
 
       <div className="h-1/3"></div>
 
-      <div className="flex flex-col w-[1000px] items-center justify-center mx-auto">
+      <div className="flex flex-col w-[1150px] items-center justify-center mx-auto">
         <div className="h-[42vh]"></div>
         <div className="flex flex-1 p-6 gap-6 z-10 justify-center w-full">
           <div className="w-1/4 space-y-2 flex flex-col items-center">
@@ -184,7 +182,11 @@ export default function FilmDetailPage() {
                   <p className="italic text-gray-400 font-light">{`'${film.alt_title}'`}</p>
                 )}
                 {film.director && (
-                  <p className="text-gray-400 font-light">Directed by <span className="text-foreground">{film.director}{film.alt_name ? <span className="text-gray-400 ml-1 italic text-xs">{film.alt_name}</span> : ""}</span></p>
+                  <div className="text-gray-400 font-light">Directed by 
+                    <Link href={`/films/search/director/${encodeURIComponent(film.director)}`} className="cursor-pointer text-foreground transition-all duration-500 hover:text-primary ml-1">
+                      {film.director} {film.alt_name ? <span className="text-gray-400 ml-1 italic text-xs transition-all duration-500 hover:text-primary">{film.alt_name}</span> : ""}
+                    </Link>
+                  </div>
                 )}
               </div>
             </div>
@@ -234,9 +236,12 @@ export default function FilmDetailPage() {
                               key={i}
                               className="relative group"
                             >
-                              <div className="bg-neutral p-1 w-fit rounded-md text-xs cursor-help">
+                              <Link 
+                                className="bg-neutral p-1 w-fit rounded-md text-xs cursor-help transition-all duration-300 hover:bg-neutral/50"
+                                href={`/films/search/actor/${encodeURIComponent(c.actor)}`}
+                              >
                                 {c.actor}
-                              </div>
+                              </Link>
 
                               <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 hidden group-hover:block bg-black text-white text-xs rounded px-2 py-1 whitespace-nowrap z-20 shadow-lg">
                                 {c.role}
@@ -250,9 +255,12 @@ export default function FilmDetailPage() {
                           <div className="flex justify-start items-center pr-4 space-x-4">
                             <span className="font-normal text-xs">DIRECTOR</span>
                             <div className="flex flex-wrap gap-2">
-                              <div className="bg-neutral p-1 w-fit rounded-md text-xs">
+                              <Link 
+                                className="bg-neutral p-1 w-fit rounded-md text-xs transition-all duration-300 hover:bg-neutral/50"
+                                href={`/films/search/director/${encodeURIComponent(film.director)}`}
+                              >
                                 {film.director}
-                              </div>
+                              </Link>
                             </div>
                           </div>
                           {Object.entries(
@@ -266,12 +274,13 @@ export default function FilmDetailPage() {
                               <span className="font-normal text-xs">{role.toUpperCase()}</span>
                               <div className="flex flex-wrap gap-2">
                                 {names.map((name, idx) => (
-                                  <div
+                                  <Link
+                                    href={`/films/search/${encodeURIComponent(role)}/${encodeURIComponent(name)}`}
                                     key={idx}
-                                    className="bg-neutral p-1 w-fit rounded-md text-xs"
+                                    className="bg-neutral p-1 w-fit rounded-md text-xs transition-all duration-300 hover:bg-neutral/50"
                                   >
                                     {name}
-                                  </div>
+                                  </Link>
                                 ))}
                               </div>
                             </div>
@@ -319,13 +328,13 @@ export default function FilmDetailPage() {
                         <div className="flex items-center space-x-2">
                           <span><strong>Genres:</strong> </span>
                           {film.genre?.map((g, i) => (
-                            <div className="bg-neutral p-1 rounded-md" key={i}>
+                            <Link href={`/films/search/genre/${encodeURIComponent(g)}`} className="bg-neutral p-1 rounded-md transition-all duration-300 hover:bg-primary/50" key={i}>
                               {g}
-                            </div>
+                            </Link>
                           ))}
                         </div>
                       )}
-                      {film.tags && (
+                      {film.tags && film.tags.length > 1 && (
                         <div className="flex items-center space-x-2">
                           <span><strong>Tags:</strong> </span>
                           {film.tags?.map((g, i) => (
@@ -337,7 +346,7 @@ export default function FilmDetailPage() {
                       )}
                       {film.series && <p><strong>Series:</strong> {film.series}</p>}
                       {film.volume && <p><strong>Entry #:</strong> {film.volume}</p>}
-                      {film.rating && <p><strong>Rating:</strong> {film.rating}/10</p>}
+                      {film.rating && <p><strong>Rating:</strong> {Number(film.rating).toFixed(0)} / 10</p>}
                       {film.runtime && <p><strong>Runtime:</strong> {formatRuntime(film.runtime)}</p>}
                       {film.date_watched && <p><strong>Date Watched:</strong> {formatDate(film.date_watched)}</p>}
                       {film.release_date && <p><strong>Release Date:</strong> {formatDate(film.release_date)}</p>}

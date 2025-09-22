@@ -1,7 +1,7 @@
 import { Film } from "@/types/film";
 import { Book } from "@/types/book";
 
-export function getMostRecent(films: Film[], count = 4) {
+export function getMostRecent(films: Film[], count = 5) {
     return [...films]
         .filter(f => f.date_watched)
         .sort((a, b) =>
@@ -10,17 +10,17 @@ export function getMostRecent(films: Film[], count = 4) {
         .slice(0, count);
 }
 
-export function getRandomWatchlist(films: Film[], count = 4) {
+export function getRandomWatchlist(films: Film[], count = 5) {
     const watchlist = films.filter(f => f.watchlist);
     return watchlist.sort(() => 0.5 - Math.random()).slice(0, count);
 }
 
-export function getRandomFavourites(films: Film[], count = 4) {
+export function getRandomFavourites(films: Film[], count = 5) {
     const favs = films.filter(f => f.favourite);
     return favs.sort(() => 0.5 - Math.random()).slice(0, count);
 }
 
-export function getTopDirectors(films: Film[], count = 4) {
+export function getTopDirectors(films: Film[], count = 5) {
     const grouped: Record<string, Film[]> = {};
     for (const film of films) {
         if (!film.director) continue;
@@ -40,7 +40,7 @@ export function getTopDirectors(films: Film[], count = 4) {
         .slice(0, count);
 }
 
-export function getMostRecentBooks(books: Book[], count = 4) {
+export function getMostRecentBooks(books: Book[], count = 5) {
     return [...books]
         .filter(b => b.date_read) // or "date_released" if you meant release
         .sort((a, b) =>
@@ -49,17 +49,17 @@ export function getMostRecentBooks(books: Book[], count = 4) {
         .slice(0, count);
 }
 
-export function getRandomReadlistBooks(books: Book[], count = 4) {
+export function getRandomReadlistBooks(books: Book[], count = 5) {
     const readlist = books.filter(b => b.readlist);
     return readlist.sort(() => 0.5 - Math.random()).slice(0, count);
 }
 
-export function getRandomFavouriteBooks(books: Book[], count = 4) {
+export function getRandomFavouriteBooks(books: Book[], count = 5) {
     const favs = books.filter(b => b.favourite);
     return favs.sort(() => 0.5 - Math.random()).slice(0, count);
 }
 
-export function getTopAuthors(books: Book[], count = 4) {
+export function getTopAuthors(books: Book[], count = 5) {
     const grouped: Record<string, Book[]> = {};
     for (const book of books) {
         if (!book.author) continue;

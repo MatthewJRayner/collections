@@ -20,7 +20,7 @@ export default function HomePage() {
       <h1 className="text-4xl font-bold mb-8 text-center">Welcome back, <span className="text-primary">Matthew</span>.</h1>
       <p>Use this site to expand upon all your collection dreams to your heart&apos;s content.</p>
       <p>Feel free to use the navbar above or the helpful button below to navigate to the different sections.</p>
-      <div className="grid gap-6 grid-cols-2 w-full p-12">
+      <div className="grid gap-12 grid-cols-3 w-full p-12">
         {collections.map((c) => (
           <Link
             key={c.path}

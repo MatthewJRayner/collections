@@ -201,7 +201,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
     return (
         <div>
             <h2 className="text-xl font-bold mb-4">{title}</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">{children}</div>
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">{children}</div>
         </div>
     );
 }

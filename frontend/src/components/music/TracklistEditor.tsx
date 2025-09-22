@@ -86,7 +86,7 @@ export default function TracklistEditor({ tracklist, setTracklist }: Props){
                     <button
                         type="button"
                         onClick={addTrack}
-                        className="bg-primary text-background  hover:scale-105 hover:bg-neutral-mid transition cursor-pointer px-3 py-1 rounded"
+                        className="bg-primary text-white hover:scale-105 hover:text-background hover:bg-neutral-mid transition cursor-pointer px-3 py-1 rounded"
                     >
                         + Add Track
                     </button>

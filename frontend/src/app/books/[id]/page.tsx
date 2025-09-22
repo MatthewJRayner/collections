@@ -175,7 +175,7 @@ export default function FilmDetailPage() {
                   href={book.external_links}
                   className="text-lg font-bold text-neutral-mid cursor-pointer transition-all duration-300 hover:text-primary hover:scale-105 active:scale-90"
                 >
-                  <span className="mr-2">⮺</span> Link to goodreads
+                  <span className="mr-2">⮺</span> Link
                 </Link>
               )}
             </div>
@@ -190,14 +190,14 @@ export default function FilmDetailPage() {
                 {book.title ?? ""}{book.alt_title ? <span className="text-lg text-gray-400 ml-4 font-normal">{book.alt_title}</span> : ""}
               </h1>
               
-              <div className="flex items-center space-x-4 ">
+              <Link href={`/books/search/author/${encodeURIComponent(book.author)}`} className="flex w-fit items-center space-x-4 transition-all duration-500 hover:text-primary">
                 {book.author && (
                   <p className="font-light text-2xl italic">{book.author}{book.alt_name ? <span className="text-sm text-gray-400 ml-2">{book.alt_name}</span> : ""}</p>
                 )}
-              </div>
+              </Link>
               <div className="flex my-2 items-center space-x-2">
                 <StarRating value={rating || 0} onChange={updateRating} />
-                <p className="text-3xl font-bold">{(rating / 2).toFixed(1)}</p>
+                <p className="text-3xl font-bold">{Number(rating).toFixed(0)}</p>
               </div>
             </div>
             <div className="flex flex-col space-x-2 w-full mt-2">
@@ -241,12 +241,13 @@ export default function FilmDetailPage() {
 
                     {(showAllGenres ? book.genre : book.genre?.slice(0, MAX_GENRES))?.map(
                         (g, i) => (
-                        <div
+                        <Link
+                            href={`/books/search/genre/${encodeURIComponent(g)}`}
                             key={i}
                             className="border-b-success border-b-2 px-1 font-bold cursor-pointer hover:border-b-green-800 transition-all duration-500"
                         >
                             {g}
-                        </div>
+                        </Link>
                         )
                     )}
 
@@ -297,13 +298,13 @@ export default function FilmDetailPage() {
                     {book.series && <p><span className="text-xs text-gray-400 mr-2">Series</span> {book.series}</p>}
                     {book.volume && <p><span className="text-xs text-gray-400 mr-2">Entry #</span> {book.volume}</p>}
                     {book.rating && <p><span className="text-xs text-gray-400 mr-2">Rating</span> {book.rating}/10</p>}
-                    {book.og_language && <p><span className="text-xs text-gray-400 mr-2">Language</span> {book.og_language}</p>}
+                    {book.og_language && <p><span className="text-xs text-gray-400 mr-2">Language</span> <Link href={`/books/search/language/${encodeURIComponent(book.og_language)}`} className="transition-all duration-500 hover:text-primary">{book.og_language}</Link></p>}
                     {book.country && <p><span className="text-xs text-gray-400 mr-2">Country</span> {book.country}</p>}
                     
-                    <p className="pt-4 text-foreground"><span className="text-md font-bold">This Edition</span></p>
+                    <p className="pt-4 text-foreground"><span className="text-md font-bold">My Edition</span></p>
                     {book.ISBN && <p><span className="text-xs text-gray-400 mr-2">ISBN</span> {book.ISBN}</p>}
                     {book.publisher && <p><span className="text-xs text-gray-400 mr-2">Publisher</span> {book.publisher}</p>}
-                    {book.language && <p><span className="text-xs text-gray-400 mr-2">Language</span> {book.language}</p>}
+                    {book.language && <p><span className="text-xs text-gray-400 mr-2">Language</span> <Link href={`/books/search/language/${encodeURIComponent(book.language)}`} className="transition-all duration-500 hover:text-primary">{book.language}</Link></p>}
                     {book.external_links && (
                     <p>
                     <span className="text-xs text-gray-400 mr-2">Link:</span>{" "}
@@ -322,7 +323,7 @@ export default function FilmDetailPage() {
                 {book.review ? (
                     <div className="flex flex-col justify-start py-4 relative mt-4">
                         <div className="flex space-x-2 items-center">
-                        <h3 className="font-semibold">Review</h3>
+                        <h3 className="font-semibold">My Review</h3>
                         <button
                             onClick={() => setShowReviewModal(true)}
                             className="text-md cursor-pointer transition-all duration-300 hover:text-primary hover:scale-105 active:scale-90"

@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 type StarRatingProps = {
-  value: number; // rating from 1–10
+  value: number; // 0–10 whole numbers
   onChange: (value: number) => void;
 };
 
@@ -14,23 +14,22 @@ export default function StarRating({ value, onChange }: StarRatingProps) {
   const isHovering = hoverValue !== null;
 
   // Colors
-  const baseColor = "#9CA3AF"; // GRAY-400
-  const savedColor = "#ffbc2f"; // WARNING
-  const hoverColor = "#307cf6"; // PRIMARY
+  const baseColor = "#9CA3AF"; // gray
+  const savedColor = "#ffbc2f"; // gold
+  const hoverColor = "#307cf6"; // blue
 
   return (
     <div className="flex">
       {[1, 2, 3, 4, 5].map((starIndex) => {
-        const leftValue = starIndex * 2 - 1; // odd (half)
-        const rightValue = starIndex * 2; // even (full)
+        const leftValue = starIndex * 2 - 1; // odd (1, 3, 5, 7, 9)
+        const rightValue = starIndex * 2;    // even (2, 4, 6, 8, 10)
 
-        let fill: string = baseColor; // default: grey
+        let fill: string = baseColor;
 
         if (currentValue >= rightValue) {
-          fill = isHovering ? hoverColor : savedColor; // full
-        } else if (currentValue === leftValue) {
-          // half star with gradient
-          fill = `url(#half-fill-${starIndex})`;
+          fill = isHovering ? hoverColor : savedColor; // full star
+        } else if (currentValue >= leftValue && currentValue < rightValue) {
+          fill = `url(#half-fill-${starIndex})`; // half star
         }
 
         return (
@@ -62,7 +61,7 @@ export default function StarRating({ value, onChange }: StarRatingProps) {
               />
             </svg>
 
-            {/* Left half hit area */}
+            {/* Left half hit area (odd numbers) */}
             <button
               type="button"
               onMouseEnter={() => setHoverValue(leftValue)}
@@ -71,7 +70,7 @@ export default function StarRating({ value, onChange }: StarRatingProps) {
               className="absolute top-0 left-0 w-1/2 h-full cursor-pointer"
             />
 
-            {/* Right half hit area */}
+            {/* Right half hit area (even numbers) */}
             <button
               type="button"
               onMouseEnter={() => setHoverValue(rightValue)}
