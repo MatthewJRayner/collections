@@ -3,7 +3,7 @@ from .models import (
     Watch, Music, FilmCollection, BookCollection,
     Wardrobe, GameCollection, Art,
     ExtrasCategory, Extra, Film, Book,
-    Instrument
+    Instrument, List
 )
 
 class WatchSerializer(serializers.ModelSerializer):
@@ -74,3 +74,33 @@ class InstrumentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Instrument
         fields = "__all__"
+        
+class ListSerializer(serializers.ModelSerializer):
+    films = FilmSerializer(many=True, read_only=True)
+    books = serializers.PrimaryKeyRelatedField(
+        many=True, queryset=Book.objects.all(), required=False
+    )
+    
+    class Meta:
+        model = List
+        fields = [
+            "id",
+            "name",
+            "description",
+            "category",
+            "films",
+            "books",
+            "created_at",
+        ]
+    
+    def validate(self, data):
+        category = data.get("category")
+        films = data.get("films", [])
+        books = data.get("books", [])
+        
+        if category == "film" and books:
+            raise serializers.ValidationError("Book items are not allowed in a Film list.")
+        if category == "book" and films:
+            raise serializers.ValidationError("Film items are not allowed in a Book list.")
+        
+        return data

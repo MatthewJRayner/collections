@@ -87,7 +87,7 @@ export default function ArtPage() {
         </div>
         <div className="rounded p-4 text-center">
             <h3 className="text-sm">Total Owned Value</h3>
-            <p className="font-bold text-xl mt-2">{Number(totalOwnedValue).toLocaleString()}</p>
+            <p className="font-bold text-xl mt-2">£{Number(totalOwnedValue).toLocaleString()}</p>
         </div>
       </div>
 

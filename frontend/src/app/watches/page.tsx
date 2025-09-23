@@ -45,8 +45,8 @@ export default function WatchesPage() {
   
   // Stats
   const totalOwned = watches.filter((w) => w.owned).length;
-  const totalOwnedValue = watches.filter((w) => w.owned).reduce((sum, w) => sum + Number(w.price || 0), 0);
-  const totalValue = watches.reduce((sum, w) => sum + Number(w.price || 0), 0);
+  const totalOwnedValue = Number(watches.filter((w) => w.owned).reduce((sum, w) => sum + Number(w.price || 0), 0));
+  const totalValue = Number(watches.reduce((sum, w) => sum + Number(w.price || 0), 0));
   const avgPrice = watches.length > 0 ? Number(totalValue / watches.length).toFixed(0) : 0;
   
   return (
@@ -86,7 +86,7 @@ export default function WatchesPage() {
         </div>
         <div className="rounded p-4 text-center">
           <h3 className="text-sm">Total Owned Value</h3>
-          <p className="font-bold text-xl mt-2">{totalOwnedValue}</p>
+          <p className="font-bold text-xl mt-2">£{totalOwnedValue.toLocaleString()}</p>
         </div>
       </div>
 

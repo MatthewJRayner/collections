@@ -5,6 +5,7 @@ from django.conf import settings
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.filters import SearchFilter
 from rest_framework import status
 from datetime import timedelta
 import time
@@ -14,13 +15,13 @@ from .models import (
     Watch, Music, FilmCollection, BookCollection,
     Wardrobe, GameCollection, Art,
     ExtrasCategory, Extra, Film, Book,
-    Instrument
+    Instrument, List
 )
 from .serializers import (
     WatchSerializer, MusicSerializer, FilmCollectionSerializer, BookCollectionSerializer,
     WardrobeSerializer, GameCollectionSerializer, ArtSerializer,
     ExtrasCategorySerializer, ExtraSerializer, FilmSerializer, BookSerializer,
-    InstrumentSerializer
+    InstrumentSerializer, ListSerializer
 )
 
 # Set up logging
@@ -66,6 +67,8 @@ class ExtraViewSet(viewsets.ModelViewSet):
 class FilmViewSet(viewsets.ModelViewSet):
     queryset = Film.objects.all()
     serializer_class = FilmSerializer
+    filter_backends = [SearchFilter]
+    search_fields = ['title', 'alt_title', 'director', 'alt_name']
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -217,7 +220,7 @@ def batch_import_films(request):
         film_data = {
             "tmdb_id": data.get("id"),
             "title": data.get("title") or "Unknown Title",
-            "alt_title": data.get("original_title"),
+            "alt_title": data.get("original_title") if data.get("original_title") != data.get("title") else None,
             "director": director_name,
             "alt_name": alt_name,
             "cast": [
@@ -255,3 +258,13 @@ def batch_import_films(request):
         time.sleep(0.25)
     
     return Response({"results": results}, status=status.HTTP_200_OK)
+
+class ListViewSet(viewsets.ModelViewSet):
+    serializer_class = ListSerializer
+    
+    def get_queryset(self):
+        queryset = List.objects.all().order_by("-created_at")
+        category = self.request.query_params.get('category')
+        if category:
+            queryset = queryset.filter(category=category)
+        return queryset

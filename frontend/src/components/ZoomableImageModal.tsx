@@ -89,7 +89,7 @@ export default function ZoomableImageModal({ src, alt, onClose }: ZoomableImageM
         </button>
       </div>
       <div
-        className="bg-white/20 backdrop-blur-md p-4 overflow-hidden cursor-grab active:cursor-grabbing relative"
+        className="bg-white/20 backdrop-blur-md rounded-md p-4 overflow-hidden cursor-grab active:cursor-grabbing relative"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}

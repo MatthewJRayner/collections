@@ -45,7 +45,7 @@ export default function InstrumentsPage() {
 
     // Stats
     const totalOwned = instruments.filter((i) => i.owned).length;
-    const totalOwnedValue = instruments.filter((i) => i.owned).reduce((sum, i) => sum + Number(i.price || 0), 0)
+    const totalOwnedValue = Number(instruments.filter((i) => i.owned).reduce((sum, i) => sum + Number(i.price || 0), 0));
     const totalValue = instruments.reduce((sum, i) => sum + Number(i.price || 0), 0);
     const avgPrice = instruments.length > 0 ? Number(totalValue / instruments.length).toFixed(0) : 0;
 
@@ -78,7 +78,7 @@ export default function InstrumentsPage() {
                 </div>
                 <div className="rounded p-4 text-center">
                     <h3 className="text-sm">Total Owned Value</h3>
-                    <p className="font-bold text-xl mt-2">{totalOwnedValue}</p>
+                    <p className="font-bold text-xl mt-2">£{totalOwnedValue.toLocaleString()}</p>
                 </div>
                 <div className="rounded p-4 text-center">
                     <h3 className="text-sm">Total Value</h3>

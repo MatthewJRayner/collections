@@ -107,7 +107,7 @@ export default function FilmDetailPage() {
   if (!film) return <p>Loading...</p>;
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col font-inter">
       {film.background_pic && (
         <div className="absolute top-0 left-0 w-full h-[560px] flex justify-center -z-10">
           <div className="relative h-full w-[100vw]">
@@ -172,11 +172,11 @@ export default function FilmDetailPage() {
 
           <div className="flex flex-col w-3/4 pl-6">
             <div>
-              <h1 className="text-4xl font-bold font-serif flex items-center">
+              <h1 className="text-4xl font-bold font-playfair flex items-center">
                 {film.title ?? film.title}
               </h1>
               {film.series && (
-                <span className="text-gray-400 text-sm">{film.series}{film.volume ? ` (#${film.volume})` : ""}</span>
+                <span className="text-gray-400 font-source font-light text-sm">{film.series}{film.volume ? ` (#${film.volume})` : ""}</span>
               )}
               <div className="flex items-center space-x-4 mt-2">
                 {film.release_date && (
@@ -197,18 +197,18 @@ export default function FilmDetailPage() {
             <div className="flex space-x-2 w-full mt-4">
                 <div className="w-3/5 space-y-4">
                   {film.blurb && (
-                    <h6 className="text-sm text-gray-400">{film.blurb.toUpperCase()}</h6>
+                    <h6 className="text-sm font-source font-light text-gray-400">{film.blurb.toUpperCase()}</h6>
                   )}
 
                   {film.synopsis && (
-                    <p className="text-md text-gray-400 leading-relaxed font-serif font-medium">{film.synopsis}</p>
+                    <p className="text-md font-inter text-gray-400 leading-relaxed">{film.synopsis}</p>
                   )}
 
                   <div className="space-y-4 pb-4">
                     <div className="flex space-x-4">
                       <button
                         onClick={() => setActiveTab("cast")}
-                        className={`font-semibold cursor-pointer ${
+                        className={`font-semibold cursor-pointer font-source ${
                           activeTab === "cast" ? "text-primary border-b-2 border-primary" : "text-gray-500"
                         }`}
                       >
@@ -216,7 +216,7 @@ export default function FilmDetailPage() {
                       </button>
                       <button
                         onClick={() => setActiveTab("crew")}
-                        className={`font-semibold cursor-pointer ${
+                        className={`font-semibold cursor-pointer font-source ${
                           activeTab === "crew" ? "text-primary border-b-2 border-primary" : "text-gray-500"
                         }`}
                       >
@@ -224,7 +224,7 @@ export default function FilmDetailPage() {
                       </button>
                       <button
                         onClick={() => setActiveTab("awards")}
-                        className={`font-semibold cursor-pointer ${
+                        className={`font-semibold cursor-pointer font-source ${
                           activeTab === "awards" ? "text-primary border-b-2 border-primary" : "text-gray-500"
                         }`}
                       >
@@ -455,8 +455,8 @@ export default function FilmDetailPage() {
                     </div>
                   </div>
 
-                  <div className="flex flex-col items-center border-b-background border-b-1 p-4">
-                    <h2 className="text-xs text-gray-400 font-semibold">{film.rating ? "RATED" : "RATE"}</h2>
+                  <div className="flex flex-col font-source items-center border-b-background border-b-1 p-4">
+                    <h2 className="text-xs text-gray-400 font-light">{film.rating ? "RATED" : "UNRATED"}</h2>
                     <StarRating value={rating || 0} onChange={updateRating} />
                   </div>
 

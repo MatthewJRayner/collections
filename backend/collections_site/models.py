@@ -384,3 +384,16 @@ class Instrument(models.Model):
     notes = models.TextField(blank=True, null=True)
     date_bought = models.DateField(blank=True, null=True)
     materials = models.CharField(max_length=100, blank=True, null=True)
+    
+class List(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
+    category = models.CharField(max_length=10)
+    
+    films = models.ManyToManyField("Film", blank=True, related_name="lists")
+    books = models.ManyToManyField("Book", blank=True, related_name="lists")
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"{self.name} ({self.category})"

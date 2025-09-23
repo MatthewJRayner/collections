@@ -186,7 +186,7 @@ export default function FilmDetailPage() {
               {book.series && (
                 <span className="text-gray-400 text-lg italic">{book.series}{book.volume ? ` (#${book.volume})` : ""}</span>
               )}
-              <h1 className="text-5xl font-bold font-serif flex items-center">
+              <h1 className="text-5xl font-bold font-playfair flex items-center">
                 {book.title ?? ""}{book.alt_title ? <span className="text-lg text-gray-400 ml-4 font-normal">{book.alt_title}</span> : ""}
               </h1>
               
@@ -284,10 +284,10 @@ export default function FilmDetailPage() {
                 </button>
                 {showDetails && (
                 <div className="text-left w-full space-y-2 text-sm text-neutral-mid pl-2">
-                    {book.alt_title && <p><span className="text-xs text-gray-400 mr-2">Original Language</span> {book.alt_title}</p>}
+                    {book.alt_title && <p><span className="text-xs text-gray-400 font-source mr-2">Original Language</span> {book.alt_title}</p>}
                     {book.tags && book.tags?.length > 1 && (
                     <div className="flex items-center space-x-2">
-                        <span><span className="text-xs text-gray-400 mr-2">Tags</span> </span>
+                        <span><span className="text-xs text-gray-400 mr-2 font-source">Tags</span> </span>
                         {book.tags?.map((g, i) => (
                         <div className="bg-neutral p-1 rounded-md" key={i}>
                             {g}
@@ -295,19 +295,19 @@ export default function FilmDetailPage() {
                         ))}
                     </div>
                     )}
-                    {book.series && <p><span className="text-xs text-gray-400 mr-2">Series</span> {book.series}</p>}
-                    {book.volume && <p><span className="text-xs text-gray-400 mr-2">Entry #</span> {book.volume}</p>}
-                    {book.rating && <p><span className="text-xs text-gray-400 mr-2">Rating</span> {book.rating}/10</p>}
-                    {book.og_language && <p><span className="text-xs text-gray-400 mr-2">Language</span> <Link href={`/books/search/language/${encodeURIComponent(book.og_language)}`} className="transition-all duration-500 hover:text-primary">{book.og_language}</Link></p>}
-                    {book.country && <p><span className="text-xs text-gray-400 mr-2">Country</span> {book.country}</p>}
+                    {book.series && <p><span className="text-xs text-gray-400 mr-2 font-source">Series</span> {book.series}</p>}
+                    {book.volume && <p><span className="text-xs text-gray-400 mr-2 font-source">Entry #</span> {book.volume}</p>}
+                    {book.rating && <p><span className="text-xs text-gray-400 mr-2 font-source">Rating</span> {book.rating}/10</p>}
+                    {book.og_language && <p><span className="text-xs text-gray-400 mr-2 font-source">Language</span> <Link href={`/books/search/language/${encodeURIComponent(book.og_language)}`} className="transition-all duration-500 hover:text-primary">{book.og_language}</Link></p>}
+                    {book.country && <p><span className="text-xs text-gray-400 mr-2 font-source">Country</span> {book.country}</p>}
                     
                     <p className="pt-4 text-foreground"><span className="text-md font-bold">My Edition</span></p>
-                    {book.ISBN && <p><span className="text-xs text-gray-400 mr-2">ISBN</span> {book.ISBN}</p>}
-                    {book.publisher && <p><span className="text-xs text-gray-400 mr-2">Publisher</span> {book.publisher}</p>}
-                    {book.language && <p><span className="text-xs text-gray-400 mr-2">Language</span> <Link href={`/books/search/language/${encodeURIComponent(book.language)}`} className="transition-all duration-500 hover:text-primary">{book.language}</Link></p>}
+                    {book.ISBN && <p><span className="text-xs text-gray-400 mr-2 font-source">ISBN</span> {book.ISBN}</p>}
+                    {book.publisher && <p><span className="text-xs text-gray-400 mr-2 font-source">Publisher</span> {book.publisher}</p>}
+                    {book.language && <p><span className="text-xs text-gray-400 mr-2 font-source">Language</span> <Link href={`/books/search/language/${encodeURIComponent(book.language)}`} className="transition-all duration-500 hover:text-primary">{book.language}</Link></p>}
                     {book.external_links && (
                     <p>
-                    <span className="text-xs text-gray-400 mr-2">Link</span>{" "}
+                    <span className="text-xs text-gray-400 mr-2 font-source">Link</span>{" "}
                     <a
                         href={book.external_links}
                         target="_blank"

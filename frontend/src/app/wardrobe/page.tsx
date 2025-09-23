@@ -65,7 +65,7 @@ export default function ClothesPage() {
 
     // Stats
     const totalOwned = clothes.filter((c) => c.owned).length;
-    const totalOwnedValue = clothes.filter((c) => c.owned).reduce((sum, c) => sum + Number(c.price || 0), 0);
+    const totalOwnedValue = Number(clothes.filter((c) => c.owned).reduce((sum, c) => sum + Number(c.price || 0), 0));
     const totalValue = clothes.reduce((sum, c) => sum + Number(c.price || 0), 0);
     const avgPrice = clothes.length > 0 ? Number(totalValue / clothes.length).toFixed(0) : 0;
 
@@ -106,7 +106,7 @@ export default function ClothesPage() {
                 </div>
                 <div className="rounded p-4 text-center">
                     <h3 className="text-sm">Total Owned Value</h3>
-                    <p className="font-bold text-xl mt-2">{totalOwnedValue}</p>
+                    <p className="font-bold text-xl mt-2">£{totalOwnedValue.toLocaleString()}</p>
                 </div>
             </div>
 
