@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { Film } from "@/types/film";
+import { Book } from "@/types/book";
 import { List } from "@/types/list";
-import FilmCard from "@/components/film/FilmCard";
-import FilmListModal from "@/components/film/FilmListModal";
+import BookCard from "@/components/book/BookCard";
+import BookListModal from "@/components/book/BookListModal";
 
 export default function ListDetailPage() {
   const { id } = useParams();
@@ -15,7 +15,7 @@ export default function ListDetailPage() {
   const [showListModal, setShowListModal] = useState(false);
   const [initialListData, setInitialListData] = useState<List | null>(null);
   const [sortOption, setSortOption] = useState<
-    "" | "release_date_asc" | "release_date_desc" | "rating_asc" | "rating_desc"
+    "" | "year_released_asc" | "year_released_desc" | "rating_asc" | "rating_desc"
   >("");
 
   const fetchList = () => {
@@ -40,22 +40,19 @@ export default function ListDetailPage() {
     fetchList();
   }, [id]);
 
-  // Sort films based on sortOption
-  const sortedFilms = list?.films
-    ? [...list.films].sort((a, b) => {
+  const sortedBooks = list?.books
+    ? [...list.books].sort((a, b) => {
         if (!sortOption) return 0; // No sorting if sortOption is empty
 
         const [sortField, sortDirection] = sortOption.split("_") as [
-          "release_date" | "rating",
+          "year_released" | "rating",
           "asc" | "desc"
         ];
 
-        if (sortField === "release_date") {
-          const dateA = a.release_date ? new Date(a.release_date) : new Date(0);
-          const dateB = b.release_date ? new Date(b.release_date) : new Date(0);
-          return sortDirection === "asc"
-            ? dateA.getTime() - dateB.getTime()
-            : dateB.getTime() - dateA.getTime();
+        if (sortField === "year_released") {
+          const yearA = Number(a.year_released) ?? 0;
+          const yearB = Number(b.year_released) ?? 0;
+          return sortDirection === "asc" ? yearA - yearB : yearB - yearA;
         }
 
         if (sortField === "rating") {
@@ -77,7 +74,7 @@ export default function ListDetailPage() {
         <div className="flex space-x-2 items-center">
           <h1 className="text-3xl font-bold font-serif">{list.name}</h1>
           <p className="font-sans text-gray-400">
-            {list.films.length ? `(${list.films.length} Films)` : ""}
+            {list.books?.length ? `(${list.books.length} Books)` : ""}
           </p>
           <button
             onClick={() => {
@@ -90,7 +87,7 @@ export default function ListDetailPage() {
           </button>
         </div>
         {showListModal && (
-          <FilmListModal
+          <BookListModal
             onClose={() => {
               setShowListModal(false);
               setInitialListData(null);
@@ -113,32 +110,32 @@ export default function ListDetailPage() {
           value={sortOption}
           onChange={(e) =>
             setSortOption(
-              e.target.value as "" | "release_date_asc" | "release_date_desc" | "rating_asc" | "rating_desc"
+              e.target.value as "" | "year_released_asc" | "year_released_desc" | "rating_asc" | "rating_desc"
             )
           }
           className="font-sans p-2 border-1 border-foreground/20 rounded bg-neutral shadow-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
         >
           <option value="">Sort by...</option>
-          <option value="release_date_asc">{`Release Date (Oldest -> Newest)`}</option>
-          <option value="release_date_desc">{`Release Date (Newest -> Oldest)`}</option>
+          <option value="year_released_asc">{`Year Released (Oldest -> Newest)`}</option>
+          <option value="year_released_desc">{`Year Released (Newest -> Oldest)`}</option>
           <option value="rating_asc">{`Rating (Lowest -> Highest)`}</option>
           <option value="rating_desc">{`Rating (Highest -> Lowest)`}</option>
         </select>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-2">
-        {sortedFilms.length > 0 ? (
-          sortedFilms.map((film) => (
+        {sortedBooks.length > 0 ? (
+          sortedBooks.map((book, idx) => (
             <div
-              key={film.id}
-              className={`transition-all duration-300 ${film.seen ? "opacity-50 hover:opacity-100" : ""}`}
+              key={idx}
+              className={`transition-all duration-300 ${book.read ? "opacity-50 hover:opacity-100" : ""}`}
             >
-              <FilmCard film={film} />
+              <BookCard book={book} />
             </div>
           ))
         ) : (
           <p className="font-sans text-gray-400 col-span-full text-center">
-            No films in this list.
+            No books in this list.
           </p>
         )}
       </div>

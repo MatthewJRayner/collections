@@ -34,7 +34,7 @@ export default function WatchCard({ watch, onDelete }: WatchCardProps) {
           />
       )}
 
-      <h2 className="font-semibold">
+      <h2 className="font-semibold font-inter">
         {watch.brand} {watch.collection || ""} {watch.model}
       </h2>
       <p className="text-sm text-gray-800">{watch.reference_number || "—"}</p>

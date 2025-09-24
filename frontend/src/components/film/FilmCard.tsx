@@ -16,6 +16,9 @@ export default function FilmCard({ film }: FilmProps) {
                         src={film.poster}
                         alt={film.title}
                         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        loading="lazy"
+                        decoding="async"
+                        fetchPriority="low"
                     />
                 ) : (
                     <div className="w-full h-full bg-neutral flex items-center justify-center">

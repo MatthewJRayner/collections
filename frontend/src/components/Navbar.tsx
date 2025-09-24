@@ -4,7 +4,9 @@ import ThemeToggle from "./ThemeToggle";
 export default function Navbar() {
   return (
     <nav className="p-4 flex items-center">
-      <div className="w-1/3 text-2xl text-special-dark"><Link href="/" className="hover:text-primary">Orpheus Archives</Link></div>
+      <div className="w-1/3 text-2xl text-special-dark font-logos flex">
+        <Link href="/" className="hover:text-primary">Orpheus Archives</Link>
+      </div>
       <div className="w-1/3 flex gap-4 items-center">
         <Link href="/watches" className="transition hover:scale-105 hover:text-primary active:scale-95">Watches</Link>
         <Link href="/music" className="transition hover:scale-105 hover:text-primary active:scale-95">Music</Link>

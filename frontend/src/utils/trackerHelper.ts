@@ -20,7 +20,7 @@ export function getRandomFavourites(films: Film[], count = 5) {
     return favs.sort(() => 0.5 - Math.random()).slice(0, count);
 }
 
-export function getTopDirectors(films: Film[], count = 5) {
+export function getTopDirectors(films: Film[], count = 4) {
     const grouped: Record<string, Film[]> = {};
     for (const film of films) {
         if (!film.director) continue;
@@ -28,12 +28,15 @@ export function getTopDirectors(films: Film[], count = 5) {
         grouped[film.director].push(film);
     }
 
-    const averages = Object.entries(grouped).map(([director, movies]) => {
-        const rated = movies.filter(m => m.rating != null);
-        const avg =
-            rated.reduce((sum, m) => sum + Number(m.rating ?? 0), 0) / rated.length;
-        return { director, avg, films: movies };
-    });
+    const averages = Object.entries(grouped)
+        .map(([director, movies]) => {
+            const rated = movies.filter(m => m.rating != null);
+            if (rated.length < 4) return null; // Skip directors with fewer than 3 rated films
+            const avg =
+                rated.reduce((sum, m) => sum + Number(m.rating ?? 0), 0) / rated.length;
+            return { director, avg, films: movies };
+        })
+        .filter((item): item is { director: string; avg: number; films: Film[] } => item !== null);
 
     return averages
         .sort((a, b) => b.avg - a.avg)

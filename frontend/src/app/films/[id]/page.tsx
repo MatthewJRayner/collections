@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { lazy, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Film } from "../../../types/film";
 import ZoomableImageModal from "@/components/ZoomableImageModal";
@@ -115,6 +115,9 @@ export default function FilmDetailPage() {
               src={film.background_pic}
               alt={film.title}
               className="h-full w-full object-cover object-top"
+              loading="lazy"
+              decoding="async"
+              fetchPriority="low"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-background"></div>
           </div>
@@ -255,7 +258,7 @@ export default function FilmDetailPage() {
                             {film.cast && film.cast.length > MAX_CAST_CREW && (
                               <button
                                 onClick={() => setShowFullCast(!showFullCast)}
-                                className="bg-neutral px-2 py-1 w-fit rounded-md text-sm cursor-help transition-all duration-300 hover:bg-neutral/50 cursor-pointer"
+                                className="bg-neutral px-2 py-1 w-fit rounded-md text-sm transition-all duration-300 hover:bg-neutral/50"
                               >
                                 {showFullCast ? "Show Less" : "Show All"}
                               </button>
@@ -291,26 +294,6 @@ export default function FilmDetailPage() {
                               </div>
                             ))}
                           </div>
-                          {!showFullCrew && film.crew && (
-                            <div className="absolute bottom-5 left-0 w-full h-12 bg-gradient-to-t from-background via-background/80 to-transparent pointer-events-none" />
-                          )}
-                          {film.crew && (
-                            <button
-                              onClick={() => setShowFullCrew(!showFullCrew)}
-                              className="mt-1 cursor-pointer z-10 flex items-center"
-                            >
-                              <span className="mr-1 font-bold text-sm transition hover:text-primary">
-                                {showFullCrew ? "Show Less" : "Show More"}
-                              </span>
-                              <span
-                                className={`transition-transform duration-300 ${
-                                  showFullCrew ? "rotate-180" : "rotate-0"
-                                }`}
-                              >
-                                ▼
-                              </span>
-                            </button>
-                          )}
                         </div>
                       )}
                       {activeTab === "awards" && (
@@ -353,7 +336,7 @@ export default function FilmDetailPage() {
                         <div className="flex items-center space-x-2">
                           <span><strong>Genres:</strong> </span>
                           {film.genre?.map((g, i) => (
-                            <Link href={`/films/search/genre/${encodeURIComponent(g)}`} className="bg-neutral p-1 rounded-md transition-all duration-300 hover:bg-primary/50" key={i}>
+                            <Link href={`/films/search/genre/${encodeURIComponent(g)}`} className="bg-neutral p-1 rounded-md transition-all duration-300 hover:bg-primary/50 hover:text-white/75" key={i}>
                               {g}
                             </Link>
                           ))}

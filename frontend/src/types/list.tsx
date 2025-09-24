@@ -1,10 +1,12 @@
 import { Film } from "./film";
+import { Book } from "./book";
 
 export type List = {
   id: number;
   name: string;
-  description: string | null;
+  description?: string;
   category: string;
-  films: Film[];
+  films?: Film[];
+  books?: Book[];
   created_at: string;
 }

@@ -131,14 +131,46 @@ class FilmViewSet(viewsets.ModelViewSet):
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    filter_backends = [SearchFilter]
+    search_fields = ['title', 'alt_title', 'author', 'alt_name']
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        author = self.request.query_params.get('author')
+        genre = self.request.query_params.get('genre')
+
+        logger.debug(f"Query params: author={author}, genre={genre}, ")
+
+        if author:
+            queryset = queryset.filter(author__iexact=author)
+        elif genre:
+            # Use json_each to iterate over genre array in SQLite
+            queryset = queryset.filter(
+                id__in=RawSQL(
+                    """
+                    SELECT id FROM collections_site_book
+                    WHERE EXISTS (
+                        SELECT 1 FROM json_each(collections_site_book.genre)
+                        WHERE json_each.value LIKE %s
+                    )
+                    """,
+                    (f'%{genre}%',)
+                )
+            )
+        logger.debug(f"Filtered queryset count: {queryset.count()}")
+        logger.debug(f"Filtered films: {[book.title for book in queryset]}")
+        return queryset
+    
+    
     
 class InstrumentViewSet(viewsets.ModelViewSet):
     queryset = Instrument.objects.all()
     serializer_class = InstrumentSerializer
     
-def fetch_tmdb_data(query: str):
+def fetch_tmdb_data(query: str, year: int = None):
     """
     Accepts either a TMDb key or a title and fetches film data.
+    Optionall filters results by release year
     Returns JSON or None.
     """
     base = "https://api.themoviedb.org/3"
@@ -161,12 +193,29 @@ def fetch_tmdb_data(query: str):
     if response.status_code != 200:
         logger.error(f"Failed to search movie {query}: {response.status_code}")
         return None
-    results = response.json()
-    if not results.get("results"):
+
+    data = response.json()
+    results = data.get("results", [])
+
+    if not results:
         logger.warning(f"No results found for query: {query}")
         return None
+
+    # If year provided, filter by release year
+    movie_id = None
+    if year:
+        for r in results:
+            if r.get("release_date"):
+                release_year = int(r["release_date"].split("-")[0])
+                if release_year == year:
+                    movie_id = r["id"]
+                    break
+        if not movie_id:
+            logger.warning(f"No results matched year {year} for query: {query}")
+            return None
+    else:
+        movie_id = results[0]["id"]
     
-    movie_id = results["results"][0]["id"]
     details_url = f"{base}/movie/{movie_id}?append_to_response=credits"
     response = requests.get(details_url, headers=headers)
     if response.status_code != 200:
@@ -237,8 +286,8 @@ def batch_import_films(request):
             "synopsis": data.get("overview"),
             "language": data.get("original_language"),
             "country": ", ".join(data.get("origin_country", []) or []),
-            "poster": f"https://image.tmdb.org/t/p/w500{data.get('poster_path')}" if data.get("poster_path") else None,
-            "background_pic": f"https://image.tmdb.org/t/p/w500{data.get('backdrop_path')}" if data.get("backdrop_path") else None,
+            "poster": f"https://image.tmdb.org/t/p/original{data.get('poster_path')}" if data.get("poster_path") else None,
+            "background_pic": f"https://image.tmdb.org/t/p/original{data.get('backdrop_path')}" if data.get("backdrop_path") else None,
             "runtime": runtime,
             "genre": [g["name"] for g in data.get("genres", [])] or [],
             "budget": data.get("budget") or 0,

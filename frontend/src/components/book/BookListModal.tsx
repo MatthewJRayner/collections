@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Film } from "@/types/film";
+import { Book } from "@/types/book";
 import { List } from "@/types/list";
 
 type Props = {
@@ -11,12 +11,12 @@ type Props = {
   initialList?: List;
 };
 
-export default function FilmListModal({ onClose, onCreated, initialList }: Props) {
+export default function BookListModal({ onClose, onCreated, initialList }: Props) {
   const [name, setName] = useState(initialList?.name || "");
   const [description, setDescription] = useState(initialList?.description || "");
   const [search, setSearch] = useState("");
-  const [results, setResults] = useState<Film[]>([]);
-  const [selected, setSelected] = useState<Film[]>(initialList?.films || []);
+  const [results, setResults] = useState<Book[]>([]);
+  const [selected, setSelected] = useState<Book[]>(initialList?.books || []);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -27,54 +27,54 @@ export default function FilmListModal({ onClose, onCreated, initialList }: Props
     }
     setLoading(true);
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/films/?search=${encodeURIComponent(search)}`);
+      const response = await fetch(`http://127.0.0.1:8000/api/books/?search=${encodeURIComponent(search)}`);
       const data = await response.json();
-      const validResults = data.filter((film: Film) => {
-        if (!film.id || typeof film.id !== "number") {
+      const validResults = data.filter((book: Book) => {
+        if (!book.id || typeof book.id !== "number") {
           return false;
         }
         return true;
       });
       setResults(validResults);
     } catch (error) {
-      alert("Error searching films. Please try again.");
+      alert("Error searching books. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
-  const toggleSelect = (film: Film) => {
-    if (!film.id || typeof film.id !== "number") {
+  const toggleSelect = (book: Book) => {
+    if (!book.id || typeof book.id !== "number") {
       return;
     }
     setSelected((prev) => {
-      const newSelected = prev.find((i) => i.id === film.id)
-        ? prev.filter((i) => i.id !== film.id)
-        : [...prev, film];
+      const newSelected = prev.find((i) => i.id === book.id)
+        ? prev.filter((i) => i.id !== book.id)
+        : [...prev, book];
       return newSelected;
     });
   };
 
   const handleSubmit = async () => {
-    const filmIds = selected
-      .map((f) => {
-        if (!f.id || typeof f.id !== "number") {
+    const bookIds = selected
+      .map((b) => {
+        if (!b.id || typeof b.id !== "number") {
           return null;
         }
-        return f.id;
+        return b.id;
       })
       .filter((id): id is number => id !== null);
 
-    if (filmIds.length === 0) {
-      alert("No valid films selected. Please select at least one film with a valid ID.");
+    if (bookIds.length === 0) {
+      alert("No valid books selected. Please select at least one book with a valid ID.");
       return;
     }
 
     const payload = {
       name,
       description,
-      category: "film",
-      films_ids: filmIds,
+      category: "book",
+      books_ids: bookIds,
     };
 
     const isEdit = !!initialList?.id;
@@ -111,7 +111,7 @@ export default function FilmListModal({ onClose, onCreated, initialList }: Props
 
       if (response.ok) {
         onCreated();
-        router.push("/films");
+        router.push("/books");
       } else {
         alert("Failed to delete list. Please try again.");
       }
@@ -124,7 +124,7 @@ export default function FilmListModal({ onClose, onCreated, initialList }: Props
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
       <div className="bg-background rounded-xl shadow-lg p-6 w-full max-w-2xl">
         <h2 className="text-xl font-bold font-serif mb-4">
-          {initialList?.id ? "Edit Film List" : "Create Film List"}
+          {initialList?.id ? "Edit Book List" : "Create Book List"}
         </h2>
 
         <input
@@ -144,7 +144,7 @@ export default function FilmListModal({ onClose, onCreated, initialList }: Props
         <div className="flex space-x-2 mb-4">
           <input
             type="text"
-            placeholder="Search films..."
+            placeholder="Search books..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             onKeyDown={(e) => {
@@ -163,43 +163,43 @@ export default function FilmListModal({ onClose, onCreated, initialList }: Props
 
         {results.length > 0 && (
           <div className="max-h-40 overflow-y-auto mb-4 border rounded p-2">
-            {results.map((film) => (
+            {results.map((book) => (
               <div
-                key={film.id}
-                onClick={() => toggleSelect(film)}
+                key={book.id}
+                onClick={() => toggleSelect(book)}
                 className={`font-sans flex items-center p-2 cursor-pointer hover:bg-neutral ${
-                  selected.find((i) => i.id === film.id) ? "bg-primary/20" : ""
+                  selected.find((i) => i.id === book.id) ? "bg-primary/20" : ""
                 }`}
               >
-                {film.poster && (
-                  <img src={film.poster} alt={film.title} className="w-10 h-14 object-cover rounded mr-3" />
+                {book.cover && (
+                  <img src={book.cover} alt={book.title} className="w-10 h-14 object-cover rounded mr-3" />
                 )}
-                <span>{film.title}</span>
+                <span>{book.title}</span>
               </div>
             ))}
           </div>
         )}
 
         <div className="mb-4 max-h-100 overflow-y-auto">
-          <h3 className="font-sans font-semibold">Selected Films</h3>
+          <h3 className="font-sans font-semibold">Selected Books</h3>
           <div className="flex flex-col items-start gap-3 mt-2">
             {selected.length > 0 ? (
-              selected.map((film) => (
+              selected.map((book) => (
                 <div
-                  key={film.id}
+                  key={book.id}
                   className="font-sans flex items-center justify-between border-b-1 border-b-foreground/20 pb-4 pl-2 w-full cursor-pointer"
                 >
                   <div className="flex items-center space-x-2">
-                    {film.poster && (
-                      <img src={film.poster} alt={film.title} className="w-24 object-cover rounded" />
+                    {book.cover && (
+                      <img src={book.cover} alt={book.title} className="w-24 object-cover rounded" />
                     )}
                     <div className="text-md flex space-x-2 items-center mr-2 text-center">
-                      <p>{film.title}</p>
-                      <p className="text-gray-400">{film.release_date?.substring(0, 4) || "Unknown"}</p>
+                      <p>{book.title}</p>
+                      <p className="text-gray-400">{book.year_released || "Unknown"}</p>
                     </div>
                   </div>
                   <button
-                    onClick={() => toggleSelect(film)}
+                    onClick={() => toggleSelect(book)}
                     className="font-sans bg-danger px-1 mr-2 rounded-xs cursor-pointer hover:bg-danger/80"
                   >
                     X
@@ -207,7 +207,7 @@ export default function FilmListModal({ onClose, onCreated, initialList }: Props
                 </div>
               ))
             ) : (
-              <p className="font-sans text-gray-400">No films selected.</p>
+              <p className="font-sans text-gray-400">No books selected.</p>
             )}
           </div>
         </div>
