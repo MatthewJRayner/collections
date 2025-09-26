@@ -12,7 +12,7 @@ export default function EditBooksPage() {
   const [book, setBook] = useState<Book | null>(null);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/books/${id}/`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/books/${id}/`)
       .then((res) => res.json())
       .then((data) => setBook(data));
   }, [id]);
