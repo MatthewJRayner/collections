@@ -92,7 +92,7 @@ class Command(BaseCommand):
                             "budget": tmdb_data.get("budget") or 0,
                             "box_office": tmdb_data.get("revenue") or 0,
                             "release_date": tmdb_data.get("release_date"),
-                            "watchlist": True,
+                            "seen": True,
                             "rating": rating,  # Set your Letterboxd rating
                         }
 
