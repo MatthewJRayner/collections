@@ -59,7 +59,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'orpheus-archives.vercel.app'
+    'https://orpheus-archives.vercel.app'
 ]
 
 ROOT_URLCONF = 'core.urls'
