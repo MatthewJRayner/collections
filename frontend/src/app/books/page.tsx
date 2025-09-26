@@ -157,65 +157,65 @@ export default function BookPage() {
                   Collection
                 </Link>
               </div>
-            </div>
-            {debouncedSearchQuery && (
-              <div className="absolute top-full mt-1 left-0 w-full sm:w-1/2 md:w-1/3 bg-background/20 backdrop-blur-2xl rounded shadow-lg max-h-[300px] overflow-y-auto z-10">
-                {filteredBooks.map((b) => {
-                  const query = searchQuery.toLowerCase();
-                  const matchesSet = new Set<string>();
+              {debouncedSearchQuery && (
+                <div className="absolute top-full mt-1 left-0 w-full sm:w-1/2 md:w-1/3 bg-background/20 backdrop-blur-2xl rounded shadow-lg max-h-[300px] overflow-y-auto z-10">
+                  {filteredBooks.map((b) => {
+                    const query = searchQuery.toLowerCase();
+                    const matchesSet = new Set<string>();
 
-                  if (b.title.toLowerCase().includes(query))
-                    matchesSet.add(b.title);
-                  if (b.author.toLowerCase().includes(query))
-                    matchesSet.add(b.author);
-                  if (b.alt_title?.toLowerCase().includes(query))
-                    matchesSet.add(b.alt_title);
-                  if (b.alt_name?.toLowerCase().includes(query))
-                    matchesSet.add(b.alt_name);
+                    if (b.title.toLowerCase().includes(query))
+                      matchesSet.add(b.title);
+                    if (b.author.toLowerCase().includes(query))
+                      matchesSet.add(b.author);
+                    if (b.alt_title?.toLowerCase().includes(query))
+                      matchesSet.add(b.alt_title);
+                    if (b.alt_name?.toLowerCase().includes(query))
+                      matchesSet.add(b.alt_name);
 
-                  const matches = Array.from(matchesSet);
+                    const matches = Array.from(matchesSet);
 
-                  const highlightMatch = (text: string) => {
-                    const regex = new RegExp(`(${query})`, "gi");
-                    return text.split(regex).map((part, idx) =>
-                      part.toLowerCase() === query.toLowerCase() ? (
-                        <span key={idx} className="">
-                          {part}
-                        </span>
-                      ) : (
-                        part
-                      )
-                    );
-                  };
+                    const highlightMatch = (text: string) => {
+                      const regex = new RegExp(`(${query})`, "gi");
+                      return text.split(regex).map((part, idx) =>
+                        part.toLowerCase() === query.toLowerCase() ? (
+                          <span key={idx} className="">
+                            {part}
+                          </span>
+                        ) : (
+                          part
+                        )
+                      );
+                    };
 
-                  return (
-                    <Link
-                      key={b.id}
-                      href={`/books/${b.id}`}
-                      className="p-2 border-b-1 border-b-foreground/20 transition-all duration-300 hover:text-primary active:scale-95 cursor-pointer flex space-x-2 items-center"
-                    >
-                      <img
-                        src={b.cover}
-                        alt={b.title}
-                        className="h-24 object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
-                      <div className="flex flex-col">
-                        <div className="font-semibold text-sm">
-                          {highlightMatch(b.title)}
+                    return (
+                      <Link
+                        key={b.id}
+                        href={`/books/${b.id}`}
+                        className="p-2 border-b-1 border-b-foreground/20 transition-all duration-300 hover:text-primary active:scale-95 cursor-pointer flex space-x-2 items-center"
+                      >
+                        <img
+                          src={b.cover}
+                          alt={b.title}
+                          className="h-24 object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                        <div className="flex flex-col">
+                          <div className="font-semibold text-sm">
+                            {highlightMatch(b.title)}
+                          </div>
+                          {matches
+                            .filter((m) => m !== b.title)
+                            .map((m, idx) => (
+                              <div key={idx} className="text-sm text-gray-400">
+                                {highlightMatch(m)}
+                              </div>
+                            ))}
                         </div>
-                        {matches
-                          .filter((m) => m !== b.title)
-                          .map((m, idx) => (
-                            <div key={idx} className="text-sm text-gray-400">
-                              {highlightMatch(m)}
-                            </div>
-                          ))}
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            )}
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="space-y-6 sm:space-y-10">
@@ -245,7 +245,9 @@ export default function BookPage() {
                     key={a.author}
                     className="relative group bg-neutral p-3 rounded shadow"
                   >
-                    <span className="font-semibold font-sans text-sm sm:text-base">{a.author}</span>
+                    <span className="font-semibold font-sans text-sm sm:text-base">
+                      {a.author}
+                    </span>
                     <span className="block text-xs sm:text-sm text-gray-400 font-sans">
                       Avg {a.avg.toFixed(1)}
                     </span>
@@ -270,7 +272,9 @@ export default function BookPage() {
         <div className="w-full md:w-2/10 mt-4 md:mt-0">
           <div className="bg-neutral shadow-lg h-fit rounded">
             <div className="pt-4 w-full flex justify-start pl-4">
-              <span className="font-bold font-sans text-sm sm:text-base">Stats</span>
+              <span className="font-bold font-sans text-sm sm:text-base">
+                Stats
+              </span>
             </div>
             <div className="grid grid-cols-1 mb-6 mt-4 border-b-2 border-b-background/20">
               <div className="rounded flex space-x-2 items-center w-full justify-between px-4">
@@ -299,7 +303,9 @@ export default function BookPage() {
             </div>
             <div className="grid grid-cols-1 mb-6 mt-4 border-b-2 border-b-background/20 p-4">
               <div className="flex justify-between items-center mb-6">
-                <span className="font-bold font-sans text-sm sm:text-base">Lists</span>
+                <span className="font-bold font-sans text-sm sm:text-base">
+                  Lists
+                </span>
                 <button
                   className="bg-primary text-white px-1 text-center rounded-lg transition-all duration-300 hover:text-background hover:bg-neutral-mid cursor-pointer"
                   onClick={() => setShowListModal(true)}
@@ -323,7 +329,7 @@ export default function BookPage() {
                       <button
                         onClick={() => {
                           setShowListModal(true);
-                          setInitialListData(list); 
+                          setInitialListData(list);
                         }}
                         className="font-sans text-foreground/75 hover:text-primary transition-all duration-300 cursor-pointer text-2xl"
                       >

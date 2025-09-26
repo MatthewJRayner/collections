@@ -128,14 +128,70 @@ export default function FilmPage() {
 
       <div className="flex flex-col md:flex-row md:space-x-4 w-full">
         <div className="flex flex-col w-full md:w-8/10">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 mb-4 sm:mb-6 relative">
-            <input
-              type="text"
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="p-2 w-full sm:w-1/2 md:w-1/3 bg-neutral rounded shadow text-sm sm:text-base"
-            />
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 mb-4 sm:mb-6">
+            <div className="relative w-full sm:w-1/2 md:w-1/3">
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="p-2 w-full bg-neutral rounded shadow text-sm sm:text-base"
+              />
+              {debouncedSearchQuery && (
+                <div className="absolute top-[100%] mt-1 left-0 w-full bg-background/20 backdrop-blur-2xl rounded shadow-lg max-h-[300px] overflow-y-auto z-10">
+                  {filteredFilms.map((f) => {
+                    const query = debouncedSearchQuery.toLowerCase();
+                    const matchesSet = new Set<string>();
+                    if (f.title.toLowerCase().includes(query))
+                      matchesSet.add(f.title);
+                    if (f.alt_title?.toLowerCase().includes(query))
+                      matchesSet.add(f.alt_title);
+                    if (f.director?.toLowerCase().includes(query))
+                      matchesSet.add(f.director);
+                    if (f.alt_name?.toLowerCase().includes(query))
+                      matchesSet.add(f.alt_name);
+                    const matches = Array.from(matchesSet);
+                    const highlightMatch = (text: string) => {
+                      const regex = new RegExp(`(${query})`, "gi");
+                      return text.split(regex).map((part, idx) =>
+                        part.toLowerCase() === query.toLowerCase() ? (
+                          <span key={idx} className="font-bold">
+                            {part}
+                          </span>
+                        ) : (
+                          part
+                        )
+                      );
+                    };
+                    return (
+                      <Link
+                        key={f.id}
+                        href={`/films/${f.id}`}
+                        className="p-2 border-b-1 border-b-foreground/20 transition-all duration-300 hover:text-primary active:scale-95 cursor-pointer flex space-x-2 items-center"
+                      >
+                        <img
+                          src={f.poster}
+                          alt={f.title}
+                          className="h-24 object-cover transition-transform duration-300"
+                        />
+                        <div className="flex flex-col">
+                          <div className="font-semibold text-sm">
+                            {highlightMatch(f.title)}
+                          </div>
+                          {matches
+                            .filter((m) => m !== f.title)
+                            .map((m, idx) => (
+                              <div key={idx} className="text-xs text-gray-400">
+                                {highlightMatch(m)}
+                              </div>
+                            ))}
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
             <div className="flex gap-2 mt-2 sm:mt-0">
               <Link
                 href="/films/new"
@@ -151,60 +207,6 @@ export default function FilmPage() {
               </Link>
             </div>
           </div>
-          {debouncedSearchQuery && (
-            <div className="absolute top-full mt-1 left-0 w-full sm:w-1/2 md:w-1/3 bg-background/20 backdrop-blur-2xl rounded shadow-lg max-h-[300px] overflow-y-auto z-10">
-              {filteredFilms.map((f) => {
-                const query = debouncedSearchQuery.toLowerCase();
-                const matchesSet = new Set<string>();
-                if (f.title.toLowerCase().includes(query))
-                  matchesSet.add(f.title);
-                if (f.alt_title?.toLowerCase().includes(query))
-                  matchesSet.add(f.alt_title);
-                if (f.director?.toLowerCase().includes(query))
-                  matchesSet.add(f.director);
-                if (f.alt_name?.toLowerCase().includes(query))
-                  matchesSet.add(f.alt_name);
-                const matches = Array.from(matchesSet);
-                const highlightMatch = (text: string) => {
-                  const regex = new RegExp(`(${query})`, "gi");
-                  return text.split(regex).map((part, idx) =>
-                    part.toLowerCase() === query.toLowerCase() ? (
-                      <span key={idx} className="font-bold">
-                        {part}
-                      </span>
-                    ) : (
-                      part
-                    )
-                  );
-                };
-                return (
-                  <Link
-                    key={f.id}
-                    href={`/films/${f.id}`}
-                    className="p-2 border-b-1 border-b-foreground/20 transition-all duration-300 hover:text-primary active:scale-95 cursor-pointer flex space-x-2 items-center"
-                  >
-                    <img
-                      src={f.poster}
-                      alt={f.title}
-                      className="h-24 object-cover transition-transform duration-300"
-                    />
-                    <div className="flex flex-col">
-                      <div className="font-semibold text-sm">
-                        {highlightMatch(f.title)}
-                      </div>
-                      {matches
-                        .filter((m) => m !== f.title)
-                        .map((m, idx) => (
-                          <div key={idx} className="text-xs text-gray-400">
-                            {highlightMatch(m)}
-                          </div>
-                        ))}
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          )}
 
           <div className="space-y-6 sm:space-y-10">
             <Section title="Most Recently Watched">
