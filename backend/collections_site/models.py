@@ -284,7 +284,7 @@ class Film(models.Model):
     review = models.TextField(blank=True, null=True)
     series = models.CharField(max_length=200, blank=True, null=True)
     volume = models.IntegerField(blank=True, null=True)
-    blurb = models.CharField(blank=True, null=True)
+    blurb = models.TextField(blank=True, null=True)
     synopsis = models.TextField(blank=True, null=True)
     external_links = models.URLField(blank=True, null=True)
     language = models.CharField(max_length=100, blank=True, null=True)
