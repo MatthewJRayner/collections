@@ -3,10 +3,15 @@
 import { useState } from "react";
 import { formatPhrase } from "@/utils/formatters";
 
+interface ImportResult {
+    item: string;
+    status: string;
+}
+
 export default function BatchImportModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => void}) {
     const [input, setInput] = useState("");
     const [loading, setLoading] = useState(false);
-    const [results, setResults] = useState<any[]>([]);
+    const [results, setResults] = useState<ImportResult[]>([]);
 
     const handleImport = async () => {
         setLoading(true)
