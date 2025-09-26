@@ -90,7 +90,7 @@ export default function MusicPage() {
 
           <div className="">
             {loading ? (
-              <p>Loading watches...</p>
+              <p>Loading music...</p>
             ) : filteredMusic.length === 0 ? (
               <p>No music items found.</p>
             ) : (
