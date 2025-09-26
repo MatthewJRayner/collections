@@ -31,7 +31,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG')
 
 # Access environment variables
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["orpheus-archives.up.railway.app"]
 
 # Application definition
 
@@ -58,9 +58,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [""]
-
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    'https://orpheus-archives.vercel.app'
+]
 
 ROOT_URLCONF = 'core.urls'
 
