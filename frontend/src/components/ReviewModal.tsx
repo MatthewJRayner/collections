@@ -25,7 +25,7 @@ export default function ReviewModal({
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/20 backdrop-blur-md">
+    <div className="fixed p-4 inset-0 flex items-center justify-center z-50 bg-black/20 backdrop-blur-md">
       <div className="bg-background p-6 rounded-lg w-254 shadow-lg relative">
         <h2 className="text-lg font-bold mb-4">Write your review</h2>
         <textarea

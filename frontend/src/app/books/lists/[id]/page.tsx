@@ -10,10 +10,10 @@ import BookListModal from "@/components/book/BookListModal";
 
 export default function ListDetailPage() {
   const { id } = useParams();
-  const [list, setList] = useState<List | null>(null);
+  const [list, setList] = useState<List | undefined>(undefined);
   const [loading, setLoading] = useState(true);
   const [showListModal, setShowListModal] = useState(false);
-  const [initialListData, setInitialListData] = useState<List | null>(null);
+  const [initialListData, setInitialListData] = useState<List | undefined>(undefined);
   const [sortOption, setSortOption] = useState<
     "" | "year_released_asc" | "year_released_desc" | "rating_asc" | "rating_desc"
   >("");
@@ -27,7 +27,7 @@ export default function ListDetailPage() {
       })
       .catch((error) => {
         console.error("Error fetching list:", error);
-        setList(null);
+        setList(undefined);
         setLoading(false);
       });
   };
@@ -69,11 +69,11 @@ export default function ListDetailPage() {
   if (!list) return <p className="p-6 font-sans text-gray-400">List not found</p>;
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 sm:p-6 space-y-6">
       <div className="flex flex-col border-b-1 border-b-foreground/20 pb-4">
         <div className="flex space-x-2 items-center">
-          <h1 className="text-3xl font-bold font-serif">{list.name}</h1>
-          <p className="font-sans text-gray-400">
+          <h1 className="text-2xl sm:text-3xl font-bold font-serif">{list.name}</h1>
+          <p className="font-sans text-xs sm:text-sm text-gray-400">
             {list.books?.length ? `(${list.books.length} Books)` : ""}
           </p>
           <button
@@ -90,12 +90,12 @@ export default function ListDetailPage() {
           <BookListModal
             onClose={() => {
               setShowListModal(false);
-              setInitialListData(null);
+              setInitialListData(undefined);
             }}
             onCreated={() => {
               fetchList();
               setShowListModal(false);
-              setInitialListData(null);
+              setInitialListData(undefined);
             }}
             initialList={initialListData}
           />
@@ -113,7 +113,7 @@ export default function ListDetailPage() {
               e.target.value as "" | "year_released_asc" | "year_released_desc" | "rating_asc" | "rating_desc"
             )
           }
-          className="font-sans p-2 border-1 border-foreground/20 rounded bg-neutral shadow-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+          className="font-sans w-full sm:w-1/2 md:w-1/4 text-sm sm:text-base p-2 border-1 border-foreground/20 rounded bg-neutral shadow-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
         >
           <option value="">Sort by...</option>
           <option value="year_released_asc">{`Year Released (Oldest -> Newest)`}</option>
@@ -123,7 +123,7 @@ export default function ListDetailPage() {
         </select>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-2">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-4">
         {sortedBooks.length > 0 ? (
           sortedBooks.map((book, idx) => (
             <div
@@ -134,7 +134,7 @@ export default function ListDetailPage() {
             </div>
           ))
         ) : (
-          <p className="font-sans text-gray-400 col-span-full text-center">
+          <p className="font-sans text-gray-400 col-span-full text-xs sm:text-sm text-center">
             No books in this list.
           </p>
         )}

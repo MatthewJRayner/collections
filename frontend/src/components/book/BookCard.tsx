@@ -17,6 +17,9 @@ export default function BookCard({ book }: BookProps) {
                         src={book.cover}
                         alt={book.title}
                         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        loading="lazy"
+                        decoding="async"
+                        fetchPriority="low"
                     />
                 ) : (
                     <div className="w-full h-full bg-neutral flex items-center justify-center">

@@ -37,7 +37,7 @@ export default function AwardsEditor({ awards, setAwards }: Props) {
         <div className="p-2 rounded bg-neutral shadow w-full">
             <button
                 type="button" 
-                className="mb-2 w-full text-left cursor-pointer"
+                className="mb-2 w-full text-left text-xs sm:text-sm cursor-pointer"
                 onClick={() => setAwardsView(!awardsView)}
             >
                 <span className={`mr-1 transition ${awardsView ? "text-primary" : ""}`}>Awards</span>
@@ -46,20 +46,20 @@ export default function AwardsEditor({ awards, setAwards }: Props) {
             {awardsView && (
                 <>
                     {awards.map((award, index) => (
-                        <div key={index} className="mb-3 bg-background shadow p-2 rounded">
+                        <div key={index} className="mb-3 bg-background shadow p-2 text-sm sm:text-base">
                             <input
                             type="text"
                             placeholder="Award Name"
                             value={award.award}
                             onChange={(e) => updateAward(index, "award", e.target.value)}
-                            className="bg-background border-foreground border-b-1 p-1 w-full rounded mb-2"
+                            className="bg-background border-foreground border-b-1 p-1 w-full text-sm sm:text-base mb-2"
                             />
                             <input
                             type="text"
                             placeholder="Category"
                             value={award.category}
                             onChange={(e) => updateAward(index, "category", e.target.value)}
-                            className="bg-background border-foreground border-b-1 p-1 w-full rounded mb-2"
+                            className="bg-background border-foreground border-b-1 p-1 w-full text-sm sm:text-base mb-2"
                             />
                             <label className="flex items-center space-x-2">
                                 <input
@@ -72,7 +72,7 @@ export default function AwardsEditor({ awards, setAwards }: Props) {
                             <button
                                 type="button"
                                 onClick={() => removeAward(index)}
-                                className="bg-danger text-white px-2 py-1 mt-2 rounded hover:text-background hover:bg-red-500 transition cursor-pointer active:scale-95"
+                                className="bg-danger text-white px-2 py-1 mt-2 text-sm sm:text-base hover:text-background hover:bg-red-500 transition cursor-pointer active:scale-95"
                             >
                                 Remove
                             </button>
@@ -81,7 +81,7 @@ export default function AwardsEditor({ awards, setAwards }: Props) {
                     <button
                         type="button"
                         onClick={addAward}
-                        className="bg-primary text-white px-2 py-2 rounded hover:text-background hover:bg-neutral-mid transition cursor-pointer active:scale-95"
+                        className="bg-primary text-sm sm:text-base text-white px-2 py-2 rounded hover:text-background hover:bg-neutral-mid transition cursor-pointer active:scale-95"
                     >
                         + Add Award
                     </button>

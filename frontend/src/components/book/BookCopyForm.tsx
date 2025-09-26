@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { BookCopy } from '@/types/bookCopy';
 
 type BookCopyFormProps = {
@@ -64,28 +64,28 @@ export default function BookCopyForm({ initialData, onSuccess }: BookCopyFormPro
     };
 
     return (
-        <div className="flex w-full">
-            <div className="w-1/2 pr-2">
+        <div className="flex flex-col md:flex-row w-full p-4 sm:p-6">
+            <div className="w-full md:w-1/2 md:pr-2 mb-4 md:mb-0">
                 {formData.cover_image && (
-                    <div className="mb-3">
-                        <p className="text-sm text-silver mb-1">Current Cover Preview:</p>
+                    <div className="mb-3 flex flex-col items-center">
+                        <p className="text-xs sm:text-sm text-silver mb-1 w-full text-left">Current Cover Preview:</p>
                         <img
                             src={formData.cover_image}
                             alt="Cover preview"
-                            className=" object-contain rounded"
+                            className="object-contain rounded max-w-[200px] sm:max-w-[300px] md:max-w-[400px] lg:max-w-[500px]"
                         />
                     </div>
                 )}
             </div>
-            <div className="w-1/2 pl-2">
-                <form onSubmit={handleSubmit} className="space-y-3">
+            <div className="w-full md:w-1/2 md:pl-2">
+                <form onSubmit={handleSubmit} className="space-y-2 sm:space-y-3">
                     <input
                         type="text"
                         name="title"
                         placeholder="Title"
                         value={formData.title || ""}
                         onChange={handleChange}
-                        className="bg-neutral shadow p-2 w-full rounded"
+                        className="bg-neutral shadow p-2 w-full rounded text-sm sm:text-base"
                     />
                     <input
                         type="text"
@@ -93,13 +93,13 @@ export default function BookCopyForm({ initialData, onSuccess }: BookCopyFormPro
                         placeholder="Author"
                         value={formData.author || ""}
                         onChange={handleChange}
-                        className="bg-neutral shadow p-2 w-full rounded"
+                        className="bg-neutral shadow p-2 w-full rounded text-sm sm:text-base"
                     />
                     <select
                         name="format"
                         value={formData.format || ""}
                         onChange={handleChange}
-                        className="bg-neutral shadow p-2 w-full rounded"
+                        className="bg-neutral shadow p-2 w-full rounded text-sm sm:text-base"
                     >
                         <option value="">-- Select Format --</option>
                         <option value="hardcover">Hardcover</option>
@@ -114,7 +114,7 @@ export default function BookCopyForm({ initialData, onSuccess }: BookCopyFormPro
                         placeholder="Publication Date (Jan 01 if unknown)"
                         value={formData.publication_date || ""}
                         onChange={handleChange}
-                        className="bg-neutral shadow p-2 w-full rounded"
+                        className="bg-neutral shadow p-2 w-full rounded text-sm sm:text-base"
                     />
                     <input
                         type="url"
@@ -122,7 +122,7 @@ export default function BookCopyForm({ initialData, onSuccess }: BookCopyFormPro
                         placeholder="Cover Image"
                         value={formData.cover_image || ""}
                         onChange={handleChange}
-                        className="bg-neutral shadow p-2 w-full rounded"
+                        className="bg-neutral shadow p-2 w-full rounded text-sm sm:text-base"
                     />
                     <input
                         type="text"
@@ -130,7 +130,7 @@ export default function BookCopyForm({ initialData, onSuccess }: BookCopyFormPro
                         placeholder="Genres (comma separated)"
                         value={genreInput}
                         onChange={(e) => setGenreInput(e.target.value)}
-                        className="p-2 w-full rounded bg-neutral shadow"
+                        className="p-2 w-full rounded text-sm sm:text-base bg-neutral shadow"
                     />
                     <input
                         type="text"
@@ -138,7 +138,7 @@ export default function BookCopyForm({ initialData, onSuccess }: BookCopyFormPro
                         placeholder="Price"
                         value={formData.price || ""}
                         onChange={handleChange}
-                        className="bg-neutral shadow p-2 w-full rounded"
+                        className="bg-neutral shadow p-2 w-full rounded text-sm sm:text-base"
                     />
                     <input
                         type="text"
@@ -146,7 +146,7 @@ export default function BookCopyForm({ initialData, onSuccess }: BookCopyFormPro
                         placeholder="Page Count"
                         value={formData.page_count || ""}
                         onChange={handleChange}
-                        className="bg-neutral shadow p-2 w-full rounded"
+                        className="bg-neutral shadow p-2 w-full rounded text-sm sm:text-base"
                     />
                     <input
                         type="text"
@@ -154,7 +154,7 @@ export default function BookCopyForm({ initialData, onSuccess }: BookCopyFormPro
                         placeholder="ISBM"
                         value={formData.isbn || ""}
                         onChange={handleChange}
-                        className="bg-neutral shadow p-2 w-full rounded"
+                        className="bg-neutral shadow p-2 w-full rounded text-sm sm:text-base"
                     />
                     <input
                         type="text"
@@ -162,7 +162,7 @@ export default function BookCopyForm({ initialData, onSuccess }: BookCopyFormPro
                         placeholder="Country"
                         value={formData.country || ""}
                         onChange={handleChange}
-                        className="bg-neutral shadow p-2 w-full rounded"
+                        className="bg-neutral shadow p-2 w-full rounded text-sm sm:text-base"
                     />
                     <input
                         type="text"
@@ -170,7 +170,7 @@ export default function BookCopyForm({ initialData, onSuccess }: BookCopyFormPro
                         placeholder="Language"
                         value={formData.language || ""}
                         onChange={handleChange}
-                        className="bg-neutral shadow p-2 w-full rounded"
+                        className="bg-neutral shadow p-2 w-full rounded text-sm sm:text-base"
                     />
                     <input
                         type="text"
@@ -178,7 +178,7 @@ export default function BookCopyForm({ initialData, onSuccess }: BookCopyFormPro
                         placeholder="Publisher"
                         value={formData.publisher || ""}
                         onChange={handleChange}
-                        className="bg-neutral shadow p-2 w-full rounded"
+                        className="bg-neutral shadow p-2 w-full rounded text-sm sm:text-base"
                     />
                     <input
                         type="text"
@@ -186,7 +186,7 @@ export default function BookCopyForm({ initialData, onSuccess }: BookCopyFormPro
                         placeholder="Edition"
                         value={formData.edition || ""}
                         onChange={handleChange}
-                        className="bg-neutral shadow p-2 w-full rounded"
+                        className="bg-neutral shadow p-2 w-full rounded text-sm sm:text-base"
                     />
                     
                     <input
@@ -195,7 +195,7 @@ export default function BookCopyForm({ initialData, onSuccess }: BookCopyFormPro
                         placeholder="Printing"
                         value={formData.printing || ""}
                         onChange={handleChange}
-                        className="bg-neutral shadow p-2 w-full rounded"
+                        className="bg-neutral shadow p-2 w-full rounded text-sm sm:text-base"
                     />
                     <input
                         type="url"
@@ -203,14 +203,14 @@ export default function BookCopyForm({ initialData, onSuccess }: BookCopyFormPro
                         placeholder="Link"
                         value={formData.link || ""}
                         onChange={handleChange}
-                        className="bg-neutral shadow p-2 w-full rounded"
+                        className="bg-neutral shadow p-2 w-full rounded text-sm sm:text-base"
                     />
                     <textarea
                         name="notes"
                         placeholder="Notes"
                         value={formData.notes || ""}
                         onChange={handleChange}
-                        className="bg-neutral shadow p-2 w-full rounded"
+                        className="bg-neutral shadow p-2 w-full rounded text-sm sm:text-base"
                     />
                     <input
                         type="date"
@@ -218,7 +218,7 @@ export default function BookCopyForm({ initialData, onSuccess }: BookCopyFormPro
                         placeholder="Date Bought"
                         value={formData.date_bought || ""}
                         onChange={handleChange}
-                        className="bg-neutral shadow p-2 w-full rounded"
+                        className="bg-neutral shadow p-2 w-full rounded text-sm sm:text-base"
                     />
                     <label className="flex items-center space-x-2">
                         <input
@@ -231,7 +231,7 @@ export default function BookCopyForm({ initialData, onSuccess }: BookCopyFormPro
                     </label>
                     <button
                         type="submit"
-                        className="bg-primary text-white px-4 py-2 rounded hover:bg-neutral-mid hover:text-background hover:scale-105 transition cursor-pointer"
+                        className="bg-primary text-white px-4 py-2 rounded text-sm sm:text-base hover:bg-neutral-mid hover:text-background hover:scale-105 transition cursor-pointer"
                     >
                         {initialData ? "Update Book Collection" : "Add Book"}
                     </button>

@@ -10,10 +10,12 @@ import FilmListModal from "@/components/film/FilmListModal";
 
 export default function ListDetailPage() {
   const { id } = useParams();
-  const [list, setList] = useState<List | null>(null);
+  const [list, setList] = useState<List | undefined>(undefined);
   const [loading, setLoading] = useState(true);
   const [showListModal, setShowListModal] = useState(false);
-  const [initialListData, setInitialListData] = useState<List | null>(null);
+  const [initialListData, setInitialListData] = useState<List | undefined>(
+    undefined
+  );
   const [sortOption, setSortOption] = useState<
     "" | "release_date_asc" | "release_date_desc" | "rating_asc" | "rating_desc"
   >("");
@@ -27,7 +29,7 @@ export default function ListDetailPage() {
       })
       .catch((error) => {
         console.error("Error fetching list:", error);
-        setList(null);
+        setList(undefined);
         setLoading(false);
       });
   };
@@ -61,7 +63,9 @@ export default function ListDetailPage() {
         if (sortField === "rating") {
           const ratingA = Number(a.rating) ?? 0;
           const ratingB = Number(b.rating) ?? 0;
-          return sortDirection === "asc" ? ratingA - ratingB : ratingB - ratingA;
+          return sortDirection === "asc"
+            ? ratingA - ratingB
+            : ratingB - ratingA;
         }
 
         return 0;
@@ -69,22 +73,25 @@ export default function ListDetailPage() {
     : [];
 
   if (loading) return <p className="p-6 font-sans text-gray-400">Loading...</p>;
-  if (!list) return <p className="p-6 font-sans text-gray-400">List not found</p>;
+  if (!list)
+    return <p className="p-6 font-sans text-gray-400">List not found</p>;
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 sm:p-6 space-y-6">
       <div className="flex flex-col border-b-1 border-b-foreground/20 pb-4">
         <div className="flex space-x-2 items-center">
-          <h1 className="text-3xl font-bold font-serif">{list.name}</h1>
-          <p className="font-sans text-gray-400">
-            {list.films.length ? `(${list.films.length} Films)` : ""}
+          <h1 className="text-2xl sm:text-3xl font-bold font-serif">
+            {list.name}
+          </h1>
+          <p className="font-sans text-xs sm:text-sm text-gray-400">
+            {list.films?.length ? `(${list.films.length} Films)` : ""}
           </p>
           <button
             onClick={() => {
               setShowListModal(true);
               setInitialListData(list);
             }}
-            className="font-sans hover:text-primary transition-all duration-300 cursor-pointer text-lg"
+            className="font-sans hover:text-primary transition-all duration-300 cursor-pointer active:scale-95 text-lg"
           >
             ✎
           </button>
@@ -93,12 +100,12 @@ export default function ListDetailPage() {
           <FilmListModal
             onClose={() => {
               setShowListModal(false);
-              setInitialListData(null);
+              setInitialListData(undefined);
             }}
             onCreated={() => {
               fetchList();
               setShowListModal(false);
-              setInitialListData(null);
+              setInitialListData(undefined);
             }}
             initialList={initialListData}
           />
@@ -113,10 +120,15 @@ export default function ListDetailPage() {
           value={sortOption}
           onChange={(e) =>
             setSortOption(
-              e.target.value as "" | "release_date_asc" | "release_date_desc" | "rating_asc" | "rating_desc"
+              e.target.value as
+                | ""
+                | "release_date_asc"
+                | "release_date_desc"
+                | "rating_asc"
+                | "rating_desc"
             )
           }
-          className="font-sans p-2 border-1 border-foreground/20 rounded bg-neutral shadow-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+          className="font-sans w-full sm:w-1/2 md:w-1/4 text-sm sm:text-base p-2 border-1 border-foreground/20 rounded bg-neutral shadow-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
         >
           <option value="">Sort by...</option>
           <option value="release_date_asc">{`Release Date (Oldest -> Newest)`}</option>
@@ -126,18 +138,20 @@ export default function ListDetailPage() {
         </select>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-2">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap:4">
         {sortedFilms.length > 0 ? (
           sortedFilms.map((film) => (
             <div
               key={film.id}
-              className={`transition-all duration-300 ${film.seen ? "opacity-50 hover:opacity-100" : ""}`}
+              className={`transition-all duration-300 ${
+                film.seen ? "opacity-50 hover:opacity-100" : ""
+              }`}
             >
               <FilmCard film={film} />
             </div>
           ))
         ) : (
-          <p className="font-sans text-gray-400 col-span-full text-center">
+          <p className="font-sans text-gray-400 text-xs sm:text-sm col-span-full text-center">
             No films in this list.
           </p>
         )}
