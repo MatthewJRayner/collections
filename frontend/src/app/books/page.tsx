@@ -54,7 +54,7 @@ export default function BookPage() {
 
   const fetchBooks = () => {
     setLoading(true);
-    fetch("http://127.0.0.1:8000/api/books/")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/books/`)
       .then((response) => response.json())
       .then((data) => {
         setBooks(data);
@@ -63,7 +63,7 @@ export default function BookPage() {
   };
 
   const fetchLists = () => {
-    fetch("http://127.0.0.1:8000/api/lists/?category=book")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/lists/?category=book`)
       .then((response) => response.json())
       .then((data) => setLists(data))
       .catch((error) => console.error("Error fetching lists:", error));

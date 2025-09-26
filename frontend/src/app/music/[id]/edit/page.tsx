@@ -11,7 +11,7 @@ export default function EditMusicPage() {
   const [music, setMusic] = useState<Music | null>(null);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/music/${id}/`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/music/${id}/`)
       .then((res) => res.json())
       .then((data) => setMusic(data));
   }, [id]);

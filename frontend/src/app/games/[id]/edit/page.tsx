@@ -11,7 +11,7 @@ export default function EditGamePage() {
   const [game, setGame] = useState<Game | null>(null);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/games/${id}/`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/games/${id}/`)
       .then((res) => res.json())
       .then((data) => setGame(data));
   }, [id]);

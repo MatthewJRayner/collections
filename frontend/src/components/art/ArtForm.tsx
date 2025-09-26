@@ -53,8 +53,8 @@ export default function ArtForm({ initialData, onSuccess }: ArtFormProps) {
 
     const method = initialData ? "PUT" : "POST";
     const url = initialData
-      ? `http://127.0.0.1:8000/api/art/${initialData.id}/`
-      : "http://127.0.0.1:8000/api/art/";
+      ? `${process.env.NEXT_PUBLIC_API_URL}/api/art/${initialData.id}/`
+      : `${process.env.NEXT_PUBLIC_API_URL}/api/art/`;
 
     await fetch(url, {
       method,

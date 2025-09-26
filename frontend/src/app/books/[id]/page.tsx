@@ -22,7 +22,7 @@ export default function BookDetailPage() {
   const MAX_GENRES = 5;
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/books/${id}/`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/books/${id}/`)
       .then((res) => res.json())
       .then((data) => {
         setBook(data);
@@ -33,7 +33,7 @@ export default function BookDetailPage() {
   const saveReview = async (newReview: string) => {
     if (!book?.id) return;
 
-    const response = await fetch(`http://127.0.0.1:8000/api/books/${book.id}/`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/books/${book.id}/`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ review: newReview, read: true }),
@@ -50,7 +50,7 @@ export default function BookDetailPage() {
 
     setRating(newValue);
 
-    await fetch(`http://127.0.0.1:8000/api/books/${book.id}/`, {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/books/${book.id}/`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ rating: newValue, read: true }),
@@ -60,7 +60,7 @@ export default function BookDetailPage() {
   const toggleSeen = async () => {
     if (!book?.id) return;
     
-    const response = await fetch(`http://127.0.0.1:8000/api/books/${book.id}/`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/books/${book.id}/`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ read: !book?.read }),
@@ -75,7 +75,7 @@ export default function BookDetailPage() {
   const toggleReadlist = async () => {
     if (!book?.id) return;
     
-    const response = await fetch(`http://127.0.0.1:8000/api/books/${book.id}/`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/books/${book.id}/`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ readlist: !book?.readlist }),
@@ -90,7 +90,7 @@ export default function BookDetailPage() {
   const toggleFavourite = async () => {
     if (!book?.id) return;
     
-    const response = await fetch(`http://127.0.0.1:8000/api/books/${book.id}/`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/books/${book.id}/`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ favourite: !book?.favourite }),

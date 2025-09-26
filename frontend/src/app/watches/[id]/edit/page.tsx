@@ -11,7 +11,7 @@ export default function EditWatchPage() {
   const [watch, setWatch] = useState<Watch | null>(null);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/watches/${id}/`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/watches/${id}/`)
       .then((res) => res.json())
       .then((data) => setWatch(data));
   }, [id]);

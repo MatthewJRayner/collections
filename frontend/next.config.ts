@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    domains: ["image.tmdb.org", "orpheus-archives-production.up.railway.app"]
+  }
 };
 
 export default nextConfig;

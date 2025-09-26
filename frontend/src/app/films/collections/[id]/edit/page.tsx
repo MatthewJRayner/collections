@@ -11,7 +11,7 @@ export default function EditWatchPage() {
     const [filmMedia, setFilmMedia] = useState<FilmPhysical | null>(null);
 
     useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/film-collections/${id}/`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/film-collections/${id}/`)
         .then((res) => res.json())
         .then((data) => setFilmMedia(data));
     }, [id]);

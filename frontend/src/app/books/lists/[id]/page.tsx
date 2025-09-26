@@ -19,7 +19,7 @@ export default function ListDetailPage() {
   >("");
 
   const fetchList = () => {
-    fetch(`http://127.0.0.1:8000/api/lists/${id}/`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/lists/${id}/`)
       .then((res) => res.json())
       .then((data) => {
         setList(data);

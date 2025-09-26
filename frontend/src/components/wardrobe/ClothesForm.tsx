@@ -57,8 +57,8 @@ export default function ClothesForm({
 
     const method = initialData ? "PUT" : "POST";
     const url = initialData
-      ? `http://127.0.0.1:8000/api/wardrobe/${initialData.id}/`
-      : "http://127.0.0.1:8000/api/wardrobe/";
+      ? `${process.env.NEXT_PUBLIC_API_URL}/api/wardrobe/${initialData.id}/`
+      : `${process.env.NEXT_PUBLIC_API_URL}/api/wardrobe/`;
 
     await fetch(url, {
       method,

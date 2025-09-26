@@ -78,8 +78,8 @@ export default function FilmForm({ initialData, onSuccess }: FilmFormProps) {
 
     const method = initialData ? "PUT" : "POST";
     const url = initialData
-      ? `http://127.0.0.1:8000/api/films/${initialData.id}/`
-      : "http://127.0.0.1:8000/api/films/";
+      ? `${process.env.NEXT_PUBLIC_API_URL}/api/films/${initialData.id}/`
+      : `${process.env.NEXT_PUBLIC_API_URL}/api/films/`;
 
     await fetch(url, {
       method,
@@ -95,7 +95,7 @@ export default function FilmForm({ initialData, onSuccess }: FilmFormProps) {
 
     if (!confirm("Are you sure you want to delete this film?")) return;
 
-    await fetch(`http://127.0.0.1:8000/api/films/${formData.id}/`, {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/films/${formData.id}/`, {
       method: "DELETE",
     });
 

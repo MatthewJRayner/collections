@@ -49,8 +49,8 @@ export default function InstrumentForm({
 
     const method = initialData ? "PUT" : "POST";
     const url = initialData
-      ? `http://127.0.0.1:8000/api/instruments/${initialData.id}/`
-      : "http://127.0.0.1:8000/api/instruments/";
+      ? `${process.env.NEXT_PUBLIC_API_URL}/api/instruments/${initialData.id}/`
+      : `${process.env.NEXT_PUBLIC_API_URL}/api/instruments/`;
 
     await fetch(url, {
       method,

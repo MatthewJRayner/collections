@@ -22,7 +22,7 @@ export default function FilmMediaPage() {
 
   const fetchBookCopy = () => {
     setLoading(true);
-    fetch("http://127.0.0.1:8000/api/book-collections/")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/book-collections/`)
       .then((response) => response.json())
       .then((data) => {
         setBookCopy(data);
@@ -37,7 +37,7 @@ export default function FilmMediaPage() {
   const deleteBookCopy = async (id: number) => {
     if (!confirm("Are you sure you want to delete this book?")) return;
 
-    await fetch(`http://127.0.0.1:8000/api/book-collections/${id}/`, {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/book-collections/${id}/`, {
       method: "DELETE",
     });
     fetchBookCopy();

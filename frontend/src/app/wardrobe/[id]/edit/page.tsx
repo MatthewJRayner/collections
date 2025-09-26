@@ -11,7 +11,7 @@ export default function EditClothesPage() {
   const [clothes, setClothes] = useState<Clothing | null>(null);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/wardrobe/${id}/`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/wardrobe/${id}/`)
       .then((res) => res.json())
       .then((data) => setClothes(data));
   }, [id]);

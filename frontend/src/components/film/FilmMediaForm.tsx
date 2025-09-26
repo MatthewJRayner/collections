@@ -71,8 +71,8 @@ export default function FilmMediaForm({
 
     const method = initialData ? "PUT" : "POST";
     const url = initialData
-      ? `http://127.0.0.1:8000/api/film-collections/${initialData.id}/`
-      : "http://127.0.0.1:8000/api/film-collections/";
+      ? `${process.env.NEXT_PUBLIC_API_URL}/api/film-collections/${initialData.id}/`
+      : `${process.env.NEXT_PUBLIC_API_URL}/api/film-collections/`;
 
     await fetch(url, {
       method,

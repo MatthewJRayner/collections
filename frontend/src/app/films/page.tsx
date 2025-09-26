@@ -54,7 +54,7 @@ export default function FilmPage() {
 
   const fetchFilms = () => {
     setLoading(true);
-    fetch("http://127.0.0.1:8000/api/films/")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/films/`)
       .then((response) => response.json())
       .then((data) => {
         setFilms(data);
@@ -63,7 +63,7 @@ export default function FilmPage() {
   };
 
   const fetchLists = () => {
-    fetch("http://127.0.0.1:8000/api/lists/?category=film")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/lists/?category=film`)
       .then((response) => response.json())
       .then((data) => setLists(data))
       .catch((error) => console.error("Error fetching lists:", error));

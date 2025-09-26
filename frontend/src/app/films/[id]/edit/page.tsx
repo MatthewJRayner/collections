@@ -12,7 +12,7 @@ export default function EditFilmsPage() {
   const [film, setFilms] = useState<Film | null>(null);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/films/${id}/`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/films/${id}/`)
       .then((res) => res.json())
       .then((data) => setFilms(data));
   }, [id]);

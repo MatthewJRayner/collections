@@ -45,8 +45,8 @@ export default function ExtraForm({ initialData, onSuccess }: ExtraFormProps) {
 
     const method = initialData ? "PUT" : "POST";
     const url = initialData
-      ? `http://127.0.0.1:8000/api/extra/${initialData.id}/`
-      : "http://127.0.0.1:8000/api/extra/";
+      ? `${process.env.NEXT_PUBLIC_API_URL}/api/extra/${initialData.id}/`
+      : `${process.env.NEXT_PUBLIC_API_URL}/api/extra/`;
 
     await fetch(url, {
       method,

@@ -55,8 +55,8 @@ export default function WatchForm({ initialData, onSuccess }: WatchFormProps) {
 
     const method = initialData ? "PUT" : "POST";
     const url = initialData
-      ? `http://127.0.0.1:8000/api/watches/${initialData.id}/`
-      : "http://127.0.0.1:8000/api/watches/";
+      ? `${process.env.NEXT_PUBLIC_API_URL}/api/watches/${initialData.id}/`
+      : `${process.env.NEXT_PUBLIC_API_URL}/api/watches/`;
 
     await fetch(url, {
       method,

@@ -22,7 +22,7 @@ export default function ExtraPage() {
 
   const fetchExtra = () => {
     setLoading(true);
-    fetch("http://127.0.0.1:8000/api/extra/")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/extra/`)
       .then((response) => response.json())
       .then((data) => {
         setExtra(data);
@@ -37,7 +37,7 @@ export default function ExtraPage() {
   const deleteExtra = async (id: number) => {
     if (!confirm("Are you sure you want to delete this item")) return;
 
-    await fetch(`http://127.0.0.1:8000/api/extra/${id}/`, {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/extra/${id}/`, {
       method: "DELETE",
     });
     fetchExtra();

@@ -60,8 +60,8 @@ export default function GameForm({ initialData, onSuccess }: GameFormProps) {
 
     const method = initialData ? "PUT" : "POST";
     const url = initialData
-      ? `http://127.0.0.1:8000/api/games/${initialData.id}/`
-      : "http://127.0.0.1:8000/api/games/";
+      ? `${process.env.NEXT_PUBLIC_API_URL}/api/games/${initialData.id}/`
+      : `${process.env.NEXT_PUBLIC_API_URL}/api/games/`;
 
     await fetch(url, {
       method,

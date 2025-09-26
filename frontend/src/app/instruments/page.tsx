@@ -22,7 +22,7 @@ export default function InstrumentsPage() {
 
   const fetchInstruments = () => {
     setLoading(true);
-    fetch("http://127.0.0.1:8000/api/instruments/")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/instruments/`)
       .then((response) => response.json())
       .then((data) => {
         setInstrument(data);
@@ -37,7 +37,7 @@ export default function InstrumentsPage() {
   const deleteInstrument = async (id: number) => {
     if (!confirm("Are you sure you want to delete this instrument")) return;
 
-    await fetch(`http://127.0.0.1:8000/api/instrument/${id}/`, {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/instrument/${id}/`, {
       method: "DELETE",
     });
     fetchInstruments();

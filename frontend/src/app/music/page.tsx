@@ -24,7 +24,7 @@ export default function MusicPage() {
 
   const fetchMusic = () => {
     setLoading(true);
-    fetch("http://127.0.0.1:8000/api/music/")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/music/`)
       .then((response) => response.json())
       .then((data) => {
         setMusic(data);
@@ -39,7 +39,7 @@ export default function MusicPage() {
   const deleteMusic = async (id: number) => {
     if (!confirm("Are you sure you want to delete this music item")) return;
 
-    await fetch(`http://127.0.0.1:8000/api/music/${id}/`, {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/music/${id}/`, {
       method: "DELETE",
     });
     fetchMusic();

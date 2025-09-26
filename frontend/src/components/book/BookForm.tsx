@@ -72,8 +72,8 @@ export default function BookForm({ initialData, onSuccess }: BookFormProps) {
 
     const method = initialData ? "PUT" : "POST";
     const url = initialData
-      ? `http://127.0.0.1:8000/api/books/${initialData.id}/`
-      : "http://127.0.0.1:8000/api/books/";
+      ? `${process.env.NEXT_PUBLIC_API_URL}/api/books/${initialData.id}/`
+      : `${process.env.NEXT_PUBLIC_API_URL}/api/books/`;
 
     await fetch(url, {
       method,

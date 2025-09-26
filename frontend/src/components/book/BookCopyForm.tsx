@@ -51,8 +51,8 @@ export default function BookCopyForm({ initialData, onSuccess }: BookCopyFormPro
 
         const method = initialData ? "PUT" : "POST";
         const url = initialData
-            ? `http://127.0.0.1:8000/api/book-collecitons/${initialData.id}/`
-            : "http://127.0.0.1:8000/api/book-collecitons/";
+            ? `${process.env.NEXT_PUBLIC_API_URL}/api/book-collecitons/${initialData.id}/`
+            : `${process.env.NEXT_PUBLIC_API_URL}/api/book-collecitons/`;
 
         await fetch(url, {
             method,

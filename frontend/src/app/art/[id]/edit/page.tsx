@@ -11,7 +11,7 @@ export default function EditArtPage() {
   const [art, setArt] = useState<Art | null>(null);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/art/${id}/`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/art/${id}/`)
       .then((res) => res.json())
       .then((data) => setArt(data));
   }, [id]);

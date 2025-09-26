@@ -22,7 +22,7 @@ export default function ArtPage() {
 
   const fetchArt = () => {
     setLoading(true);
-    fetch("http://127.0.0.1:8000/api/art/")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/art/`)
       .then((response) => response.json())
       .then((data) => {
         setArt(data);
@@ -37,7 +37,7 @@ export default function ArtPage() {
   const deleteArt = async (id: number) => {
     if (!confirm("Are you sure you want to delete this artwork?")) return;
 
-    await fetch(`http://127.0.0.1:8000/api/art/${id}/`, {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/art/${id}/`, {
       method: "DELETE",
     });
     fetchArt();

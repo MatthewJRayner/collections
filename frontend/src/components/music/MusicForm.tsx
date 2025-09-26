@@ -61,8 +61,8 @@ export default function MusicForm({ initialData, onSuccess }: MusicFormProps) {
 
     const method = initialData ? "PUT" : "POST";
     const url = initialData
-      ? `http://127.0.0.1:8000/api/music/${initialData.id}/`
-      : "http://127.0.0.1:8000/api/music/";
+      ? `${process.env.NEXT_PUBLIC_API_URL}/api/music/${initialData.id}/`
+      : `${process.env.NEXT_PUBLIC_API_URL}/api/music/`;
 
     await fetch(url, {
       method,

@@ -11,7 +11,7 @@ export default function EditExtraPage() {
   const [extra, setExtra] = useState<Extra | null>(null);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/extra/${id}/`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/extra/${id}/`)
       .then((res) => res.json())
       .then((data) => setExtra(data));
   }, [id]);

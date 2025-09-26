@@ -26,7 +26,7 @@ export default function FilmDetailPage() {
   const MAX_CAST_CREW = 20;
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/films/${id}/`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/films/${id}/`)
       .then((res) => res.json())
       .then((data) => {
         setFilm(data);
@@ -50,7 +50,7 @@ export default function FilmDetailPage() {
     if (!film?.id) return;
 
     const response = await fetch(
-      `http://127.0.0.1:8000/api/films/${film.id}/`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/films/${film.id}/`,
       {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -69,7 +69,7 @@ export default function FilmDetailPage() {
 
     setRating(newValue);
 
-    await fetch(`http://127.0.0.1:8000/api/films/${film.id}/`, {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/films/${film.id}/`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ rating: newValue, seen: true }),
@@ -80,7 +80,7 @@ export default function FilmDetailPage() {
     if (!film?.id) return;
 
     const response = await fetch(
-      `http://127.0.0.1:8000/api/films/${film.id}/`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/films/${film.id}/`,
       {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -98,7 +98,7 @@ export default function FilmDetailPage() {
     if (!film?.id) return;
 
     const response = await fetch(
-      `http://127.0.0.1:8000/api/films/${film.id}/`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/films/${film.id}/`,
       {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -116,7 +116,7 @@ export default function FilmDetailPage() {
     if (!film?.id) return;
 
     const response = await fetch(
-      `http://127.0.0.1:8000/api/films/${film.id}/`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/films/${film.id}/`,
       {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },

@@ -11,7 +11,7 @@ export default function EditInstrumentPage() {
   const [instruments, setInstruments] = useState<Instrument | null>(null);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/instruments/${id}/`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/instruments/${id}/`)
       .then((res) => res.json())
       .then((data) => setInstruments(data));
   }, [id]);

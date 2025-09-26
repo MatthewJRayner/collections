@@ -27,7 +27,7 @@ export default function FilmListModal({ onClose, onCreated, initialList }: Props
     }
     setLoading(true);
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/films/?search=${encodeURIComponent(search)}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/films/?search=${encodeURIComponent(search)}`);
       const data = await response.json();
       const validResults = data.filter((film: Film) => {
         if (!film.id || typeof film.id !== "number") {
@@ -78,7 +78,7 @@ export default function FilmListModal({ onClose, onCreated, initialList }: Props
     };
 
     const isEdit = !!initialList?.id;
-    const url = isEdit ? `http://127.0.0.1:8000/api/lists/${initialList.id}/` : "http://127.0.0.1:8000/api/lists/";
+    const url = isEdit ? `${process.env.NEXT_PUBLIC_API_URL}/api/lists/${initialList.id}/` : `${process.env.NEXT_PUBLIC_API_URL}/api/lists/`;
     const method = isEdit ? "PATCH" : "POST";
 
     try {
@@ -104,7 +104,7 @@ export default function FilmListModal({ onClose, onCreated, initialList }: Props
     if (!confirm("Are you sure you want to delete this list?")) return;
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/lists/${id}/`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/lists/${id}/`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
       });

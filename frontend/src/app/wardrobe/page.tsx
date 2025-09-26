@@ -26,7 +26,7 @@ export default function ClothesPage() {
 
   const fetchClothes = () => {
     setLoading(true);
-    fetch("http://127.0.0.1:8000/api/wardrobe/")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/wardrobe/`)
       .then((response) => response.json())
       .then((data) => {
         setClothes(data);
@@ -41,7 +41,7 @@ export default function ClothesPage() {
   const deleteClothing = async (id: number) => {
     if (!confirm("Are you sure you want to delete this clothing item")) return;
 
-    await fetch(`http://127.0.0.1:8000/api/wardrobe/${id}/`, {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/wardrobe/${id}/`, {
       method: "DELETE",
     });
     fetchClothes();

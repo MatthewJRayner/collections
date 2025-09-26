@@ -14,7 +14,7 @@ export default function BatchImportModal({ isOpen, onClose }: { isOpen: boolean,
 
         const items = input.split("\n").map((line) => line.trim()).filter((line) => line);
 
-        const response = await fetch("http://127.0.0.1:8000/api/batch-import-films/", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/batch-import-films/`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ items }),
