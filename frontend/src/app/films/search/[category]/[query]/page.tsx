@@ -48,9 +48,9 @@ export default function FilmSearchPage() {
     const decodedQuery = decodeURIComponent(query as string);
 
     fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/films/?${param}=${encodeURIComponent(
-        decodedQuery
-      )}`
+      `${
+        process.env.NEXT_PUBLIC_API_URL
+      }/api/films/?${param}=${encodeURIComponent(decodedQuery)}`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -179,7 +179,9 @@ export default function FilmSearchPage() {
         <>
           <ul className="grid gap-2 sm:gap-6 grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
             {displayedFilms.map((film) => (
-              <FilmCard key={film.id} film={film} />
+              <div key={film.id} className={`${film.seen ? "opacity-50 hover:opacity-100" : ""}`}>
+                <FilmCard film={film} />
+              </div>
             ))}
           </ul>
           {displayedFilms.length < sortedFilms.length && (
