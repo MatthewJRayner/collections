@@ -121,7 +121,7 @@ export default function BookListModal({ onClose, onCreated, initialList }: Props
   };
 
   return (
-    <div className="fixed p-4 inset-0 bg-black/60 flex items-center justify-center z-50">
+    <div className="fixed p-4 inset-0 bg-black/60 flex items-center justify-center z-50 max-h-[95vh]">
       <div className="bg-background rounded-xl shadow-lg p-6 w-full max-w-2xl">
         <h2 className="text-xl font-bold font-serif mb-4">
           {initialList?.id ? "Edit Book List" : "Create Book List"}
