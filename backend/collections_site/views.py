@@ -2,10 +2,11 @@ import requests
 import logging
 from django.shortcuts import render
 from django.conf import settings
+from django.contrib.postgres.search import SearchFilter
+from django.contrib.postgres.fields import JSONField, ArrayField
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.filters import SearchFilter
 from rest_framework import status
 from datetime import timedelta
 import time
@@ -82,47 +83,11 @@ class FilmViewSet(viewsets.ModelViewSet):
         if director:
             queryset = queryset.filter(director__iexact=director)
         elif actor:
-            # Use json_each to iterate over cast array in SQLite
-            queryset = queryset.filter(
-                id__in=RawSQL(
-                    """
-                    SELECT id FROM collections_site_film
-                    WHERE EXISTS (
-                        SELECT 1 FROM json_each(collections_site_film.cast)
-                        WHERE json_extract(json_each.value, '$.actor') LIKE %s
-                    )
-                    """,
-                    (f'%{actor}%',)
-                )
-            )
+            queryset = queryset.filter(cast__contains=[{'actor': actor}])
         elif genre:
-            # Use json_each to iterate over genre array in SQLite
-            queryset = queryset.filter(
-                id__in=RawSQL(
-                    """
-                    SELECT id FROM collections_site_film
-                    WHERE EXISTS (
-                        SELECT 1 FROM json_each(collections_site_film.genre)
-                        WHERE json_each.value LIKE %s
-                    )
-                    """,
-                    (f'%{genre}%',)
-                )
-            )
+            queryset = queryset.filter(genre__contains=[genre])
         elif crew:
-            # Use json_each to iterate over crew array in SQLite
-            queryset = queryset.filter(
-                id__in=RawSQL(
-                    """
-                    SELECT id FROM collections_site_film
-                    WHERE EXISTS (
-                        SELECT 1 FROM json_each(collections_site_film.crew)
-                        WHERE json_extract(json_each.value, '$.name') LIKE %s
-                    )
-                    """,
-                    (f'%{crew}%',)
-                )
-            )
+            queryset = queryset.filter(crew__contains=[{'name': crew}])
 
         logger.debug(f"Filtered queryset count: {queryset.count()}")
         logger.debug(f"Filtered films: {[film.title for film in queryset]}")
