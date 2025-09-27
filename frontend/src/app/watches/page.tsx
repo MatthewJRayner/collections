@@ -99,11 +99,11 @@ export default function WatchesPage() {
         </div>
 
         <div className="w-full md:w-2/10">
-          <div className="bg-neutral shadow-lg h-fit rounded">
+          <div className="bg-neutral shadow-lg h-fit rounded mb-6">
             <div className="pt-4 w-full flex justify-start pl-4">
               <span className="font-bold font-sans">Stats</span>
             </div>
-            <div className="grid grid-cols-1 mb-6 mt-4 border-b-2 border-b-background/20">
+            <div className="grid grid-cols-1 mt-4 border-b-2 border-b-background/20">
               <div className="rounded flex space-x-2 items-center w-full justify-between px-4 py-2">
                 <h3 className="text-sm font-source font-light">Owned</h3>
                 <p className="font-bold text-lg">{totalOwned}</p>
