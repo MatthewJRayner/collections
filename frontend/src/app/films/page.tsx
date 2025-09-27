@@ -135,7 +135,7 @@ export default function FilmPage() {
                 placeholder="Search..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="p-2 w-full bg-neutral rounded shadow text-sm sm:text-base"
+                className="p-2 w-full bg-neutral rounded shadow text-base"
               />
               {debouncedSearchQuery && (
                 <div className="absolute top-[100%] mt-1 left-0 w-full bg-background/20 backdrop-blur-2xl rounded shadow-lg max-h-[300px] overflow-y-auto z-10">
