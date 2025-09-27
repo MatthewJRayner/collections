@@ -141,7 +141,7 @@ export default function BookPage() {
                 placeholder="Search..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="p-2 w-full sm:w-1/2 md:w-1/3 bg-neutral rounded shadow text-sm sm:text-base"
+                className="p-2 w-full sm:w-1/2 md:w-1/3 bg-neutral rounded shadow text-base"
               />
               <div className="flex gap-2 mt-2 sm:mt-0">
                 <Link

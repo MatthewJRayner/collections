@@ -163,7 +163,7 @@ export default function BookSearchPage() {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search within results..."
-          className="w-full sm:w-1/2 md:w-1/3 text-sm sm:text-base p-2 border-1 border-neutral/50 rounded-md bg-neutral text-foreground font-sans focus:outline-none focus:ring-2 focus:ring-primary"
+          className="w-full sm:w-1/2 md:w-1/3 text-base p-2 border-1 border-neutral/50 rounded-md bg-neutral text-foreground font-sans focus:outline-none focus:ring-2 focus:ring-primary"
         />
       </div>
 
