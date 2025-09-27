@@ -25,6 +25,7 @@ export default function FilmForm({ initialData, onSuccess }: FilmFormProps) {
       watchlist: false,
     }
   );
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -91,15 +92,24 @@ export default function FilmForm({ initialData, onSuccess }: FilmFormProps) {
   };
 
   const deleteFilm = async (id: number) => {
-    if (!formData.id) return;
-
-    if (!confirm("Are you sure you want to delete this film?")) return;
-
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/films/${formData.id}/`, {
-      method: "DELETE",
-    });
-
-    onSuccess();
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/films/${id}/`,
+        {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      if (response.ok) {
+        onSuccess();
+      } else {
+        alert("Failed to delete film. Please try again.");
+      }
+    } catch (error) {
+      alert("An error occurred while deleting the film.");
+    } finally {
+      setShowDeleteConfirm(false);
+    }
   };
 
   return (
@@ -107,7 +117,9 @@ export default function FilmForm({ initialData, onSuccess }: FilmFormProps) {
       <div className="w-full md:w-1/2 md:pr-2 mb-4 md:mb-0">
         {formData.poster && (
           <div className="mb-3 flex flex-col items-center">
-            <p className="text-xs sm:text-sm text-silver mb-1 w-full text-left">Current Poster Preview:</p>
+            <p className="text-xs sm:text-sm text-silver mb-1 w-full text-left">
+              Current Poster Preview:
+            </p>
             <img
               src={formData.poster}
               alt="Poster Preview"
@@ -406,6 +418,33 @@ export default function FilmForm({ initialData, onSuccess }: FilmFormProps) {
             >
               Delete
             </button>
+
+            {showDeleteConfirm && (
+              <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[60] p-4">
+                <div className="bg-background rounded-xl shadow-lg p-4 sm:p-6 w-full max-w-xs sm:max-w-sm">
+                  <h3 className="text-lg font-semibold font-sans mb-4">
+                    Confirm Delete
+                  </h3>
+                  <p className="text-sm font-sans mb-4">
+                    Are you sure you want to delete this film?
+                  </p>
+                  <div className="flex justify-end space-x-2">
+                    <button
+                      onClick={() => setShowDeleteConfirm(false)}
+                      className="font-sans px-3 py-1.5 rounded bg-neutral-mid text-background hover:bg-neutral hover:text-white"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={() => formData.id && deleteFilm(formData.id)}
+                      className="font-sans bg-danger text-white px-3 py-1.5 rounded hover:bg-danger/80"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </form>
       </div>

@@ -121,8 +121,8 @@ export default function FilmListModal({ onClose, onCreated, initialList }: Props
   };
 
   return (
-    <div className="fixed p-4 inset-0 bg-black/60 flex items-center justify-center z-50 max-h-[95vh]">
-      <div className="bg-background rounded-xl shadow-lg p-6 w-full max-w-2xl">
+    <div className="fixed inset-0 bg-black/60 flex items-start justify-center z-50 p-4 pt-8 sm:pt-16 overflow-y-auto">
+      <div className="bg-background rounded-xl shadow-lg p-4 sm:p-6 w-full max-w-lg sm:max-w-xl h-auto max-h-[90vh] flex flex-col">
         <h2 className="text-xl font-bold font-serif mb-4">
           {initialList?.id ? "Edit Film List" : "Create Film List"}
         </h2>
@@ -132,13 +132,13 @@ export default function FilmListModal({ onClose, onCreated, initialList }: Props
           placeholder="List title"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="font-sans w-full p-2 active:border border-1 border-neutral/50 rounded mb-3"
+          className="font-sans w-full p-2 border border-neutral/50 focus:outline-none focus:border-primary rounded mb-3"
         />
         <textarea
           placeholder="Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="font-sans w-full p-2 active:border border-1 border-neutral/50 rounded mb-4"
+          className="font-sans w-full p-2 border border-neutral/50 focus:outline-none focus:border-primary rounded mb-4 resize-none h-24"
         />
 
         <div className="flex space-x-2 mb-4">
@@ -150,7 +150,7 @@ export default function FilmListModal({ onClose, onCreated, initialList }: Props
             onKeyDown={(e) => {
               if (e.key === "Enter") handleSearch();
             }}
-            className="font-sans flex-1 p-2 active:border border-1 border-neutral/50 rounded"
+            className="font-sans flex-1 p-2 border border-neutral/50 focus:outline-none focus:border-primary rounded"
           />
           <button
             onClick={handleSearch}
@@ -162,12 +162,12 @@ export default function FilmListModal({ onClose, onCreated, initialList }: Props
         </div>
 
         {results.length > 0 && (
-          <div className="max-h-40 overflow-y-auto mb-4 border rounded p-2">
+          <div className="max-h-32 sm:max-h-40 overflow-y-auto mb-4 border rounded p-2">
             {results.map((film) => (
               <div
                 key={film.id}
                 onClick={() => toggleSelect(film)}
-                className={`font-sans flex items-center p-2 cursor-pointer hover:bg-neutral ${
+                className={`font-sans text-sm sm:text-base flex items-center p-2 cursor-pointer hover:bg-neutral ${
                   selected.find((i) => i.id === film.id) ? "bg-primary/20" : ""
                 }`}
               >
@@ -180,7 +180,7 @@ export default function FilmListModal({ onClose, onCreated, initialList }: Props
           </div>
         )}
 
-        <div className="mb-4 max-h-100 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto mb-4">
           <h3 className="font-sans font-semibold">Selected Films</h3>
           <div className="flex flex-col items-start gap-3 mt-2">
             {selected.length > 0 ? (
@@ -193,7 +193,7 @@ export default function FilmListModal({ onClose, onCreated, initialList }: Props
                     {film.poster && (
                       <img src={film.poster} alt={film.title} className="w-24 object-cover rounded" />
                     )}
-                    <div className="text-md flex space-x-2 items-center mr-2 text-center">
+                    <div className="text-sm sm:text-md flex space-x-2 items-center mr-2 text-center">
                       <p>{film.title}</p>
                       <p className="text-gray-400">{film.release_date?.substring(0, 4) || "Unknown"}</p>
                     </div>

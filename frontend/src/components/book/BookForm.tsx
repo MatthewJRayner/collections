@@ -84,6 +84,18 @@ export default function BookForm({ initialData, onSuccess }: BookFormProps) {
     onSuccess();
   };
 
+  const deleteBook = async (id: number) => {
+    if (!formData.id) return;
+
+    if (!confirm("Are you sure you want to delete this book?")) return;
+
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/books/${formData.id}/`, {
+      method: "DELETE",
+    });
+
+    onSuccess();
+  };
+
   return (
     <div className="flex flex-col md:flex-row w-full p-4 sm:p-6">
       <div className="w-full md:w-1/2 md:pr-2 mb-4 md:mb-0">
@@ -357,12 +369,21 @@ export default function BookForm({ initialData, onSuccess }: BookFormProps) {
             onChange={handleChange}
             className="bg-neutral shadow p-2 w-full rounded text-sm sm:text-base"
           />
-          <button
-            type="submit"
-            className="bg-primary text-white px-4 py-2 rounded text-sm sm:text-base hover:bg-neutral-mid hover:text-background hover:scale-105 transition cursor-pointer"
-          >
-            {initialData ? "Update Item" : "Add Item"}
-          </button>
+          <div className="flex space-x-2">
+            <button
+              type="submit"
+              className="bg-primary text-sm sm:text-base text-white px-4 py-2 rounded hover:bg-neutral-mid hover:text-background hover:scale-105 transition cursor-pointer"
+            >
+              {initialData ? "Update Item" : "Add Item"}
+            </button>
+            <button
+              type="button"
+              onClick={() => deleteBook(Number(formData.id))}
+              className="bg-danger text-sm sm:text-base text-white px-4 py-2 rounded hover:bg-neutral-mid hover:text-background hover:scale-105 transition cursor-pointer"
+            >
+              Delete
+            </button>
+          </div>
         </form>
       </div>
     </div>
