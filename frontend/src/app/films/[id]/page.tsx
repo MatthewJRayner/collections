@@ -148,7 +148,7 @@ export default function FilmDetailPage() {
         </div>
       )}
 
-      <div className="h-0 sm:h-[42vh]"></div>
+      <div className="h-[50px] sm:h-[42vh]"></div>
 
       <div className="flex flex-col w-full max-w-[900px] sm:max-w-[1150px] items-center justify-center mx-auto">
         <div className="flex flex-col md:flex-row flex-1 gap-4 sm:gap-6 z-10 justify-center w-full">
