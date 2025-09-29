@@ -27,7 +27,7 @@ export default function FilmImageModal({
 }: Props) {
   const [tab, setTab] = useState<"poster" | "backdrop">("poster");
   const [images, setImages] = useState<ImageResponse[]>([]);
-  const [language, setLanguage] = useState<string>("all");
+  const [language, setLanguage] = useState<string>("en");
   const [selected, setSelected] = useState<string | null>(null);
 
   useEffect(() => {
