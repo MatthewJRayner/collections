@@ -4,7 +4,7 @@ from .views import (
     WatchViewSet, MusicViewSet, FilmCollectionViewSet, BookCollectionViewSet,
     WardrobeViewSet, GameCollectionViewSet, ArtViewSet,
     ExtrasCategoryViewSet, ExtraViewSet, FilmViewSet, BookViewSet,
-    InstrumentViewSet, ListViewSet, batch_import_films
+    InstrumentViewSet, ListViewSet, batch_import_films, fetch_tmdb_images, update_film_image
 )
 
 router = routers.DefaultRouter()
@@ -24,5 +24,7 @@ router.register(r'lists', ListViewSet, basename="list")
 
 urlpatterns = [
     path("", include(router.urls)),
-    path("batch-import-films/", batch_import_films, name="batch_import_films")
+    path("batch-import-films/", batch_import_films, name="batch_import_films"),
+    path("films/<int:tmdb_id>/images/", fetch_tmdb_images, name="fetch_tmdb_images"),
+    path("films/<int:pk>/update-image/", update_film_image, name="update_film_image"),
 ] 

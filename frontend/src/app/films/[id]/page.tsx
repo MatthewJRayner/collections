@@ -8,7 +8,7 @@ import StarRating from "@/components/StarRating";
 import ReviewModal from "@/components/ReviewModal";
 import Link from "next/link";
 import { formatDate, formatRuntime } from "@/utils/formatters";
-import AwardsEditor from "@/components/film/AwardsEditor";
+import FilmImageModal from "@/components/film/FilmImageModal";
 
 export default function FilmDetailPage() {
   const { id } = useParams();
@@ -23,7 +23,22 @@ export default function FilmDetailPage() {
   const [showFullCast, setShowFullCast] = useState(false);
   const [showFullCrew, setShowFullCrew] = useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const [showImageModal, setShowImageModal] = useState(false);
   const MAX_CAST_CREW = 20;
+
+  const fetchFilm = async () => {
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/api/films/${id}/`);
+      const data = await res.json();
+      setFilm(data);
+    } catch (err) {
+      console.error("Error fetching film:", err);
+    }
+  };
+
+  useEffect(() => {
+    if (id) fetchFilm();
+  }, [id]);
 
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/films/${id}/`)
@@ -130,6 +145,10 @@ export default function FilmDetailPage() {
     }
   };
 
+  const handleFilmUpdated = () => {
+    fetchFilm();
+  }
+
   if (!film)
     return <p className="p-4 sm:p-6 font-sans text-gray-400">Loading...</p>;
 
@@ -190,6 +209,20 @@ export default function FilmDetailPage() {
               >
                 ✎
               </Link>
+              <button
+                onClick={() => setShowImageModal(true)}
+                className="text-base text-neutral-mid cursor-pointer transition-all duration-300 hover:text-primary hover:scale-105 active:scale-90"
+              >
+                🖼
+              </button>
+              {showImageModal && film.id && film.tmdb_id && (
+                <FilmImageModal
+                  filmId={film.id}
+                  tmdbId={film.tmdb_id}
+                  onClose={() => setShowImageModal(false)}
+                  onUpdated={handleFilmUpdated}
+                />
+              )}
               {film.external_links && (
                 <Link
                   href={film.external_links}

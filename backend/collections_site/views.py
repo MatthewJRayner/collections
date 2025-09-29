@@ -125,12 +125,23 @@ class BookViewSet(viewsets.ModelViewSet):
         logger.debug(f"Filtered queryset count: {queryset.count()}")
         logger.debug(f"Filtered films: {[book.title for book in queryset]}")
         return queryset
-    
-    
+     
     
 class InstrumentViewSet(viewsets.ModelViewSet):
     queryset = Instrument.objects.all()
     serializer_class = InstrumentSerializer
+
+
+class ListViewSet(viewsets.ModelViewSet):
+    serializer_class = ListSerializer
+
+    def get_queryset(self):
+        queryset = List.objects.all().order_by("-created_at")
+        category = self.request.query_params.get('category')
+        if category:
+            queryset = queryset.filter(category=category)
+        return queryset
+  
     
 def fetch_tmdb_data(query: str, year: int = None):
     """
@@ -187,6 +198,7 @@ def fetch_tmdb_data(query: str, year: int = None):
         logger.error(f"Failed to fetch movie details for ID {movie_id}: {response.status_code}")
         return None
     return response.json()
+
 
 @api_view(["POST"])
 def batch_import_films(request):
@@ -273,12 +285,51 @@ def batch_import_films(request):
     
     return Response({"results": results}, status=status.HTTP_200_OK)
 
-class ListViewSet(viewsets.ModelViewSet):
-    serializer_class = ListSerializer
+
+@api_view(["GET"])
+def fetch_tmdb_images(request, tmdb_id):
+    """
+    Fetches posters and backdrops from TMDb for a given movie ID
+    """
+    base = "https://api.themoviedb.org/3"
+    read_token = settings.CONFIG['TMDB_READ_TOKEN']
+    headers = {
+        "accept": "application/json",
+        "Authorization": f"Bearer {read_token}"
+    }
+    url = f"{base}/movie/{tmdb_id}/images"
+    response = requests.get(url, headers=headers)
     
-    def get_queryset(self):
-        queryset = List.objects.all().order_by("-created_at")
-        category = self.request.query_params.get('category')
-        if category:
-            queryset = queryset.filter(category=category)
-        return queryset
+    if response.status_code != 200:
+        return Response(
+            {"error": f"TMDB request failed: {response.status_code}"},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+        
+    data = response.json()
+    return Response({
+        "posters": data.get("posters", []),
+        "backdrops": data.get("backdrops", []),
+    })
+    
+@api_view(["PATCH"])
+def update_film_image(request, pk):
+    """
+    Update poster or backdrop for a film
+    """
+    
+    try:
+        film = Film.objects.get(pk=pk)
+    except Film.DoesNotExist:
+        return Response({"error": "Film not found"}, status=status.HTTP_404_NOT_FOUND)
+    
+    poster = request.data.get("poster")
+    backdrop = request.data.get("backdrop")
+    
+    if poster:
+        film.poster = f"https://image.tmdb.org/t/p/original{poster}"
+    if backdrop:
+        film.background_pic = f"https://image.tmdb.org/t/p/original{backdrop}"
+    
+    film.save()
+    return Response({"success": True, "poster": film.poster, "backdrop": film.background_pic})

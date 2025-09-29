@@ -50,4 +50,5 @@ export type Film = {
     seen: boolean;
     date_watched?: string;
     watchlist: boolean;
+    tmdb_id?: number;
 };
