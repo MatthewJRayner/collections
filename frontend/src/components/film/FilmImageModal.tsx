@@ -100,14 +100,14 @@ export default function FilmImageModal({
         </div>
 
         <select
-          className="mb-4 p-2 border border-neutral/50 rounded text-base focus:outline-none focus:ring-2 focus:ring-primary touch-action-manipulation"
+          className="mb-4 p-2 border border-neutral/50 rounded text-base focus:outline-none focus:ring-2 focus:ring-primary touch-action-manipulation bg-background text-foreground"
           value={language}
           onChange={(e) => setLanguage(e.target.value)}
         >
-          <option value="all">All Languages</option>
+          <option value="all" className="bg-background text-foreground">All Languages</option>
           {[...new Set(images.map((img) => img.iso_639_1).filter(Boolean))].map(
             (lang) => (
-              <option key={lang} value={lang}>
+              <option key={lang} value={lang} className="bg-background text-foreground">
                 {lang}
               </option>
             )
