@@ -16,13 +16,13 @@ from .models import (
     Watch, Music, FilmCollection, BookCollection,
     Wardrobe, GameCollection, Art,
     ExtrasCategory, Extra, Film, Book,
-    Instrument, List
+    Instrument, List, LivePerformance
 )
 from .serializers import (
     WatchSerializer, MusicSerializer, FilmCollectionSerializer, BookCollectionSerializer,
     WardrobeSerializer, GameCollectionSerializer, ArtSerializer,
     ExtrasCategorySerializer, ExtraSerializer, FilmSerializer, BookSerializer,
-    InstrumentSerializer, ListSerializer
+    InstrumentSerializer, ListSerializer, LivePerformanceSerializer
 )
 
 # Set up logging
@@ -141,6 +141,10 @@ class ListViewSet(viewsets.ModelViewSet):
         if category:
             queryset = queryset.filter(category=category)
         return queryset
+    
+class LivePerformanceViewSet(viewsets.ModelViewSet):
+    queryset = LivePerformance.objects.all()
+    serializer_class = LivePerformanceSerializer
   
     
 def fetch_tmdb_data(query: str, year: int = None):

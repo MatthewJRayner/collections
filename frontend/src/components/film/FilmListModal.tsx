@@ -187,7 +187,7 @@ export default function FilmListModal({ onClose, onCreated, initialList }: Props
               selected.map((film) => (
                 <div
                   key={film.id}
-                  className="font-sans flex items-center justify-between border-b-1 border-b-foreground/20 pb-4 pl-2 w-full cursor-pointer"
+                  className="font-sans flex items-center justify-between border-b border-foreground/20 py-2 pl-2 w-full cursor-pointer"
                 >
                   <div className="flex items-center space-x-2">
                     {film.poster && (

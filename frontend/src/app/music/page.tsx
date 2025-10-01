@@ -80,12 +80,20 @@ export default function MusicPage() {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="p-2 w-full sm:w-1/2 md:w-1/3 mt-2 sm:mt-0 bg-neutral rounded shadow"
             />
-            <Link
-              href="/music/new"
-              className="bg-primary text-white px-2 py-0.5 hover:text-background hover:bg-neutral-mid hover:scale-105 transition rounded-md"
-            >
-              +
-            </Link>
+            <div className="flex gap-2 mt-2 sm:mt-0">
+              <Link
+                href="/music/new"
+                className="bg-primary text-white px-2 py-1 hover:text-background hover:bg-neutral-mid hover:scale-105 transition rounded-md text-sm sm:text-base"
+              >
+                +
+              </Link>
+              <Link
+                href="/music/performances"
+                className="bg-primary text-white px-2 py-1 hover:text-background hover:bg-neutral-mid hover:scale-105 transition rounded-md text-sm sm:text-base"
+              >
+                Performances
+              </Link>
+            </div>
           </div>
 
           <div className="">

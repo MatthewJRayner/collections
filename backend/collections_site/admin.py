@@ -3,7 +3,7 @@ from .models import (
     Watch, Music, FilmCollection, BookCollection, GameCollection,
     Wardrobe, Art, ExtrasCategory, 
     Extra, Film, Book,
-    Instrument, List
+    Instrument, List, LivePerformance
 )
 
 # Register your models here.
@@ -92,3 +92,8 @@ class InstrumentAdmin(admin.ModelAdmin):
 class ListAdmin(admin.ModelAdmin):
     list_display = ("name", "description", "category")
     search_fields = ("name", "films", "books", "category")
+    
+@admin.register(LivePerformance)
+class LivePerformanceAdmin(admin.ModelAdmin):
+    list_display = ("title", "composer", "performance_type")
+    search_fields = ("title", "composer", "performance_type", "original_language", "locatio_seen")

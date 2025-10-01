@@ -21,7 +21,7 @@ export default function FilmMediaPage() {
 
   const fetchFilmMedia = () => {
     setLoading(true);
-    fetch("http://127.0.0.1:8000/api/film-collections/")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/film-collections/`)
       .then((response) => response.json())
       .then((data) => {
         setFilmMedia(data);
@@ -36,7 +36,7 @@ export default function FilmMediaPage() {
   const deleteFilmMedia = async (id: number) => {
     if (!confirm("Are you sure you want to delete this film?")) return;
 
-    await fetch(`http://127.0.0.1:8000/api/film-collections/${id}/`, {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/film-collections/${id}/`, {
       method: "DELETE",
     });
     fetchFilmMedia();

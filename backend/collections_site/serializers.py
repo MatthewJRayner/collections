@@ -3,7 +3,7 @@ from .models import (
     Watch, Music, FilmCollection, BookCollection,
     Wardrobe, GameCollection, Art,
     ExtrasCategory, Extra, Film, Book,
-    Instrument, List
+    Instrument, List, LivePerformance
 )
 
 class WatchSerializer(serializers.ModelSerializer):
@@ -153,3 +153,8 @@ class ListSerializer(serializers.ModelSerializer):
         if invalid_ids:
             raise serializers.ValidationError(f"Invalid book IDs: {invalid_ids}")
         return value
+    
+class LivePerformanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LivePerformance
+        fields = "__all__"

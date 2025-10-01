@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 
 # Create your models here.
 class Watch(models.Model):
@@ -397,3 +398,37 @@ class List(models.Model):
     
     def __str__(self):
         return f"{self.name} ({self.category})"
+    
+class LivePerformance(models.Model):
+    YEAR_SPECIFICITY_CHOICES = [
+        ("exact", "Exact"),
+        ("year", "Year"),
+        ("decade", "Decade"),
+        ("century", "Century"),
+        ("millennium", "Millennium"),
+        ("unknown", "Unknown"),
+    ]
+    
+    title = models.CharField(max_length=255)
+    original_title = models.CharField(max_length=255, blank=True, null=True)
+    performance_type = models.CharField(max_length=50)
+    original_language = models.CharField(max_length=100, blank=True, null=True)
+    language_heard = models.CharField(max_length=100, blank=True, null=True)
+    composer = models.CharField(max_length=255)
+    country = models.CharField(max_length=100, blank=True, null=True)
+    conductor = models.CharField(max_length=255, blank=True, null=True)
+    director = models.CharField(max_length=255, blank=True, null=True)
+    orchestra_ensemble = models.CharField(max_length=255, blank=True, null=True)
+    seen = models.BooleanField(default=True)
+    date_seen = models.DateField(blank=True, null=True)
+    location_seen = models.CharField(max_length=255, blank=True, null=True)
+    location_premiered = models.CharField(max_length=255, blank=True, null=True)
+    date_premiered = models.DateField(blank=True, null=True)
+    pieces = models.JSONField(default=list, blank=True) # Format: [{"title": TITLE, "composer": COMPOSER, "movement": [MOVEMENTS]}, ]
+    cast = models.JSONField(default=list, blank=True) # Format: [{"character": NAME, "performer": NAME}, ]
+    rating = models.IntegerField(blank=True, null=True)
+    review = models.TextField(blank=True, null=True)
+    images = models.URLField(blank=True, null=True)
+    external_links = models.URLField(blank=True, null=True)
+    year = models.IntegerField(blank=True, null=True)
+    year_specificity = models.CharField(max_length=50, choices=YEAR_SPECIFICITY_CHOICES, blank=True, null=True)
