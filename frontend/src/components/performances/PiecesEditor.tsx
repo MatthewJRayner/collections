@@ -135,7 +135,7 @@ export default function PiecesEditor({ pieces, setPieces }: Props) {
                   <button
                     type="button"
                     onClick={() => addMovement(pieceIndex)}
-                    className="bg-primary text-white px-2 py-1 text-xs sm:text-sm rounded hover:bg-neutral-mid transition cursor-pointer active:scale-95"
+                    className="bg-primary text-white hover:text-background px-2 py-1 text-xs sm:text-sm rounded hover:bg-neutral-mid transition cursor-pointer active:scale-95"
                   >
                     + Add Movement
                   </button>

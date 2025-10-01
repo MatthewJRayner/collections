@@ -111,25 +111,9 @@ export default function PerformanceForm({ initialData, onSuccess }: PerformanceF
           />
           <input
             type="date"
-            name="date_seen"
-            placeholder="Date Seen"
-            value={formData.date_seen || ""}
-            onChange={handleChange}
-            className="bg-neutral shadow p-2 w-full rounded text-sm sm:text-base"
-          />
-          <input
-            type="date"
             name="date_premiered"
             placeholder="Date Premiered"
             value={formData.date_premiered || ""}
-            onChange={handleChange}
-            className="bg-neutral shadow p-2 w-full rounded text-sm sm:text-base"
-          />
-          <input
-            type="text"
-            name="location_seen"
-            placeholder="Location Seen"
-            value={formData.location_seen || ""}
             onChange={handleChange}
             className="bg-neutral shadow p-2 w-full rounded text-sm sm:text-base"
           />
@@ -225,6 +209,14 @@ export default function PerformanceForm({ initialData, onSuccess }: PerformanceF
             name="review"
             placeholder="Review"
             value={formData.review || ""}
+            onChange={handleChange}
+            className="bg-neutral shadow p-2 w-full rounded text-sm sm:text-base"
+          />
+          <input
+            type="text"
+            name="location_seen"
+            placeholder="Location Seen"
+            value={formData.location_seen || ""}
             onChange={handleChange}
             className="bg-neutral shadow p-2 w-full rounded text-sm sm:text-base"
           />

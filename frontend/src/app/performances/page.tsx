@@ -67,16 +67,10 @@ export default function PerformancePage() {
             />
             <div className="flex gap-2 mt-2 sm:mt-0">
               <Link
-                href="/music/performances/new"
+                href="/performances/new"
                 className="bg-primary text-white px-2 py-1 hover:text-background hover:bg-neutral-mid hover:scale-105 transition rounded-md text-sm sm:text-base"
               >
                 +
-              </Link>
-              <Link
-                href="/music"
-                className="bg-primary text-white px-2 py-1 hover:text-background hover:bg-neutral-mid hover:scale-105 transition rounded-md text-sm sm:text-base"
-              >
-                Performances
               </Link>
             </div>
           </div>
