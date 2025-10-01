@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Performance } from "@/types/performance";
-import PerformanceForm from "@/components/music/PerformanceForm";
+import PerformanceForm from "@/components/performances/PerformanceForm";
 
 export default function EditPerformancePage() {
   const { id } = useParams();
@@ -24,7 +24,7 @@ export default function EditPerformancePage() {
       <PerformanceForm
         initialData={performance}
         onSuccess={() => {
-          router.push("/music/performances");
+          router.push("/performances");
         }}
       />
     </div>

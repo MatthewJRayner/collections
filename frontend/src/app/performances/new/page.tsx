@@ -1,6 +1,6 @@
 "use client";
 
-import PerformanceForm from "@/components/music/PerformanceForm";
+import PerformanceForm from "@/components/performances/PerformanceForm";
 import { useRouter } from "next/navigation";
 
 export default function NewPerformancePage() {
@@ -13,7 +13,7 @@ export default function NewPerformancePage() {
       </h1>
       <PerformanceForm
         onSuccess={() => {
-          router.push("/music/performances"); // go back after saving
+          router.push("/performances"); // go back after saving
         }}
       />
     </div>

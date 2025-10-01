@@ -14,7 +14,7 @@ export default function PerformanceForm({ initialData, onSuccess }: PerformanceF
   const [formData, setFormData] = useState<Performance>(
     initialData || {
       title: "",
-      composer: "",
+      creator: "",
       performance_type: "",
       seen: true,
     }
@@ -87,9 +87,17 @@ export default function PerformanceForm({ initialData, onSuccess }: PerformanceF
           />
           <input
             type="text"
-            name="composer"
-            placeholder="Composer"
-            value={formData.composer || ""}
+            name="creator"
+            placeholder="Composer / Writer / Creator of original work"
+            value={formData.creator || ""}
+            onChange={handleChange}
+            className="bg-neutral shadow p-2 w-full rounded text-sm sm:text-base"
+          />
+          <input
+            type="text"
+            name="alt_name"
+            placeholder="Original Name"
+            value={formData.alt_name || ""}
             onChange={handleChange}
             className="bg-neutral shadow p-2 w-full rounded text-sm sm:text-base"
           />

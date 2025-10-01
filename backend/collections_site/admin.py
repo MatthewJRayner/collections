@@ -95,5 +95,5 @@ class ListAdmin(admin.ModelAdmin):
     
 @admin.register(LivePerformance)
 class LivePerformanceAdmin(admin.ModelAdmin):
-    list_display = ("title", "composer", "performance_type")
-    search_fields = ("title", "composer", "performance_type", "original_language", "locatio_seen")
+    list_display = ("title", "creator", "performance_type")
+    search_fields = ("title", "creator", "performance_type", "original_language", "locatio_seen")

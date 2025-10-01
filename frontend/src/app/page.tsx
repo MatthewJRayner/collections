@@ -13,6 +13,7 @@ export default function HomePage() {
     { name: "Art", path: "/art" },
     { name: "Instruments", path: "/instruments"},
     { name: "Extras", path: "/extras" },
+    { name: "Performances", path: "/performances"}
   ];
 
   return (

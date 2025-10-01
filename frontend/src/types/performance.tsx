@@ -1,9 +1,14 @@
 export type YearSpecificity = "exact" | "year" | "decade" | "century" | "millennium" | "unknown";
 
+export type Movement = {
+    number: string;
+    title: string;
+}
+
 export type Piece = {
     title: string;
     composer: string;
-    movements?: string[];
+    movements: Movement[];
 }
 
 export type Cast = {
@@ -18,7 +23,8 @@ export type Performance = {
     performance_type: string;
     original_language?: string;
     language_heard?: string;
-    composer: string;
+    creator: string;
+    alt_name?: string;
     country?: string;
     conductor?: string;
     director?: string;

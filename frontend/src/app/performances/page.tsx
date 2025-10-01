@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Performance } from "@/types/performance";
-import PerformanceCard from "@/components/music/PerformanceCard";
+import PerformanceCard from "@/components/performances/PerformanceCard";
 import Link from "next/link";
 
 export default function PerformancePage() {
@@ -14,7 +14,7 @@ export default function PerformancePage() {
     const query = searchQuery.toLowerCase();
     return (
       p.title.toLowerCase().includes(query) ||
-      p.composer.toLowerCase().includes(query) ||
+      p.creator.toLowerCase().includes(query) ||
       p.performance_type.toLowerCase().includes(query) ||
       p.orchestra_ensemble?.toLowerCase().includes(query) ||
       p.original_language?.toLowerCase().includes(query)

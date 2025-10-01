@@ -76,3 +76,29 @@ export function formatPhrase(phrase: string): string {
     )
     .join(" ");
 }
+
+export function formatNumeral(number: number): string {
+    if (!Number.isInteger(number) || number < 1 || number > 39) {
+        throw new Error("Input must be an integer between 1 and 39");
+    }
+
+    const numeralMap: [number, string][] = [
+        [10, "X"],
+        [9, "IX"],
+        [5, "V"],
+        [4, "IV"],
+        [1, "I"],
+    ];
+
+    let result = "";
+    let remaining = number;
+
+    for (const [value, numeral] of numeralMap) {
+        while (remaining >= value) {
+            result += numeral;
+            remaining -= value;
+        }
+    }
+
+    return result;
+}

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Performance } from "@/types/performance";
 import Link from "next/link";
-import { formatYear, formatDate } from "@/utils/formatters";
+import { formatYear, formatDate, formatNumeral } from "@/utils/formatters";
 import ZoomableImageModal from "../ZoomableImageModal";
 
 type PerformanceCardProps = {
@@ -11,7 +11,10 @@ type PerformanceCardProps = {
   onDelete: (id: number) => void;
 };
 
-export default function PerformanceCard({ performance, onDelete }: PerformanceCardProps) {
+export default function PerformanceCard({
+  performance,
+  onDelete,
+}: PerformanceCardProps) {
   const [expanded, setExpanded] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showCast, setShowCast] = useState(false);
@@ -45,7 +48,7 @@ export default function PerformanceCard({ performance, onDelete }: PerformanceCa
         {performance.title ?? ""}
       </h2>
       <p className="text-xs sm:text-sm text-gray-800">
-        {`${performance.composer ?? ""} (${formatYear({
+        {`${performance.creator ?? ""} (${formatYear({
           year: performance.year,
           year_specificity: Array.isArray(performance.year_specificity)
             ? performance.year_specificity.join(",")
@@ -68,7 +71,9 @@ export default function PerformanceCard({ performance, onDelete }: PerformanceCa
       )}
       <span
         className={`mt-1 sm:mt-2 px-2 py-1 rounded text-xs ${
-          performance.seen ? "bg-green-200 text-success" : "bg-red-200 text-danger"
+          performance.seen
+            ? "bg-green-200 text-success"
+            : "bg-red-200 text-danger"
         }`}
       >
         {performance.seen ? "Seen" : "Watchlist"}
@@ -96,21 +101,35 @@ export default function PerformanceCard({ performance, onDelete }: PerformanceCa
 
           {showPieces && (
             <ul className="mt-1 sm:mt-2 space-y-1 text-xs sm:text-sm w-full">
-              {performance.pieces.map((pieces, idx) => (
-                <li
-                  key={idx}
-                  className="ml-2 flex justify-between w-full"
-                >
-                  <div className="max-w-4/5 text-left truncate">
-                    {pieces.title}
-                    {pieces.movements && (
-                      <>
-                        <span>, </span>
-                        {pieces.movements.map((movement, idx) => (
-                          <span key={idx}>{`'${movement}' `}</span>
-                        ))}
-                      </>
-                    )}
+              {performance.pieces.map((piece, idx) => (
+                <li key={idx} className="ml-2 sm:ml-4">
+                  <div className="flex justify-between items-start w-full">
+                    <div className="max-w-[90%] sm:max-w-[80%]">
+                      <span className="font-semibold">{piece.title}</span>
+                      {piece.composer && (
+                        <span className="text-gray-400">
+                          {" "}
+                          by {piece.composer}
+                        </span>
+                      )}
+                      {piece.movements.length > 0 && (
+                        <ul className="ml-4 sm:ml-6 mt-1 space-y-1">
+                          {piece.movements.map((movement, mIdx) => (
+                            <li key={mIdx} className="text-gray-300">
+                              {movement.number && (
+                                <>
+                                  {movement.number.match(/^\d+$/)
+                                    ? formatNumeral(parseInt(movement.number))
+                                    : movement.number}
+                                  .{" "}
+                                </>
+                              )}
+                              {movement.title}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
                   </div>
                 </li>
               ))}
@@ -142,10 +161,7 @@ export default function PerformanceCard({ performance, onDelete }: PerformanceCa
           {showCast && (
             <ul className="mt-1 sm:mt-2 space-y-1 text-xs sm:text-sm w-full">
               {performance.cast.map((cast, idx) => (
-                <li
-                  key={idx}
-                  className="ml-2 flex justify-between w-full"
-                >
+                <li key={idx} className="ml-2 flex justify-between w-full">
                   <div className="max-w-4/5 text-left truncate">
                     <strong>{cast.character}:</strong> {cast.performer}
                   </div>
@@ -167,17 +183,20 @@ export default function PerformanceCard({ performance, onDelete }: PerformanceCa
         <div className="mt-4 text-left w-full space-y-2 text-sm text-neutral-mid">
           {performance.original_language && (
             <p>
-              <strong>Original Language:</strong> {performance.original_language.toUpperCase()}
+              <strong>Original Language:</strong>{" "}
+              {performance.original_language.toUpperCase()}
             </p>
           )}
           {performance.language_heard && (
             <p>
-              <strong>Performance Language:</strong> {performance.language_heard.toUpperCase()}
+              <strong>Performance Language:</strong>{" "}
+              {performance.language_heard.toUpperCase()}
             </p>
           )}
           {performance.country && (
             <p>
-              <strong>Composer Nationality:</strong> {performance.country.toUpperCase()}
+              <strong>Composer Nationality:</strong>{" "}
+              {performance.country.toUpperCase()}
             </p>
           )}
           {performance.conductor && (
@@ -192,7 +211,8 @@ export default function PerformanceCard({ performance, onDelete }: PerformanceCa
           )}
           {performance.orchestra_ensemble && (
             <p>
-              <strong>Orchestra Ensemble:</strong> {performance.orchestra_ensemble}
+              <strong>Orchestra Ensemble:</strong>{" "}
+              {performance.orchestra_ensemble}
             </p>
           )}
           {performance.rating && (
@@ -224,12 +244,14 @@ export default function PerformanceCard({ performance, onDelete }: PerformanceCa
           )}
           {performance.location_premiered && (
             <p>
-              <strong>Premiere Location:</strong> {formatDate(performance.location_premiered)}
+              <strong>Premiere Location:</strong>{" "}
+              {formatDate(performance.location_premiered)}
             </p>
           )}
           {performance.date_premiered && (
             <p>
-              <strong>Premiere date:</strong> {formatDate(performance.date_premiered)}
+              <strong>Premiere date:</strong>{" "}
+              {formatDate(performance.date_premiered)}
             </p>
           )}
           {performance.review && (
