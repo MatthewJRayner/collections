@@ -21,6 +21,7 @@ export default function Navbar() {
         <Link href="/music" className="transition hover:scale-105 hover:text-primary active:scale-95">Music</Link>
         <Link href="/films" className="transition hover:scale-105 hover:text-primary active:scale-95">Films</Link>
         <Link href="/books" className="transition hover:scale-105 hover:text-primary active:scale-95">Books</Link>
+        <Link href="/performances" className="transition hover:scale-105 hover:text-primary active:scale-95">Performances</Link>
         <Link href="/wardrobe" className="transition hover:scale-105 hover:text-primary active:scale-95">Wardrobe</Link>
         <Link href="/games" className="transition hover:scale-105 hover:text-primary active:scale-95">Games</Link>
         <Link href="/art" className="transition hover:scale-105 hover:text-primary active:scale-95">Art</Link>

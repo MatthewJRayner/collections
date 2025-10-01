@@ -8,12 +8,12 @@ export default function HomePage() {
     { name: "Music", path: "/music" },
     { name: "Films", path: "/films" },
     { name: "Books", path: "/books" },
+    { name: "Performances", path: "/performances"},
     { name: "Wardrobe", path: "/wardrobe" },
     { name: "Games", path: "/games" },
     { name: "Art", path: "/art" },
     { name: "Instruments", path: "/instruments"},
     { name: "Extras", path: "/extras" },
-    { name: "Performances", path: "/performances"}
   ];
 
   return (
