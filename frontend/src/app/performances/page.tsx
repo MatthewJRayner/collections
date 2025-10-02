@@ -14,6 +14,7 @@ export default function PerformancePage() {
     const query = searchQuery.toLowerCase();
     return (
       p.title.toLowerCase().includes(query) ||
+      p.original_title?.toLowerCase().includes(query) ||
       p.creator.toLowerCase().includes(query) ||
       p.performance_type.toLowerCase().includes(query) ||
       p.orchestra_ensemble?.toLowerCase().includes(query) ||
