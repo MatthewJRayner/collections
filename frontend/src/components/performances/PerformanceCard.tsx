@@ -45,7 +45,7 @@ export default function PerformanceCard({
       )}
 
       <h2 className="font-semibold font-inter text-sm sm:text-base">
-        {performance.title ?? ""}
+        {performance.original_title ? performance.original_title : performance.title ? performance.title : ""}
       </h2>
       <p className="text-xs sm:text-sm text-gray-800">
         {`${performance.creator ?? ""} (${formatYear({
