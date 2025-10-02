@@ -39,7 +39,7 @@ export default function CastEditor({ cast, setCast }: Props) {
         </span>
         <span
           className={`transition duration-400 ${
-            castView ? "text-primary" : ""
+            castView ? "text-primary rotate-180" : ""
           }`}
         >
           ▼

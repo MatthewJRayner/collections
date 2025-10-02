@@ -64,7 +64,7 @@ export default function PiecesEditor({ pieces, setPieces }: Props) {
   };
 
   return (
-    <div className="p-2 sm:p-3 rounded bg-neutral shadow w-full">
+    <div className="p-2 rounded bg-neutral shadow w-full">
       <button
         type="button"
         className="mb-2 w-full text-left text-xs sm:text-sm cursor-pointer flex items-center"
@@ -153,7 +153,7 @@ export default function PiecesEditor({ pieces, setPieces }: Props) {
           <button
             type="button"
             onClick={addPiece}
-            className="bg-primary text-white px-2 py-1.5 rounded text-xs sm:text-base hover:bg-neutral-mid transition cursor-pointer active:scale-95"
+            className="bg-primary text-white hover:text-background px-2 py-1.5 rounded text-xs sm:text-base hover:bg-neutral-mid transition cursor-pointer active:scale-95"
           >
             + Add Piece
           </button>
