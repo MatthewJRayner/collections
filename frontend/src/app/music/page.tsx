@@ -87,12 +87,6 @@ export default function MusicPage() {
               >
                 +
               </Link>
-              <Link
-                href="/music/performances"
-                className="bg-primary text-white px-2 py-1 hover:text-background hover:bg-neutral-mid hover:scale-105 transition rounded-md text-sm sm:text-base"
-              >
-                Performances
-              </Link>
             </div>
           </div>
 
