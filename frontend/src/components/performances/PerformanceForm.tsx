@@ -87,6 +87,14 @@ export default function PerformanceForm({ initialData, onSuccess }: PerformanceF
           />
           <input
             type="text"
+            name="original_title"
+            placeholder="Original Title"
+            value={formData.original_title || ""}
+            onChange={handleChange}
+            className="bg-neutral shadow p-2 w-full rounded text-sm sm:text-base"
+          />
+          <input
+            type="text"
             name="creator"
             placeholder="Composer / Writer / Creator of original work"
             value={formData.creator || ""}
