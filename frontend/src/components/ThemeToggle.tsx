@@ -28,7 +28,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="px-2 py-1 rounded text-background hover:scale-105 transition cursor-pointer active:scale-90"
+      className="px-2 py-1 rounded text-foreground hover:scale-105 transition cursor-pointer active:scale-90"
     >
       {dark ? "◐" : "◑"}
     </button>
