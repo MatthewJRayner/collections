@@ -135,6 +135,28 @@ export default function PerformanceForm({ initialData, onSuccess }: PerformanceF
           />
           <input
             type="text"
+            name="year"
+            placeholder="Year"
+            value={formData.year || ""}
+            onChange={handleChange}
+            className="bg-neutral shadow p-2 w-full rounded text-sm sm:text-base"
+          />
+          <select
+            name="year_specificity"
+            value={formData.year_specificity || ""}
+            onChange={handleChange}
+            className="bg-neutral shadow p-2 w-full rounded text-sm sm:text-base"
+          >
+            <option value="">-- Select Year Specificity --</option>
+            <option value="exact">Exact</option>
+            <option value="year">Year</option>
+            <option value="decade">Decade</option>
+            <option value="century">Century</option>
+            <option value="millennium">Millennium</option>
+            <option value="unknown">Unknown</option>
+          </select>
+          <input
+            type="text"
             name="original_language"
             placeholder="Original Language"
             value={formData.original_language || ""}

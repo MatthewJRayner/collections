@@ -184,19 +184,19 @@ export default function PerformanceCard({
           {performance.original_language && (
             <p>
               <strong>Original Language:</strong>{" "}
-              {performance.original_language.toUpperCase()}
+              {performance.original_language}
             </p>
           )}
           {performance.language_heard && (
             <p>
               <strong>Performance Language:</strong>{" "}
-              {performance.language_heard.toUpperCase()}
+              {performance.language_heard}
             </p>
           )}
           {performance.country && (
             <p>
               <strong>Composer Nationality:</strong>{" "}
-              {performance.country.toUpperCase()}
+              {performance.country}
             </p>
           )}
           {performance.conductor && (
