@@ -433,3 +433,4 @@ class LivePerformance(models.Model):
     external_links = models.URLField(blank=True, null=True)
     year = models.IntegerField(blank=True, null=True)
     year_specificity = models.CharField(max_length=50, choices=YEAR_SPECIFICITY_CHOICES, blank=True, null=True)
+    writers = models.JSONField(default=list, blank=True) # Format: [{"name": NAME, "role": ROLE}]

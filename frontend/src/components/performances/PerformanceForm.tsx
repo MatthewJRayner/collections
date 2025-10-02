@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Performance } from "@/types/performance";
 import PiecesEditor from "./PiecesEditor";
 import CastEditor from "./CastEditor";
+import WritersEditor from "./WritersEditor";
 
 type PerformanceFormProps = {
   initialData?: Performance;
@@ -210,6 +211,10 @@ export default function PerformanceForm({ initialData, onSuccess }: PerformanceF
           <CastEditor
             cast={formData.cast || []}
             setCast={(c) => setFormData({ ...formData, cast: c })}
+          />
+          <WritersEditor 
+            writers={formData.writers || []}
+            setWriters={(w) => setFormData({ ...formData, writers: w })}
           />
           <input
             type="text"

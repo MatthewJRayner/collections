@@ -16,6 +16,11 @@ export type Cast = {
     performer: string;
 }
 
+export type Writer = {
+    name: string;
+    role: string;
+}
+
 export type Performance = {
     id?: number;
     title: string;
@@ -42,4 +47,5 @@ export type Performance = {
     external_links?: string;
     year?: string;
     year_specificity?: YearSpecificity;
+    writers?: Writer[];
 }

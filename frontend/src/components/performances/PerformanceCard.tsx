@@ -45,7 +45,11 @@ export default function PerformanceCard({
       )}
 
       <h2 className="font-semibold font-inter text-sm sm:text-base">
-        {performance.original_title ? performance.original_title : performance.title ? performance.title : ""}
+        {performance.original_title
+          ? performance.original_title
+          : performance.title
+          ? performance.title
+          : ""}
       </h2>
       <p className="text-xs sm:text-sm text-gray-800">
         {`${performance.creator ?? ""} (${formatYear({
@@ -58,26 +62,28 @@ export default function PerformanceCard({
       <p className="mt-1 sm:mt-2 text-sm sm:text-base">
         {performance.performance_type ?? ""}
       </p>
-      {performance.language_heard ? (
-        <span className="mt-1 sm:mt-2 px-2 py-1 rounded text-xs bg-neutral-mid text-background">
-          {performance.language_heard ?? ""}
+      <div className="flex space-x-2">
+        {performance.language_heard ? (
+          <span className="mt-1 sm:mt-2 px-2 py-1 rounded text-xs bg-neutral-mid text-background">
+            {performance.language_heard ?? ""}
+          </span>
+        ) : performance.original_language ? (
+          <span className="mt-1 sm:mt-2 px-2 py-1 rounded text-xs bg-neutral-mid text-background">
+            {performance.original_language ?? ""}
+          </span>
+        ) : (
+          ""
+        )}
+        <span
+          className={`mt-1 sm:mt-2 px-2 py-1 rounded text-xs ${
+            performance.seen
+              ? "bg-green-200 text-success"
+              : "bg-red-200 text-danger"
+          }`}
+        >
+          {performance.seen ? "Seen" : "Watchlist"}
         </span>
-      ) : performance.original_language ? (
-        <span className="mt-1 sm:mt-2 px-2 py-1 rounded text-xs bg-neutral-mid text-background">
-          {performance.original_language ?? ""}
-        </span>
-      ) : (
-        ""
-      )}
-      <span
-        className={`mt-1 sm:mt-2 px-2 py-1 rounded text-xs ${
-          performance.seen
-            ? "bg-green-200 text-success"
-            : "bg-red-200 text-danger"
-        }`}
-      >
-        {performance.seen ? "Seen" : "Watchlist"}
-      </span>
+      </div>
 
       {performance.pieces && performance.pieces.length > 0 && (
         <div className="mt-2 sm:mt-3 w-full flex flex-col">
@@ -181,6 +187,18 @@ export default function PerformanceCard({
 
       {expanded && (
         <div className="mt-4 text-left w-full space-y-2 text-sm text-neutral-mid">
+          {performance.writers && performance.writers.length > 0 && (
+            <div className="mb-2 text-xs sm:text-sm">
+              <span className="font-semibold">Writers: </span>
+              {performance.writers.map((writer, idx) => (
+                <span key={idx}>
+                  {writer.name}
+                  {writer.role && ` (${writer.role})`}
+                  {idx < (performance.writers?.length ?? 0) - 1 ? ", " : ""}
+                </span>
+              ))}
+            </div>
+          )}
           {performance.original_language && (
             <p>
               <strong>Original Language:</strong>{" "}
@@ -195,8 +213,7 @@ export default function PerformanceCard({
           )}
           {performance.country && (
             <p>
-              <strong>Composer Nationality:</strong>{" "}
-              {performance.country}
+              <strong>Composer Nationality:</strong> {performance.country}
             </p>
           )}
           {performance.conductor && (
