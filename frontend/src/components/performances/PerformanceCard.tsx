@@ -109,7 +109,7 @@ export default function PerformanceCard({
             <ul className="mt-1 sm:mt-2 space-y-1 text-xs sm:text-sm w-full">
               {performance.pieces.map((piece, idx) => (
                 <li key={idx} className="ml-2 sm:ml-4">
-                  <div className="flex justify-between items-start w-full">
+                  <div className="flex text-left w-full">
                     <div className="max-w-[90%] sm:max-w-[80%]">
                       <span className="font-semibold">{piece.title}</span>
                       {piece.composer && (
@@ -119,7 +119,7 @@ export default function PerformanceCard({
                         </span>
                       )}
                       {piece.movements.length > 0 && (
-                        <ul className="ml-4 sm:ml-6 mt-1 space-y-1">
+                        <ul className="ml-4 sm:ml-6 mt-1 space-y-1 text-xs text-center">
                           {piece.movements.map((movement, mIdx) => (
                             <li key={mIdx} className="text-gray-300">
                               {movement.number && (
