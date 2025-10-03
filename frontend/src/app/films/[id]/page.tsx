@@ -147,7 +147,7 @@ export default function FilmDetailPage() {
 
   const handleFilmUpdated = () => {
     window.location.reload();
-  }
+  };
 
   if (!film)
     return <p className="p-4 sm:p-6 font-sans text-gray-400">Loading...</p>;
@@ -605,6 +605,34 @@ export default function FilmDetailPage() {
                     )}
                     {activeTab === "awards" && (
                       <div className="space-y-4 flex flex-col">
+                        {(() => {
+                          const awards = film.awards_won || [];
+                          const totalNominations = awards.length;
+                          const totalWins = awards.filter((a) => a.won).length;
+                          const tooltipMessage =
+                            "Awards from Academy Awards, BAFTA, Golden Globes, Critics' Choice, SAG. Festivals from Cannes, Venice, Berlin, Toronto, Sundance.";
+
+                          return (
+                            <div className="mb-2 text-sm text-gray-400 font-sans relative group w-fit">
+                              <span className="cursor-help group-hover:text-primary transition">
+                                🏆{" "}
+                                <span className="text-warning font-semibold">
+                                  {totalWins}
+                                </span>{" "}
+                                Wins ·{" "}
+                                <span className="text-primary font-semibold">
+                                  {totalNominations}
+                                </span>{" "}
+                                Nominations
+                              </span>
+
+                              <div className="absolute left-0 bottom-full mb-1 hidden group-hover:block bg-neutral-mid text-background text-xs p-2 rounded shadow-lg z-10 w-max max-w-xs whitespace-normal">
+                                {tooltipMessage}
+                              </div>
+                            </div>
+                          );
+                        })()}
+
                         {Object.entries(
                           film.awards_won?.reduce(
                             (
