@@ -614,7 +614,7 @@ export default function FilmDetailPage() {
 
                           return (
                             <div className="mb-2 text-sm text-gray-400 font-sans relative group w-fit">
-                              <span className="cursor-help group-hover:text-primary transition">
+                              <span className="cursor-help group-hover:text-primary transition mb-2">
                                 🏆{" "}
                                 <span className="text-warning font-semibold">
                                   {totalWins}
