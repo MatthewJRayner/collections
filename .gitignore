@@ -1,5 +1,6 @@
 # environment variables
-.env
+/.env*
+.env*
 
 # frontend next.js
 
