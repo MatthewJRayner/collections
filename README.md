@@ -103,6 +103,6 @@ This project merges data-driven insight, beautiful UI/UX, and deep cultural pass
 
 **Matthew Rayner** — Software Developer and Linguist 
 
-- 🔗 Portfolio(https://matthewjrayner.github.io)  
+- 🔗 [Portfolio](https://matthewjrayner.github.io)  
 - 💼 [LinkedIn](https://linkedin.com)  
 - 📬 Contact: raynerjmatthew@gmail.com
