@@ -9,6 +9,7 @@ import ReviewModal from "@/components/ReviewModal";
 import Link from "next/link";
 import { formatDate, formatRuntime } from "@/utils/formatters";
 import FilmImageModal from "@/components/film/FilmImageModal";
+import ReactMarkdown from "react-markdown";
 
 export default function FilmDetailPage() {
   const { id } = useParams();
@@ -282,9 +283,9 @@ export default function FilmDetailPage() {
                 )}
 
                 {film.synopsis && (
-                  <p className="text-md font-inter text-gray-400 leading-relaxed">
-                    {film.synopsis}
-                  </p>
+                  <div className="text-md font-inter text-gray-400 leading-relaxed">
+                    <ReactMarkdown>{film.synopsis}</ReactMarkdown>
+                  </div>
                 )}
 
                 <div className="rounded-lg block md:hidden w-full md:w-2/5 h-fit mt-4 md:mt-0">

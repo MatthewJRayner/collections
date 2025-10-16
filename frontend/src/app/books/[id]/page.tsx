@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Book } from "@/types/book";
 import ZoomableImageModal from "@/components/ZoomableImageModal";
@@ -8,6 +8,7 @@ import StarRating from "@/components/StarRating";
 import ReviewModal from "@/components/ReviewModal";
 import Link from "next/link";
 import { formatDate, formatPhrase, formatYear } from "@/utils/formatters";
+import ReactMarkdown from "react-markdown";
 
 export default function BookDetailPage() {
   const { id } = useParams();
@@ -198,11 +199,11 @@ export default function BookDetailPage() {
           <div className="flex flex-col w-full mt-2 space-y-4">
             {book.synopsis && (
               <div className="mb-8 relative">
-                <p
+                <div
                   className={`text-sm sm:text-md leading-relaxed font-serif font-medium transition-all duration-300 ${showFullSynopsis ? "max-h-none" : "max-h-24 sm:max-h-32 overflow-hidden"}`}
                 >
-                  {book.synopsis}
-                </p>
+                  <ReactMarkdown>{book.synopsis}</ReactMarkdown>
+                </div>
                 {!showFullSynopsis && book.synopsis.length > 300 && (
                   <div className="absolute bottom-5 left-0 w-full h-10 sm:h-12 bg-gradient-to-t from-background via-background/80 to-transparent pointer-events-none" />
                 )}
