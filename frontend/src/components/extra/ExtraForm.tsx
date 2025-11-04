@@ -43,6 +43,8 @@ export default function ExtraForm({ initialData, onSuccess }: ExtraFormProps) {
       year: formData.year ? parseFloat(formData.year) : null,
     };
 
+    console.log("Payload:", payload);
+    
     const method = initialData ? "PUT" : "POST";
     const url = initialData
       ? `${process.env.NEXT_PUBLIC_API_URL}/api/extra/${initialData.id}/`
