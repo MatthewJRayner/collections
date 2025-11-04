@@ -98,10 +98,10 @@ class FilmViewSet(viewsets.ModelViewSet):
                 Q(alt_title__icontains=q) |
                 Q(director__icontains=q) |
                 Q(alt_name__icontains=q)
-            )
+            )[:10]
 
         logger.debug(f"Filtered queryset count: {queryset.count()}")
-        return queryset[:10]
+        return queryset
     
     @action(detail=False, methods=['get'])
     def frontpage(self, request):
