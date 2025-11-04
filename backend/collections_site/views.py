@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.conf import settings
 from django.contrib.postgres.fields import JSONField, ArrayField
 from rest_framework import viewsets
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
 from rest_framework.filters import SearchFilter
 from rest_framework import status
@@ -73,25 +73,63 @@ class FilmViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = super().get_queryset()
+        q = self.request.query_params.get('q')
         director = self.request.query_params.get('directors')
         actor = self.request.query_params.get('actor')
         genre = self.request.query_params.get('genre')
         crew = self.request.query_params.get('crew')
 
-        logger.debug(f"Query params: director={director}, actor={actor}, genre={genre}, crew={crew}")
+        logger.debug(f"Query params: q={q}, director={director}, actor={actor}, genre={genre}, crew={crew}")
 
+        # Apply individual filters independently
         if director:
             queryset = queryset.filter(director__iexact=director)
-        elif actor:
-            queryset = queryset.filter(cast__contains=[{'actor': actor}])
-        elif genre:
+        if actor:
+            queryset = queryset.filter(cast__contains=[{"actor": actor}])
+        if genre:
+            # Use this if genre is array of strings: ["Drama", "Comedy"]
             queryset = queryset.filter(genre__contains=[genre])
-        elif crew:
-            queryset = queryset.filter(crew__contains=[{'name': crew}])
+        if crew:
+            queryset = queryset.filter(crew__contains=[{"name": crew}])
+
+        if q:
+            queryset = queryset.filter(
+                Q(title__icontains=q) |
+                Q(alt_title__icontains=q) |
+                Q(director__icontains=q) |
+                Q(alt_name__icontains=q)
+            )
 
         logger.debug(f"Filtered queryset count: {queryset.count()}")
-        logger.debug(f"Filtered films: {[film.title for film in queryset]}")
         return queryset
+    
+    @action(detail=False, methods=['get'])
+    def frontpage(self, request):
+        watchlist = Film.objects.filter(watchlist=True).order_by('?')[:5]
+        favourites = Film.objects.filter(favourite=True).order_by('?')[:5]
+        recent = Film.objects.order_by('-date_watched')[:5]
+
+        data_set = {
+            "watchlist": watchlist,
+            "favourites": favourites,
+            "recent": recent,
+        }
+
+        # If all are empty, provide fallback
+        if not any(qs.exists() for qs in data_set.values()):
+            fallback = Film.objects.order_by('?')[:5]
+            data_set["fallback"] = fallback
+        else:
+            # Remove any empty keys
+            data_set = {k: v for k, v in data_set.items() if v.exists()}
+
+        # Serialize efficiently
+        result = {
+            key: FilmSerializer(films, many=True).data
+            for key, films in data_set.items()
+        }
+
+        return Response(result)
 
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
