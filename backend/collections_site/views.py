@@ -101,13 +101,13 @@ class FilmViewSet(viewsets.ModelViewSet):
             )
 
         logger.debug(f"Filtered queryset count: {queryset.count()}")
-        return queryset
+        return queryset[:10]
     
     @action(detail=False, methods=['get'])
     def frontpage(self, request):
         watchlist = Film.objects.filter(watchlist=True).order_by('?')[:5]
         favourites = Film.objects.filter(favourite=True).order_by('?')[:5]
-        recent = Film.objects.order_by('-date_watched')[:5]
+        recent = Film.objects.filter(date_watched__isnull=False).order_by('-date_watched')[:5]
 
         data_set = {
             "watchlist": watchlist,
