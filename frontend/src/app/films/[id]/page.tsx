@@ -29,7 +29,7 @@ export default function FilmDetailPage() {
 
   const fetchFilm = async () => {
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/films/${id}/`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/films/${id}/`);
       const data = await res.json();
       setFilm(data);
     } catch (err) {
