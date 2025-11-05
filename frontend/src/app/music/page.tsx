@@ -94,10 +94,10 @@ export default function MusicPage() {
             </div>
             <button
               onClick={() => setOnlyOwned((prev) => !prev)}
-              className={`px-4 py-2 rounded-md font-medium transition-all flex items-center gap-2 ${
+              className={`px-4 py-2 rounded-md font-medium transition-all flex items-center gap-2 cursor-pointer ${
                 onlyOwned
                   ? "bg-primary text-white"
-                  : "bg-neutral-mid text-foreground hover:bg-neutral"
+                  : "bg-neutral hover:opacity-80"
               }`}
             >
               {onlyOwned ? "Owned Only" : "Show All"}
