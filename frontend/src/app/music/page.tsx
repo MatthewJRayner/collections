@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Music } from "../../types/music";
 import MusicCard from "../../components/music/MusicCard";
 import Link from "next/link";
+import { getLanguageName } from "@/utils/iso";
 
 export default function MusicPage() {
   const [music, setMusic] = useState<Music[]>([]);
@@ -127,7 +128,7 @@ export default function MusicPage() {
                           openLanguages[lang] ? "text-primary" : ""
                         }`}
                       >
-                        {lang}
+                        {getLanguageName(lang)}
                       </span>
                       <span
                         className={` transition duration-400 ${

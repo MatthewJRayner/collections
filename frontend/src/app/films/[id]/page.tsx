@@ -10,6 +10,7 @@ import Link from "next/link";
 import { formatDate, formatRuntime } from "@/utils/formatters";
 import FilmImageModal from "@/components/film/FilmImageModal";
 import ReactMarkdown from "react-markdown";
+import { getCountryName, getLanguageName } from "@/utils/iso";
 
 export default function FilmDetailPage() {
   const { id } = useParams();
@@ -175,22 +176,21 @@ export default function FilmDetailPage() {
           <div className="w-full md:w-1/4 space-y-2 flex flex-col items-center">
             {film.poster && (
               <div
-                onClick={() => setShowModal(true)}
-                className="cursor-pointer"
+                onClick={() => setShowImageModal(true)}
+                className="cursor-pointer relative group"
               >
                 <img
                   src={film.poster}
                   alt={film.title}
-                  className="rounded-lg shadow active:scale-95 cursor-pointer transition w-full max-w-[250px] sm:max-w-[400px]"
+                  className="rounded-lg shadow active:scale-95 cursor-pointer transition-transform duration-200 w-full max-w-[250px] sm:max-w-[400px]"
                 />
+
+                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg flex items-center justify-center">
+                  <span className="text-white text-lg font-semibold">
+                    Change Poster
+                  </span>
+                </div>
               </div>
-            )}
-            {showModal && (
-              <ZoomableImageModal
-                src={film.poster || "/placeholder.jpg"}
-                alt={film.title}
-                onClose={() => setShowModal(false)}
-              />
             )}
             <div className="w-full flex items-center justify-center text-center space-x-4 sm:space-x-2 mt-2 text-xs sm:text-sm">
               {film.runtime && (
@@ -210,12 +210,6 @@ export default function FilmDetailPage() {
               >
                 ✎
               </Link>
-              <button
-                onClick={() => setShowImageModal(true)}
-                className="text-base text-neutral-mid cursor-pointer transition-all duration-300 hover:text-primary hover:scale-105 active:scale-90"
-              >
-                🖼
-              </button>
               {showImageModal && film.id && film.tmdb_id && (
                 <FilmImageModal
                   filmId={film.id}
@@ -794,12 +788,12 @@ export default function FilmDetailPage() {
                     )}
                     {film.language && (
                       <p>
-                        <strong>Language:</strong> {film.language}
+                        <strong>Language:</strong> {getLanguageName(film.language)}
                       </p>
                     )}
                     {film.country && (
                       <p>
-                        <strong>Country:</strong> {film.country}
+                        <strong>Country:</strong> {getCountryName(film.country)}
                       </p>
                     )}
                     {film.external_links && (

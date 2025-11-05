@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Music } from "../../types/music";
 import Link from "next/link";
 import ZoomableImageModal from "../ZoomableImageModal";
+import { getLanguageName, getCountryName } from "@/utils/iso";
 
 type MusicCardProps = {
   music: Music;
@@ -140,12 +141,12 @@ export default function MusicCard({ music, onDelete }: MusicCardProps) {
           )}
           {music.language && (
             <p>
-              <strong>Language:</strong> {music.language}
+              <strong>Language:</strong> {getLanguageName(music.language)}
             </p>
           )}
           {music.country && (
             <p>
-              <strong>Country:</strong> {music.country}
+              <strong>Country:</strong> {getCountryName(music.country)}
             </p>
           )}
           {music.label && (

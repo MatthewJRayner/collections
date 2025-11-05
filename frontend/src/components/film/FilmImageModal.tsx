@@ -1,5 +1,6 @@
 "use client";
 
+import { getLanguageName } from "@/utils/iso";
 import { useState, useEffect } from "react";
 
 type Props = {
@@ -108,7 +109,7 @@ export default function FilmImageModal({
           {[...new Set(images.map((img) => img.iso_639_1).filter(Boolean))].map(
             (lang) => (
               <option key={lang} value={lang} className="bg-background text-foreground">
-                {lang}
+                {getLanguageName(lang)}
               </option>
             )
           )}
