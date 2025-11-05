@@ -12,14 +12,18 @@ export default function MusicPage() {
     {}
   );
   const [searchQuery, setSearchQuery] = useState("");
+  const [onlyOwned, setOnlyOwned] = useState(false);
 
   const filteredMusic = music.filter((m) => {
     const query = searchQuery.toLowerCase();
-    return (
+    const matchesSearch =
+      !query ||
       m.title?.toLowerCase().includes(query) ||
       m.artist?.toLowerCase().includes(query) ||
-      m.genre?.some((g) => g.toLowerCase().includes(query))
-    );
+      m.genre?.some((g) => g.toLowerCase().includes(query));
+    const matchesOwnership = !onlyOwned || m.owned;
+
+    return matchesSearch && matchesOwnership;
   });
 
   const fetchMusic = () => {
@@ -88,6 +92,16 @@ export default function MusicPage() {
                 +
               </Link>
             </div>
+            <button
+              onClick={() => setOnlyOwned((prev) => !prev)}
+              className={`px-4 py-2 rounded-md font-medium transition-all flex items-center gap-2 ${
+                onlyOwned
+                  ? "bg-primary text-white"
+                  : "bg-neutral-mid text-foreground hover:bg-neutral"
+              }`}
+            >
+              {onlyOwned ? "Owned Only" : "Show All"}
+            </button>
           </div>
 
           <div className="">
