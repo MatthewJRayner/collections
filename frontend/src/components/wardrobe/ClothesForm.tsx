@@ -86,7 +86,7 @@ export default function ClothesForm({
       <div className="w-full md:w-1/2 md:pl-2">
         <form onSubmit={handleSubmit} className="space-y-2 md:space-y-3">
           <select
-            name="Category"
+            name="category"
             value={formData.category || ""}
             onChange={handleChange}
             className="bg-neutral shadow p-2 w-full rounded text-sm sm:text-base"
@@ -101,7 +101,7 @@ export default function ClothesForm({
             <option value="knitwear">Knitwear</option>
             <option value="hosiery">Hosiery</option>
             <option value="underpinnings">Underpinnings</option>
-            <option value="shirts_accessories">Shirts & Accessories</option>
+            <option value="shirt_accessories">Shirts & Accessories</option>
             <option value="leather_goods">Leather Goods</option>
             <option value="hats">Hats</option>
             <option value="tools_essentials">
