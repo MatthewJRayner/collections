@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Clothing } from "@/types/clothing";
 
 type ClothesFormProps = {
@@ -19,21 +19,25 @@ export default function ClothesForm({
     }
   );
 
+  // Debug logging for production troubleshooting
+  useEffect(() => {
+    console.log("Current Form Data:", formData);
+  }, [formData]);
+
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >
   ) => {
     const { name, value, type } = e.target;
-    setFormData({
-      ...formData,
+    
+    setFormData((prev) => ({
+      ...prev,
       [name]:
         type === "checkbox"
-          ? e.target instanceof HTMLInputElement
-            ? e.target.checked
-            : false
+          ? (e.target as HTMLInputElement).checked
           : value,
-    });
+    }));
   };
 
   const [featuresInput, setFeaturesInput] = useState(
