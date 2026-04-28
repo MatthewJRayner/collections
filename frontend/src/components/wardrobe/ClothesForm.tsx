@@ -30,7 +30,7 @@ export default function ClothesForm({
     >
   ) => {
     const { name, value, type } = e.target;
-    
+
     setFormData((prev) => ({
       ...prev,
       [name]:

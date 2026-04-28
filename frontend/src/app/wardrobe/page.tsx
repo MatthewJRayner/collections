@@ -47,26 +47,19 @@ export default function ClothesPage() {
     fetchClothes();
   };
 
-  const groupByCategory = React.useMemo(
-    () =>
-      filteredClothes.reduce<Record<string, Clothing[]>>((acc, item) => {
+  const groupedClothes = React.useMemo(() => {
+    return filteredClothes.reduce<Record<string, Record<string, Clothing[]>>>(
+      (acc, item) => {
         const cat = item.category || "Unknown";
-        if (!acc[cat]) acc[cat] = [];
-        acc[cat].push(item);
+        const type = item.type || "Unknown";
+        if (!acc[cat]) acc[cat] = {};
+        if (!acc[cat][type]) acc[cat][type] = [];
+        acc[cat][type].push(item);
         return acc;
-      }, {}),
-    [filteredClothes]
-  );
-
-  const groupByType = filteredClothes.reduce<Record<string, Clothing[]>>(
-    (acc, item) => {
-      const type = item.type || "Unknown";
-      if (!acc[type]) acc[type] = [];
-      acc[type].push(item);
-      return acc;
-    },
-    {}
-  );
+      },
+      {}
+    );
+  }, [filteredClothes]);
 
   // Stats
   const totalOwned = clothes.filter((c) => c.owned).length;
@@ -111,7 +104,7 @@ export default function ClothesPage() {
               <p>No wardrobe items found.</p>
             ) : (
               <div className="space-y-4">
-                {Object.entries(groupByCategory).map(([cat, items]) => (
+                {Object.entries(groupedClothes).map(([cat, types]) => (
                   <div key={cat}>
                     <button
                       onClick={() =>
@@ -120,10 +113,10 @@ export default function ClothesPage() {
                           [cat]: !prev[cat],
                         }))
                       }
-                      className="w-full cursor-pointer flex justify-between items-center transition"
+                      className="w-full cursor-pointer flex justify-between items-center transition py-2"
                     >
                       <span
-                        className={`font-semibold transition ${
+                        className={`font-semibold transition text-xl ${
                           openCategories[cat] ? "text-primary" : ""
                         }`}
                       >
@@ -140,14 +133,11 @@ export default function ClothesPage() {
                       </span>
                     </button>
                     {openCategories[cat] && (
-                      <div className="ml-4">
-                        {Object.entries(groupByType).map(([type]) => (
-                          <div
-                            key={type}
-                            className="flex flex-col l-4 space-y-6"
-                          >
-                            <h3 className="text-lf font-semibold mb-2">
-                              {type}
+                      <div className="ml-4 space-y-8 mt-4">
+                        {Object.entries(types).map(([type, items]) => (
+                          <div key={type} className="flex flex-col">
+                            <h3 className="text-lg font-semibold mb-4 border-b border-neutral-mid pb-1">
+                              {formatPhrase(type)}
                             </h3>
                             <ul className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                               {items.map((item) => (
